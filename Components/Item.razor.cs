@@ -4,10 +4,10 @@ using TreeBuilder.Services;
 using System.Collections.Generic;
 
 namespace TreeBuilder.Components {
-    public partial class Item : ComponentBase {
+    public class Item : ComponentBase {
 
-        //[Inject]
-        //ComponentTracker componentTracker { get; set; }
+        [Inject]
+        ComponentTracker componentTracker { get; set; }
 
         [Parameter]
         public string Title { get; set; } = "Default Title";
@@ -26,7 +26,11 @@ namespace TreeBuilder.Components {
         public static Item Payload { get; set; } = null;
 
         protected override void OnInitialized(){
-            //componentTracker.Add(Uid,this);
+            try {
+            componentTracker.Add(Uid,this);
+            } catch (ArgumentException ex) {
+                componentTracker.Replace(Uid,this);
+            }
         }
 
         public void HandleOnInput(ChangeEventArgs args){
@@ -47,7 +51,7 @@ namespace TreeBuilder.Components {
 
         public void HandleOnDragEnd(){
             CssClass = "";
-            Payload = null;
+            
         }
 
     }

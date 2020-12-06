@@ -18,5 +18,10 @@ namespace TreeBuilder.Services {
         public void Remove(Guid guid){
             componentdb.Remove(guid);
         }
+
+        public void Replace(Guid guid, Item item){
+            componentdb.Remove(guid);
+            Add(guid,item);
+        }
     }
 }

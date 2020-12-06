@@ -8,8 +8,8 @@
 <Trash></Trash>
 
 @if(fieldRef != null){
-@foreach(Group grp in fieldRef.Groups){
-    @grp.Uid @grp.Parent.Uid <br/>
+@foreach(Item itm in fieldRef.Items){
+    @itm.Uid  @itm.Parent.Uid <br/>
 }
 }
 

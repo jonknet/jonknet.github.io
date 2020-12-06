@@ -16,14 +16,14 @@ namespace TreeBuilder.Components {
         public void AddGroup(){
             Group grp = new Group();
             grp.Parent = this;
-            Groups.Add(grp);
+            Items.Add(grp);
             StateHasChanged();
         }
 
         public void AddInterface(){
             Interface iface = new Interface();
             iface.Parent = this;
-            Interfaces.Add(iface);
+            Items.Add(iface);
             StateHasChanged();
         }
 

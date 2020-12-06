@@ -1,14 +1,13 @@
 @inherits Group
 
-<div id=@Uid class="tb-field">
+<div id=@Uid class="tb-field" @ondragstart:stopPropagation>
 
-@foreach(Interface iface in Interfaces){
-    <Interface Uid=@iface.Uid Title="@iface.Title" Parent=@this Field=@this></Interface>
-}
-
-@foreach(Group grp in Groups){
-    <Group Uid=@grp.Uid Title="@grp.Title" Parent=@this Field=@this>
-    </Group>
-}
+        @foreach(Item item in Items){
+            @if(item.GetType() == typeof(Group)){
+                <Group Uid=@item.Uid Title="@item.Title" Field=@this Parent=@this></Group>
+            } else if(item.GetType() == typeof(Interface)){
+                <Interface Uid=@item.Uid Title="@item.Title" Field=@this Parent=@this></Interface>
+            }
+        }
 
 </div>

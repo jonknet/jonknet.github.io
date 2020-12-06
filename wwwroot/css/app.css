@@ -54,18 +54,22 @@ a, .btn-link {
     }
 
     .tb-group {
-        width: 300px;
-        height: auto;
+        width: 400px;
+        min-height: 200px;
         background-color: orange;
-        z-index:-1;
+        padding: 10px;
+        border-radius: 5px;
+        border: 5px solid darkgoldenrod;
+        margin-top: 10px;
     }
 
     .tb-interface {
-        width: 200px;
+        width: 300px;
         height: auto;
         background-color: blue;
-        z-index: 200;
-        
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .tb-dropborder {

@@ -3,19 +3,41 @@
 <div id=@Uid class="tb-group tb-draggable @CssClass" 
         draggable = "true"
         ondragover="event.preventDefault()"
+        @ondragstart:stopPropagation
         @ondragstart="@(()=>HandleOnDragStart(this))"
         @ondragend="HandleOnDragEnd"
         @ondragenter="HandleOnDragEnter"
         @ondragleave="HandleOnDragLeave"
-        @ondrop="HandleOnDrop">@Title
+        @ondrop:stopPropagation
+        @ondrop="HandleOnDrop"
+        @onclick:stopPropagation
+        @onclick="Debug_Output">@Title : @Uid : @Parent.Uid
 
+        @foreach(Item item in Items){
+            
+            if(item.GetType() == typeof(Group)){
+                <Group Uid=@item.Uid Title="@item.Title" Field=@Field Parent=@this></Group>
+            } else if(item.GetType() == typeof(Interface)){
+                <Interface Uid=@item.Uid Title="@item.Title" Field=@Field Parent=@this></Interface>
+            }
+            
+        }
+          
+ </div>
+ 
+@*
         @foreach(Interface iface in Interfaces){
-            <Interface Uid=@iface.Uid Title="@iface.Title" Parent=@this Field=@Field></Interface>
+            <Interface Uid=@iface.Uid Title="@iface.Title" Field=@Field Parent=@this></Interface>
         }
 
-      @*  @foreach(Group grp in Groups){
-            <Group Uid=@grp.Uid Title="@grp.Title" Field=@Field Parent=@this></Group>
-        }*@
-        </div>
+        @foreach(Group grp in Groups){
+            <Group Uid=@grp.Uid Title="@grp.Title" Field=@Field Parent=@this>
+            @foreach(Interface iface in grp.Interfaces){
+                <Interface Uid=@iface.Uid Title="@iface.Title" Field=@Field Parent=@grp></Interface>
+            }
+            </Group>
+        }
+*@
+       
         
         
