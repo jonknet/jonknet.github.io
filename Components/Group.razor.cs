@@ -10,6 +10,7 @@ namespace TreeBuilder.Components {
         {
             Groups = new List<Group>();
             Interfaces = new List<Interface>();
+            base.OnInitialized();
             
         }
 

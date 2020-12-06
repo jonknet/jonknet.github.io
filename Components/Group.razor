@@ -1,3 +1,8 @@
 @inherits Item
 
-<div id=@Uid class="tb-group"><input type="text" @oninput="@((ChangeEventArgs e) => HandleOnInput(e))">@Title</input></div>
+<div id=@Uid class="tb-group @CssClass" 
+        ondragover="event.preventDefault()"
+        ondragstart="event.dataTransfer.setData('',event.target.id)"
+        @ondragenter="HandleOnDragEnter"
+        @ondragleave="HandleOnDragLeave"
+        @ondrop="HandleOnDrop">@Title</div>

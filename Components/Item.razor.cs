@@ -9,9 +9,11 @@ namespace TreeBuilder.Components {
         ComponentTracker componentTracker { get; set; }
 
         [Parameter]
-        public string Title { get; set; } = "";
+        public string Title { get; set; } = "Default Title";
 
         public Guid Uid { get; set; }
+
+        public string CssClass { get; set; } = "";
 
         protected override void OnInitialized(){
             Uid = Guid.NewGuid();

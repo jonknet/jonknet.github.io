@@ -48,3 +48,16 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+    .tb-group {
+        width: 300px;
+        height: auto;
+        background-color: orange;
+    }
+
+    .tb-interface {
+        width: 200px;
+        height: 50px;
+        background-color: blue;
+        
+    }
