@@ -1,15 +1,9 @@
-using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
 using System;
-
+using TreeBuilder.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace TreeBuilder.Components {
-    public partial class Group : Item {
-        public List<Group> Groups = new List<Group>();
-        public List<Interface> Interfaces = new List<Interface>();
-
-        [Parameter]
-        public RenderFragment ChildContent {get; set;}
+    public partial class Trash : Item {
 
         protected override void OnInitialized()
         {
@@ -17,38 +11,29 @@ namespace TreeBuilder.Components {
         }
 
         public void HandleOnDrop(){
-            if(Payload != null && Payload.Uid != this.Uid){
-                if(Payload.GetType() == typeof(Group)){
-                    Groups.Add(Payload as Group);
+            if(Payload.GetType() == typeof(Group)){
                     foreach(Group grp in Payload.Parent.Groups){
                         if(grp.Uid == Payload.Uid){
+                            Console.WriteLine("Deleting group " + grp.Uid);
                             Payload.Parent.Groups.Remove(grp);
                             break;
                         }
                     }
-                } else if(Payload.GetType() == typeof(Interface)){
-                    Interfaces.Add(Payload as Interface);
+            } else if(Payload.GetType() == typeof(Interface)){
                     foreach(Interface iface in Payload.Parent.Interfaces){
                         if(iface.Uid == Payload.Uid){
+                            Console.WriteLine("Deleting interface " + iface.Uid);
                             Payload.Parent.Interfaces.Remove(iface);
                             break;
                         }
                     }
-                }
-                
             }
-            CssClass = "";
-
-            this.Field.Refresh();
-
-            Payload.Parent = this;
-
+            while(Payload.Parent != null){
+                Payload = Payload.Parent;
+            }
+            (Payload as Field).Refresh();
             Payload = null;
-
             
         }
-
-        
-
     }
 }

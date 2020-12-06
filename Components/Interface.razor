@@ -1,3 +1,4 @@
 @inherits Item
 
-<div id=@Uid class="tb-interface @CssClass">@Title</div>
+<div id=@Uid draggable="true" class="tb-interface tb-draggable @CssClass" 
+            @ondragstart="@(()=>HandleOnDragStart(this))">@Title</div>

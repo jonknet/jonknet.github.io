@@ -1,10 +1,36 @@
 ﻿@page "/"
 
-<div class="container">
-    <div class="row"></div>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-    </div> 
-</div>
+<button @onclick="AddGroup">Add a group</button><br/>
+<button @onclick="AddInterface">Add an interface</button><br/>
 
+<Field @ref=fieldRef></Field>
+
+<Trash></Trash>
+
+@if(fieldRef != null){
+@foreach(Group grp in fieldRef.Groups){
+    @grp.Uid @grp.Parent.Uid <br/>
+}
+}
+
+@code {
+
+    Field fieldRef {get; set;}
+
+    protected override void OnInitialized()
+        {
+            base.OnInitialized();
+        }
+
+    
+
+    public void AddGroup(){
+        fieldRef.AddGroup();
+    }
+
+    public void AddInterface(){
+        fieldRef.AddInterface();
+    }
+}
+
+        

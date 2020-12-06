@@ -1,8 +1,21 @@
 @inherits Item
 
-<div id=@Uid class="tb-group @CssClass" 
+<div id=@Uid class="tb-group tb-draggable @CssClass" 
+        draggable = "true"
         ondragover="event.preventDefault()"
-        ondragstart="event.dataTransfer.setData('',event.target.id)"
+        @ondragstart="@(()=>HandleOnDragStart(this))"
+        @ondragend="HandleOnDragEnd"
         @ondragenter="HandleOnDragEnter"
         @ondragleave="HandleOnDragLeave"
-        @ondrop="HandleOnDrop">@Title</div>
+        @ondrop="HandleOnDrop">@Title
+
+        @foreach(Interface iface in Interfaces){
+            <Interface Uid=@iface.Uid Title="@iface.Title" Parent=@this Field=@Field></Interface>
+        }
+
+      @*  @foreach(Group grp in Groups){
+            <Group Uid=@grp.Uid Title="@grp.Title" Field=@Field Parent=@this></Group>
+        }*@
+        </div>
+        
+        

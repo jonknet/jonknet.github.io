@@ -1,0 +1,14 @@
+@inherits Group
+
+<div id=@Uid class="tb-field">
+
+@foreach(Interface iface in Interfaces){
+    <Interface Uid=@iface.Uid Title="@iface.Title" Parent=@this Field=@this></Interface>
+}
+
+@foreach(Group grp in Groups){
+    <Group Uid=@grp.Uid Title="@grp.Title" Parent=@this Field=@this>
+    </Group>
+}
+
+</div>
