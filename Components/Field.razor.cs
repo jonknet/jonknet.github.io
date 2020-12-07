@@ -7,6 +7,8 @@ using TreeBuilder.Services;
 namespace TreeBuilder.Components {
     public partial class Field : Group {
         
+        public Dictionary<Guid,Item> myComponents = new Dictionary<Guid, Item>();
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -17,14 +19,14 @@ namespace TreeBuilder.Components {
             Group grp = new Group();
             grp.Parent = this;
             Items.Add(grp);
-            StateHasChanged();
+            Refresh();
         }
 
         public void AddInterface(){
             Interface iface = new Interface();
             iface.Parent = this;
             Items.Add(iface);
-            StateHasChanged();
+            Refresh();
         }
 
         public void Refresh(){

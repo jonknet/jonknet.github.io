@@ -11,7 +11,7 @@ namespace TreeBuilder.Components {
         }
 
         public void HandleOnDrop(){
-            Payload.Parent.Items.Remove(Payload.Parent.Items.Find(x => x.Uid == Payload.Uid));
+            Payload.Parent.Items.Remove(Payload);
             while(Payload.Parent != null){
                 Payload = Payload.Parent;
             }

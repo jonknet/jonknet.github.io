@@ -6,26 +6,31 @@ using System;
 namespace TreeBuilder.Components {
     public partial class Group : Item {
      
-        public List<Item> Items;
+        [Parameter]
+        public List<Item> Items { get; set; } = new List<Item>();
 
-        protected override void OnInitialized()
-        {
-            Items = new List<Item>();
-            base.OnInitialized();
-        }
+        [CascadingParameter]
+        public Field Field {get; set;}
 
         public void HandleOnDrop(){
-            if(Payload.Uid != this.Uid){
-                Console.WriteLine("Removing item " + Payload.Uid);
+
+            if(Payload != this){
+                //If dragging an object from the Field to the same Field
+                if(Payload.Parent == Field && (this.GetType() == typeof(Field)) && Field == this){
+                    return;
+                }
+                Console.WriteLine("Adding item " + Payload.Uid + " to " + this.Uid);
+                Console.WriteLine("Removing item " + Payload.Uid + " from " + Payload.Parent.Uid);
                 Items.Add(Payload);
-                Payload.Parent.Items.Remove(Payload.Parent.Items.Find(x => x.Uid == Payload.Uid));
+                Payload.Parent.Items.Remove(Payload);
             }
             CssClass = "";
-
-            this.Field.Refresh();
-
+            if(this.GetType() == typeof(Field)){
+                (this as Field).Refresh();
+            } else {
+                Field.Refresh();
+            }
             Payload.Parent = this;
-            
         }
 
         public void Debug_Output(){

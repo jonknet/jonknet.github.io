@@ -1,13 +1,20 @@
 @inherits Group
 
-<div id=@Uid class="tb-field" @ondragstart:stopPropagation>
-
+<div id=@Uid class="tb-field @CssClass" @ondragstart:stopPropagation 
+                              ondragover="event.preventDefault()"
+                              @ondragenter:stopPropagation
+                              @ondragend="HandleOnDragEnd"
+                              @ondragenter="HandleOnDragEnter"
+                              @ondragleave="HandleOnDragLeave"
+                              @ondrop:stopPropagation
+                              @ondrop=HandleOnDrop>
+<CascadingValue Value=this>
         @foreach(Item item in Items){
             @if(item.GetType() == typeof(Group)){
-                <Group Uid=@item.Uid Title="@item.Title" Field=@this Parent=@this></Group>
+                <Group Uid=@item.Uid Title=@item.Title Parent=@this @key=item></Group>
             } else if(item.GetType() == typeof(Interface)){
-                <Interface Uid=@item.Uid Title="@item.Title" Field=@this Parent=@this></Interface>
+                <Interface Uid=@item.Uid Title=@item.Title Parent=@this @key=item></Interface>
             }
         }
-
+</CascadingValue>
 </div>

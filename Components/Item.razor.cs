@@ -4,6 +4,7 @@ using TreeBuilder.Services;
 using System.Collections.Generic;
 
 namespace TreeBuilder.Components {
+
     public class Item : ComponentBase {
 
         [Inject]
@@ -14,9 +15,6 @@ namespace TreeBuilder.Components {
 
         [Parameter]
         public Guid Uid { get; set; } = Guid.NewGuid();
-
-        [Parameter]
-        public Field Field { get; set; } = null;
 
         [Parameter]
         public Group Parent { get; set; } = null;
@@ -31,6 +29,7 @@ namespace TreeBuilder.Components {
             } catch (ArgumentException ex) {
                 componentTracker.Replace(Uid,this);
             }
+            base.OnInitialized();
         }
 
         public void HandleOnInput(ChangeEventArgs args){
@@ -52,6 +51,17 @@ namespace TreeBuilder.Components {
         public void HandleOnDragEnd(){
             CssClass = "";
             
+        }
+
+        public void HandleOnDragOver(){
+            if(CssClass != "tb-dropborder"){
+                CssClass = "tb-dropborder";
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (Uid == (obj as Item).Uid);
         }
 
     }
