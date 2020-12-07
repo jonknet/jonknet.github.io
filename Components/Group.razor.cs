@@ -30,7 +30,7 @@ namespace TreeBuilder.Components {
                 Field.Refresh();
             }
             Payload.Parent = this;
-            Payload = null;
+            
         }
 
         public void Debug_Output(){

@@ -16,28 +16,14 @@
         @foreach(Item item in Items){
             
             if(item.GetType() == typeof(Group)){
-                <Group Uid=@item.Uid Title=@item.Title Parent=@this Items=@((item as Group).Items) @key=item></Group>
+                <Group Uid=@item.Uid Title=@item.Title Parent=@this Items=@((item as Group).Items) @key=item.Uid></Group>
             } else if(item.GetType() == typeof(Interface)){
-                <Interface Uid=@item.Uid Title=@item.Title Parent=@this @key=item></Interface>
+                <Interface Uid=@item.Uid Title=@item.Title Parent=@this @key=item.Uid></Interface>
             }
             
         }
           
  </div>
- 
-@*
-        @foreach(Interface iface in Interfaces){
-            <Interface Uid=@iface.Uid Title="@iface.Title" Field=@Field Parent=@this></Interface>
-        }
-
-        @foreach(Group grp in Groups){
-            <Group Uid=@grp.Uid Title="@grp.Title" Field=@Field Parent=@this>
-            @foreach(Interface iface in grp.Interfaces){
-                <Interface Uid=@iface.Uid Title="@iface.Title" Field=@Field Parent=@grp></Interface>
-            }
-            </Group>
-        }
-*@
        
         
         
