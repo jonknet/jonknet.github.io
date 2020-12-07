@@ -7,9 +7,6 @@ namespace TreeBuilder.Components {
 
     public class Item : ComponentBase {
 
-        [Inject]
-        ComponentTracker componentTracker { get; set; }
-
         [Parameter]
         public string Title { get; set; } = "Default Title";
 
@@ -22,15 +19,6 @@ namespace TreeBuilder.Components {
         public string CssClass { get; set; } = "";
 
         public static Item Payload { get; set; } = null;
-
-        protected override void OnInitialized(){
-            try {
-            componentTracker.Add(Uid,this);
-            } catch (ArgumentException ex) {
-                componentTracker.Replace(Uid,this);
-            }
-            base.OnInitialized();
-        }
 
         public void HandleOnInput(ChangeEventArgs args){
             Title = args.Value.ToString();
@@ -51,12 +39,6 @@ namespace TreeBuilder.Components {
         public void HandleOnDragEnd(){
             CssClass = "";
             
-        }
-
-        public void HandleOnDragOver(){
-            if(CssClass != "tb-dropborder"){
-                CssClass = "tb-dropborder";
-            }
         }
 
         public override bool Equals(object obj)

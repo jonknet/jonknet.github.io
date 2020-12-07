@@ -53,29 +53,36 @@ a, .btn-link {
         cursor: move;
     }
 
-    .tb-group {
-        width: 400px;
-        min-height: 200px;
-        background-color: orange;
-        padding: 10px;
-        border-radius: 5px;
-        border: 5px solid darkgoldenrod;
+    .tb-item {
+        box-shadow: -5px 5px 5px grey;
         margin-top: 10px;
+        border: 2px solid black;
+        border-radius: 10px;
+    }
+
+    .tb-group {
+        display: flex;
+        min-width: 400px;
+        min-height: 200px;
+        background-color: rgb(212, 158, 9);
+        padding: 10px;
+        flex-direction: column;
+        text-align: center;
+        
     }
 
     .tb-interface {
         width: 300px;
         height: auto;
-        background-color: blue;
-        margin-top: 10px;
-        margin-left: auto;
-        margin-right: auto;
+        background-color: rgb(80, 42, 216);
+        padding: 5px;
+        align-self: center;
     }
 
     .tb-dropborder {
         border-color: red;
         border-width: 2px;
-        border-style: dashed solid;
+        border-style: solid;
     }
 
     .tb-field {

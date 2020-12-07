@@ -3,15 +3,18 @@
 <button @onclick="AddGroup">Add a group</button><br/>
 <button @onclick="AddInterface">Add an interface</button><br/>
 
-<Field @ref=fieldRef></Field>
+<div class="container">
+    <div class="row">
+        <div class="col col-6">
+            <Field @ref=fieldRef></Field>
+        </div>
+        <div class="col col-6">
+            <FieldOutput></FieldOutput>
+        </div>
+    </div>
+</div>
 
 <Trash></Trash>
-
-@if(fieldRef != null){
-@foreach(Item itm in fieldRef.Items){
-    @itm.Uid  @itm.Parent.Uid <br/>
-}
-}
 
 @code {
 

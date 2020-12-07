@@ -12,8 +12,7 @@ namespace TreeBuilder.Components {
         [CascadingParameter]
         public Field Field {get; set;}
 
-        public void HandleOnDrop(){
-
+        public virtual void HandleOnDrop(){
             if(Payload != this){
                 //If dragging an object from the Field to the same Field
                 if(Payload.Parent == Field && (this.GetType() == typeof(Field)) && Field == this){
@@ -31,6 +30,7 @@ namespace TreeBuilder.Components {
                 Field.Refresh();
             }
             Payload.Parent = this;
+            Payload = null;
         }
 
         public void Debug_Output(){

@@ -6,14 +6,6 @@ using TreeBuilder.Services;
 
 namespace TreeBuilder.Components {
     public partial class Field : Group {
-        
-        public Dictionary<Guid,Item> myComponents = new Dictionary<Guid, Item>();
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            
-        }
 
         public void AddGroup(){
             Group grp = new Group();
