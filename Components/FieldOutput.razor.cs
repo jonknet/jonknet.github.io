@@ -7,6 +7,8 @@ namespace TreeBuilder.Components {
             if(Payload.Parent != this){
                 Console.WriteLine(Payload.Uid);
             }
+            CssClass = "";
         }
+        
     }
 }

@@ -37,8 +37,7 @@ namespace TreeBuilder.Components {
         }
 
         public void HandleOnDragEnd(){
-            CssClass = "";
-            
+            CssClass = "";  
         }
 
         public override bool Equals(object obj)

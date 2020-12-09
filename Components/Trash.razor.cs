@@ -16,7 +16,6 @@ namespace TreeBuilder.Components {
                 Payload = Payload.Parent;
             }
             (Payload as Field).Refresh();
-            Payload = null;
         }
     }
 }

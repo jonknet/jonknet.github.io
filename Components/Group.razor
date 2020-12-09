@@ -24,20 +24,6 @@
         }
           
  </div>
- 
-@*
-        @foreach(Interface iface in Interfaces){
-            <Interface Uid=@iface.Uid Title="@iface.Title" Field=@Field Parent=@this></Interface>
-        }
-
-        @foreach(Group grp in Groups){
-            <Group Uid=@grp.Uid Title="@grp.Title" Field=@Field Parent=@this>
-            @foreach(Interface iface in grp.Interfaces){
-                <Interface Uid=@iface.Uid Title="@iface.Title" Field=@Field Parent=@grp></Interface>
-            }
-            </Group>
-        }
-*@
        
         
         

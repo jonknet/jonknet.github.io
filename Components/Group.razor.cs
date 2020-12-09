@@ -9,13 +9,10 @@ namespace TreeBuilder.Components {
         [Parameter]
         public List<Item> Items { get; set; } = new List<Item>();
 
-        [CascadingParameter]
-        public Field Field {get; set;}
-
         public virtual void HandleOnDrop(){
             if(Payload != this){
                 //If dragging an object from the Field to the same Field
-                if(Payload.Parent == Field && (this.GetType() == typeof(Field)) && Field == this){
+                if(Payload.Parent == this){
                     return;
                 }
                 Console.WriteLine("Adding item " + Payload.Uid + " to " + this.Uid);
@@ -23,14 +20,12 @@ namespace TreeBuilder.Components {
                 Items.Add(Payload);
                 Payload.Parent.Items.Remove(Payload);
             }
+            Item index;
+            for(index = Payload.Parent; index.GetType() != typeof(Field); index = index.Parent){}
+            (index as Field).Refresh();
             CssClass = "";
-            if(this.GetType() == typeof(Field)){
-                (this as Field).Refresh();
-            } else {
-                Field.Refresh();
-            }
             Payload.Parent = this;
-            Payload = null;
+            
         }
 
         public void Debug_Output(){
