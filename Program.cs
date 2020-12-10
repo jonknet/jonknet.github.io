@@ -22,6 +22,7 @@ namespace TreeBuilder
             builder.Services.AddSingleton<ComponentTracker>();
             builder.Services.AddSingleton<FieldReference>();
             builder.Services.AddTelerikBlazor();
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
             await builder.Build().RunAsync();
         }
     }

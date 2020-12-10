@@ -1,6 +1,6 @@
 @inherits Item
 
-<div id=@Uid class="tb-group tb-item tb-draggable @CssClass" 
+<div id=@Uid class="tb-group tb-item tb-draggable @CssClass @CssSelect" 
         draggable = "true"
         ondragover="event.preventDefault()"
         @ondragstart:stopPropagation
@@ -10,6 +10,8 @@
         @ondragleave="HandleOnDragLeave"
         @ondrop:stopPropagation
         @ondrop="HandleOnDrop"
+        @onclick:stopPropagation
+        @onclick="SelectAction"
         @ondblclick:preventDefault
         @ondblclick:stopPropagation
         @ondblclick="TriggerRenameModal">@Title : @Uid : @Parent.Uid

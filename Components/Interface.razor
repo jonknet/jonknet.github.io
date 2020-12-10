@@ -1,8 +1,10 @@
 @inherits Item
 
-<div id=@Uid draggable="true" class="tb-interface tb-item tb-draggable @CssClass" 
+<div id=@Uid draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect" 
             @ondragstart:stopPropagation   
             @ondragstart="@(()=>HandleOnDragStart(this))"
+            @onclick:stopPropagation
+            @onclick="SelectAction"
             @ondblclick:preventDefault
             @ondblclick:stopPropagation
             @ondblclick="TriggerRenameModal">@Title : @Uid : @Parent.Uid</div>
