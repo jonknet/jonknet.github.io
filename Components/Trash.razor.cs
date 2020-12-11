@@ -7,7 +7,7 @@ namespace TreeBuilder.Components {
 
         protected override void OnInitialized()
         {
-            
+            base.OnInitialized();
         }
 
         public void HandleOnDrop(){
