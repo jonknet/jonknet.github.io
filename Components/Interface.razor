@@ -4,10 +4,11 @@
             @ondragstart:stopPropagation   
             @ondragstart="@(()=>HandleOnDragStart(this))"
             @onclick:stopPropagation
+            @onclick:preventDefault
             @onclick="SelectAction"
             @ondblclick:preventDefault
             @ondblclick:stopPropagation
-            @ondblclick="TriggerRenameModal">@Title : @Uid : @Parent.Uid</div>
+            @ondblclick="TriggerRenameModal">@Title</div>
 
 <TelerikWindow Modal="true" @bind-Visible="@renameModal">
     <WindowTitle>

@@ -72,10 +72,11 @@ a, .btn-link {
     }
 
     .tb-interface {
-        width: 300px;
+        width: fit-content;
         height: auto;
         background-color: rgb(80, 42, 216);
         padding: 5px;
+        margin: 5px;
         align-self: center;
     }
 
@@ -88,4 +89,11 @@ a, .btn-link {
     .tb-field {
         width: 500px;
         height: 500px;
+    }
+
+    .tb-flex {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
     }

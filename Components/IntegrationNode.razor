@@ -1,0 +1,23 @@
+@inherits Group
+
+<div id=@Uid class="tb-item tb-draggable @CssClass @CssSelect"
+                draggable = "true"
+                ondragover="event.preventDefault()"
+                @ondragstart:stopPropagation
+                @ondragstart="@(()=>HandleOnDragStart(this))"
+                @ondragend="HandleOnDragEnd"
+                @ondragenter="HandleOnDragEnter"
+                @ondragleave="HandleOnDragLeave"
+                @ondrop:stopPropagation
+                @ondrop="HandleOnDrop"
+                @ondblclick:preventDefault
+                @ondblclick:stopPropagation
+                @ondblclick="TriggerRenameModal">@Title <br/>
+
+                <div class="tb-flex">
+                @foreach(var item in Items){
+                    <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this @key=item></Interface>
+                }
+                </div>
+                
+</div>

@@ -7,6 +7,9 @@ using TreeBuilder.Services;
 namespace TreeBuilder.Components {
     public partial class Field : Group {
 
+        [Parameter]
+        public string Name { get; set; } = null;
+
         public void AddGroup(){
             Group grp = new Group();
             grp.Parent = this;

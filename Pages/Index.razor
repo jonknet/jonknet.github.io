@@ -2,6 +2,7 @@
 
 <button @onclick="AddGroup">Add a group</button><br/>
 <button @onclick="AddInterface">Add an interface</button><br/>
+<button @onclick="AddIntegrationNode">Add an integration node</button><br/>
 <button @onclick="(()=>StateHasChanged())">Refresh State</button><br/>
 
 <div class="container">
@@ -10,7 +11,7 @@
             <Field @ref=fieldRef></Field>
         </div>
         <div class="col col-6">
-            <FieldOutput></FieldOutput>
+            <IntegrationField @ref=integrationRef></IntegrationField>
         </div>
     </div>
 </div>
@@ -20,6 +21,8 @@
 @code {
 
     Field fieldRef {get; set;}
+
+    IntegrationField integrationRef { get; set; }
 
     protected override void OnInitialized()
         {
@@ -36,6 +39,11 @@
     public void AddInterface(){
         fieldRef.AddInterface();
         fieldRef.Refresh();
+    }
+
+    public void AddIntegrationNode(){
+        integrationRef.AddIntegrationNode();
+        integrationRef.Refresh();
     }
 }
 

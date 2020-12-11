@@ -1,0 +1,11 @@
+@inherits Field
+
+<div id=@Uid class="tb-field @CssClass">
+
+    <CascadingValue Value=this>
+            @foreach(Item item in Items){
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this></IntegrationNode>
+            }
+    </CascadingValue>
+
+</div>
