@@ -15,12 +15,15 @@ namespace TreeBuilder.Components {
             }
 
             Items.Add(Payload);
-
-            Item index;
-            for(index = Payload.Parent; index.GetType() != typeof(Field); index = index.Parent){}
-            (index as Field).Refresh();
-            CssClass = "";
+            Payload.Parent.Items.Remove(Payload);
+            
             Payload.Parent = this;
+            while(Payload.Parent != null){
+                Payload = Payload.Parent;
+            }
+            (Payload as Field).Refresh();
+            CssClass = "";
+            
         }
     }
 }

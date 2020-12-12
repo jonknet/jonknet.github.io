@@ -8,7 +8,7 @@
 
     <CascadingValue Value=this>
             @foreach(Item item in Items){
-                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=this></IntegrationNode>
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=item></IntegrationNode>
             }
     </CascadingValue>
 

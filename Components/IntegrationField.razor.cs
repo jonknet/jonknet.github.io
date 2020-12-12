@@ -18,7 +18,7 @@ namespace TreeBuilder.Components {
                 Payload.Parent.Items.Remove(Payload);
                 Payload.Parent = inode;
                 inode.Items.Add(Payload); 
-                Refresh();
+                base.StateHasChanged();
             }
         }
 
