@@ -12,7 +12,8 @@
                 @ondrop="HandleOnDrop"
                 @ondblclick:preventDefault
                 @ondblclick:stopPropagation
-                @ondblclick="TriggerRenameModal">@Title <br/>
+                @ondblclick="TriggerRenameModal"
+                @onclick="Debug_Output">@Title <br/>
 
                 <div class="tb-flex">
                 @foreach(var item in Items){

@@ -1,10 +1,14 @@
 @inherits Field
 
-<div id=@Uid class="tb-field @CssClass">
+<div id=@Uid class="tb-field @CssClass"
+                ondragover="event.preventDefault();"
+                @ondrop:stopPropagation
+                @ondrop:preventDefault
+                @ondrop="HandleOnDrop">
 
     <CascadingValue Value=this>
             @foreach(Item item in Items){
-                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this></IntegrationNode>
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=this></IntegrationNode>
             }
     </CascadingValue>
 

@@ -59,7 +59,7 @@ namespace TreeBuilder.Components {
 
         public void SelectAction(){
             // If in an IntegrationNode, don't select anything
-            if(Selection.Field.GetType() == typeof(IntegrationField))
+            if(Field.GetType() == typeof(IntegrationField))
                 return;
             // For current selection, we have to unselect
             if(Selection != null)
