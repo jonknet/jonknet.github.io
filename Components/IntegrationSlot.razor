@@ -1,0 +1,15 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inherits BaseItem
+
+<div Uid="@Uid" class="tb-integrationslot @CssClass"
+     ondragover="event.preventDefault()"
+     @ondragstart:stopPropagation
+     @ondragenter="HandleOnDragEnter"
+     @ondragleave="HandleOnDragLeave"
+     @ondrop:stopPropagation
+     @ondrop="HandleOnDrop">
+     @if (Iface != null) {
+          <Interface Uid="@Iface.Uid" Parent="@this.Parent" Title="@Iface.Title"></Interface>
+     } 
+</div>  
+

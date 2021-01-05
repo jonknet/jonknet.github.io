@@ -9,11 +9,11 @@
                               @ondrop=HandleOnDrop>
 
     <CascadingValue Value="this">
-            @foreach(Item item in Items){
+            @foreach(var item in Items){
                 @if(item.GetType() == typeof(Group)){
-                    <Group Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=item></Group>
+                    <Group Uid=@item.Uid Title=@item.Title Instance=@item Parent=this Items=@((item as Group).Items) @key=item></Group>
                 } else if(item.GetType() == typeof(Interface)){
-                    <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this @key=item></Interface>
+                    <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=this @key=item></Interface>
                 }
             }
     </CascadingValue>

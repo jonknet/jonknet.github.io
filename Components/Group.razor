@@ -1,4 +1,4 @@
-@inherits Item
+@inherits BaseItem
 
 <div id=@Uid class="tb-group tb-item tb-draggable @CssClass @CssSelect" 
         draggable = "true"
@@ -17,7 +17,7 @@
         @ondblclick:stopPropagation
         @ondblclick="TriggerRenameModal">@Title : @Uid : @Parent.Uid
 
-        @foreach(Item item in Items){
+        @foreach(var item in Items){
             
             if(item.GetType() == typeof(Group)){
                 <Group Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=item></Group>

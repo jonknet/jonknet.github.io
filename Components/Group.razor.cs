@@ -4,10 +4,13 @@ using System;
 
 
 namespace TreeBuilder.Components {
-    public partial class Group : Item {
-     
-        [Parameter]
-        public List<Item> Items { get; set; } = new List<Item>();
+    public partial class Group : BaseItem {
+
+        [Parameter] public List<BaseItem> Items { get; set; } = new List<BaseItem>();
+
+        protected override void OnInitialized() {
+            base.OnInitialized();
+        }
 
         public virtual void HandleOnDrop(){
             if(Payload != this){
@@ -18,7 +21,15 @@ namespace TreeBuilder.Components {
                 Console.WriteLine("Adding item " + Payload.Uid + " to " + this.Uid);
                 Console.WriteLine("Removing item " + Payload.Uid + " from " + Payload.Parent.Uid);
                 Items.Add(Payload);
-                Payload.Parent.Items.Remove(Payload);
+                if (Payload.Field != this.Field)
+                {
+                    var i = Payload.Parent.Items.IndexOf(Payload);
+                    Payload.Parent.Items[i] = null;
+                }
+                else
+                {
+                    Payload.Parent.Items.Remove(Payload);
+                }
             }
             Payload.Parent = this;
             while(Payload.Parent != null){

@@ -11,4 +11,14 @@
     <PackageReference Include="Telerik.UI.for.Blazor" Version="2.20.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Components\IntegrationSlot.razor.cs">
+      <DependentUpon>IntegrationSlot.razor.razor</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces" />
+  </ItemGroup>
+
 </Project>

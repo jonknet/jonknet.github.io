@@ -5,10 +5,18 @@ using System;
 namespace TreeBuilder.Components {
     public partial class IntegrationNode : Group {
         
-        [Parameter]
-        public static int MAX_IFACES { get; set; } = 4;
+        
+        public const int MAX_IFACES = 4;
 
-        public override void HandleOnDrop()
+        protected override void OnInitialized() {
+            for(int i = 0; i < MAX_IFACES; i++)
+            {
+                Items.Add(null);
+            }
+        }
+
+        /*
+         public override void HandleOnDrop()
         {
             if(Payload.GetType() != typeof(Interface) || Items.Contains(Payload) || Items.Count == MAX_IFACES){
                 return;
@@ -25,5 +33,6 @@ namespace TreeBuilder.Components {
             CssClass = "";
             
         }
+        */
     }
 }

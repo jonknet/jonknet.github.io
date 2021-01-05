@@ -7,8 +7,8 @@
                 @ondrop="HandleOnDrop">
 
     <CascadingValue Value=this>
-            @foreach(Item item in Items){
-                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=item></IntegrationNode>
+            @foreach(BaseItem item in Items){
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Items=@((item as Group).Items)></IntegrationNode>
             }
     </CascadingValue>
 

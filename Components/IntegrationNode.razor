@@ -6,18 +6,14 @@
                 @ondragstart:stopPropagation
                 @ondragstart="@(()=>HandleOnDragStart(this))"
                 @ondragend="HandleOnDragEnd"
-                @ondragenter="HandleOnDragEnter"
-                @ondragleave="HandleOnDragLeave"
-                @ondrop:stopPropagation
-                @ondrop="HandleOnDrop"
                 @ondblclick:preventDefault
                 @ondblclick:stopPropagation
                 @ondblclick="TriggerRenameModal"
                 @onclick="Debug_Output">@Title <br/>
 
                 <div class="tb-flex">
-                @foreach(var item in Items){
-                    <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this @key=item></Interface>
+                @for(int i = 0; i < MAX_IFACES; i++){
+                    <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
                 }
                 </div>
                 
