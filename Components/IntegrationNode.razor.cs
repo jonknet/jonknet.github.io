@@ -5,14 +5,13 @@ using System;
 namespace TreeBuilder.Components {
     public partial class IntegrationNode : Group {
         
-        
         public const int MAX_IFACES = 4;
 
         protected override void OnInitialized() {
-            for(int i = 0; i < MAX_IFACES; i++)
-            {
-                Items.Add(null);
-            }
+            Items.Add(null);
+            Items.Add(null);
+            Items.Add(null);
+            Items.Add(null);
         }
 
         /*

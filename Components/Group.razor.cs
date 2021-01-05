@@ -13,6 +13,9 @@ namespace TreeBuilder.Components {
         }
 
         public virtual void HandleOnDrop(){
+            if (Payload.GetType() == typeof(IntegrationNode)) {
+                return;
+            }
             if(Payload != this){
                 //If dragging an object from the Field to the same Field
                 if(Payload.Parent == this){
@@ -23,7 +26,7 @@ namespace TreeBuilder.Components {
                 Items.Add(Payload);
                 if (Payload.Field != this.Field)
                 {
-                    var i = Payload.Parent.Items.IndexOf(Payload);
+                    var i = Array.IndexOf(Payload.Parent.Items.ToArray(),Payload);
                     Payload.Parent.Items[i] = null;
                 }
                 else

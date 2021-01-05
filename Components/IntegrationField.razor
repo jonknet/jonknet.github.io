@@ -1,3 +1,4 @@
+@using System.ComponentModel.DataAnnotations
 @inherits Field
 
 <div id=@Uid class="tb-field @CssClass"
@@ -8,7 +9,7 @@
 
     <CascadingValue Value=this>
             @foreach(BaseItem item in Items){
-                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Items=@((item as Group).Items)></IntegrationNode>
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Items=@((item as Group).Items) Parent=@item.Parent></IntegrationNode>
             }
     </CascadingValue>
 

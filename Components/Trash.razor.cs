@@ -11,11 +11,13 @@ namespace TreeBuilder.Components {
             //
         }
 
-        public void HandleOnDrop(){
+        public void HandleOnDrop() {
+            Console.WriteLine(Payload);
             Payload.Parent.Items.Remove(Payload);
-            while(Payload.Parent != null){
+            while (Payload.Parent != null) {
                 Payload = Payload.Parent;
             }
+
             (Payload as Field).Refresh();
         }
     }
