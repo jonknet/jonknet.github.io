@@ -1,9 +1,11 @@
 @inherits Item
 
-<div id=@Uid class="tb-trash @CssClass"  
-        ondragover="event.preventDefault()"
-        @ondragend="HandleOnDragEnd"
-        @ondragenter="HandleOnDragEnter"
-        @ondragleave="HandleOnDragLeave"
-        @ondrop="HandleOnDrop">Trash<br/>
-        </div>
+<div id=@Uid class="tb-trash @CssClass"
+     ondragover="event.preventDefault()"
+     @ondragenter="HandleOnDragEnter"
+     @ondragleave="HandleOnDragLeave"
+     @ondrop="HandleOnDrop">
+    
+    Trash<br/>
+    
+</div>

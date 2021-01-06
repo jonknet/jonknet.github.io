@@ -2,10 +2,6 @@ using System;
 
 namespace TreeBuilder.Components {
     public partial class IntegrationField : Field {
-        protected override void OnInitialized() {
-            base.OnInitialized();
-        }
-
         public IntegrationNode AddIntegrationNode(){
             IntegrationNode inode = new IntegrationNode();
             inode.Items.Add(null);
@@ -18,13 +14,14 @@ namespace TreeBuilder.Components {
             Refresh();
             return inode;
         }
-
         public override void HandleOnDrop()
         {
             if(Payload.GetType() == typeof(Interface)){
+                
                 // Dirty Hack to allow the ghost Integration Node to hide
                 (Payload as Interface).HandleOnDragEnd();
                 // End Hack
+                
                 IntegrationNode inode = AddIntegrationNode();
                 if (Payload.Field.GetType() != typeof(IntegrationField)) {
                     // Remove

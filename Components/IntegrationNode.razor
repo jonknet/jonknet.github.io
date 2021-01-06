@@ -2,25 +2,26 @@
 
 @if (!hidden)
 {
-<div id=@Uid class="tb-item tb-draggable @CssClass @CssSelect"
-     
-     @ondblclick:preventDefault
-     @ondblclick:stopPropagation
-     @ondblclick="TriggerRenameModal">@Title 
-    <i class="fas fa-times-circle tb-closeicon"
-       @onclick:stopPropagation
-       @onclick:preventDefault
-       @onclick="DestroyNode"></i>
-    <br/>
+    <div id=@Uid class="tb-item tb-draggable @CssClass @CssSelect"
+         @ondblclick:preventDefault
+         @ondblclick:stopPropagation
+         @ondblclick="TriggerRenameModal">
+        
+        @Title
+        
+        <i class="fas fa-times-circle tb-closeicon"
+           @onclick:stopPropagation
+           @onclick:preventDefault
+           @onclick="DestroyNode"></i>
+        
+        <br/>
 
-    <div class="tb-flex">
-        @for (int i = 0; i < MAX_IFACES; i++)
-        {
-            <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
-        }
+        <div class="tb-flex">
+            @for (int i = 0; i < MAX_IFACES; i++) {
+                <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
+            }
+        </div>
     </div>
-                
-</div>
 }
 
 <TelerikWindow Modal="true" @bind-Visible="@renameModal">

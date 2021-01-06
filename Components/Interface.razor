@@ -1,14 +1,18 @@
 @inherits BaseItem
 
-<div id=@Uid draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect" 
-            @ondragstart="@(()=>HandleOnDragStart(this))"
-            @ondragend="HandleOnDragEnd"
-            @onclick:stopPropagation
-            @onclick:preventDefault
-            @onclick="SelectAction"
-            @ondblclick:preventDefault
-            @ondblclick:stopPropagation
-            @ondblclick="TriggerRenameModal"><p>@Title</p></div>
+<div id=@Uid draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect"
+     @ondragstart="@(() => HandleOnDragStart(this))"
+     @ondragend="@(() => HandleOnDragEnd())"
+     @onclick:stopPropagation
+     @onclick:preventDefault
+     @onclick="SelectAction"
+     @ondblclick:preventDefault
+     @ondblclick:stopPropagation
+     @ondblclick="TriggerRenameModal">
+    
+    <p>@Title</p>
+    
+</div>
 
 <TelerikWindow Modal="true" @bind-Visible="@renameModal">
     <WindowTitle>

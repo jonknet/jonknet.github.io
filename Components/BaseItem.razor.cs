@@ -9,13 +9,15 @@ namespace TreeBuilder.Components {
         [Parameter] public Group Parent { get; set; } = null;
         [Parameter] public BaseItem Instance { get; set; } = null;
         [CascadingParameter] public Field Field { get; set; } = null;
-        public string CssClass { get; set; } = "";
         [Parameter] public string Name { get; set; } = "";
+        
+        public string CssClass { get; set; } = "";
         public string CssSelect { get; set; } = "";
-        public static BaseItem Payload { get; set; } = null;
-        public static BaseItem Selection { get; set; } = null;
         public bool renameModal { get; set; } = false;
 
+        public static BaseItem Payload { get; set; } = null;
+        public static BaseItem Selection { get; set; } = null;
+        
         protected override void OnInitialized()
         {
             

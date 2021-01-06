@@ -8,14 +8,17 @@ namespace TreeBuilder.Components {
 
         [Parameter] public List<BaseItem> Items { get; set; } = new List<BaseItem>();
 
-        protected override void OnInitialized() {
-            base.OnInitialized();
-        }
-
         public virtual void HandleOnDrop(){
-            if (Payload.GetType() == typeof(IntegrationNode)) {
+            if (Payload.GetType() != typeof(Interface) && Payload.GetType() != typeof(Group)) {
                 return;
             }
+            
+            // Dirty ugly hack
+            if (Payload.GetType() == typeof(Interface)) {
+                (Payload as Interface).HandleOnDragEnd();
+            }
+            // End hack
+            
             if(Payload != this){
                 //If dragging an object from the Field to the same Field
                 if(Payload.Parent == this){

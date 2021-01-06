@@ -1,33 +1,34 @@
 @inherits BaseItem
 
-<div id=@Uid class="tb-group tb-item tb-draggable @CssClass @CssSelect" 
-        draggable = "true"
-        ondragover="event.preventDefault()"
-        @ondragstart:stopPropagation
-        @ondragstart="@(()=>HandleOnDragStart(this))"
-        @ondragend="HandleOnDragEnd"
-        @ondragenter="HandleOnDragEnter"
-        @ondragleave="HandleOnDragLeave"
-        @ondrop:stopPropagation
-        @ondrop="HandleOnDrop"
-        @onclick:preventDefault
-        @onclick:stopPropagation
-        @onclick="SelectAction"
-        @ondblclick:preventDefault
-        @ondblclick:stopPropagation
-        @ondblclick="TriggerRenameModal">@Title : @Uid : @Parent.Uid
+<div id=@Uid class="tb-group tb-item tb-draggable @CssClass @CssSelect"
+     draggable="true"
+     ondragover="event.preventDefault()"
+     @ondragstart:stopPropagation
+     @ondragstart="@(() => HandleOnDragStart(this))"
+     @ondragend="HandleOnDragEnd"
+     @ondragenter="HandleOnDragEnter"
+     @ondragleave="HandleOnDragLeave"
+     @ondrop:stopPropagation
+     @ondrop="HandleOnDrop"
+     @onclick:preventDefault
+     @onclick:stopPropagation
+     @onclick="SelectAction"
+     @ondblclick:preventDefault
+     @ondblclick:stopPropagation
+     @ondblclick="TriggerRenameModal">
+    
+    @Title : @Uid : @Parent.Uid
 
-        @foreach(var item in Items){
-            
-            if(item.GetType() == typeof(Group)){
-                <Group Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=item></Group>
-            } else if(item.GetType() == typeof(Interface)){
-                <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this @key=item></Interface>
-            }
-            
+    @foreach (var item in Items) {
+        if (item.GetType() == typeof(Group)) {
+            <Group Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this Items=@((item as Group).Items) @key=item></Group>
         }
-          
- </div>
+        else if (item.GetType() == typeof(Interface)) {
+            <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=@this @key=item></Interface>
+        }
+    }
+
+</div>
     
 <TelerikWindow Modal="true" @bind-Visible="@renameModal">
     <WindowTitle>

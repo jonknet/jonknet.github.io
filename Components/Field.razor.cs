@@ -7,10 +7,6 @@ using TreeBuilder.Services;
 namespace TreeBuilder.Components {
     public partial class Field : Group {
 
-        protected override void OnInitialized() {
-
-        }
-        
         public void AddGroup(){
             Group grp = new Group();
             grp.Parent = this;

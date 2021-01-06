@@ -35,19 +35,6 @@ namespace TreeBuilder.Components {
                 }
             }
         }
-
-        public void HandleOnDrop()
-        {
-            IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
-            node.hidden = true;
-            node.Redraw();
-        }
-
-        public void ReleaseInterface()
-        {
-            IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
-            node.hidden = true;
-            node.Redraw();
-        }
+        
     }
 }

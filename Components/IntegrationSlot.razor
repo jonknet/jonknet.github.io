@@ -7,8 +7,10 @@
      @ondragleave="HandleOnDragLeave"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
+     
      @if (Iface != null) {
           <Interface Uid="@Iface.Uid" Parent="@this.Parent" Title="@Iface.Title" Instance="@Iface"></Interface>
      } 
+     
 </div>  
 
