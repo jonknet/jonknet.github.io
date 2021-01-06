@@ -5,23 +5,47 @@ using TreeBuilder.Components;
 namespace TreeBuilder.Services {
     public class ComponentTracker {
 
-        Dictionary<Guid,Item> componentdb;
+        private List<BaseItem> Items = new List<BaseItem>();
 
         public ComponentTracker(){
-            componentdb = new Dictionary<Guid,Item>();
+            
         }
 
-        public void Add(Guid guid, Item item){
-            componentdb.Add(guid,item);
+        public void Add(BaseItem item) {
+            Items.Add(item);
         }
 
-        public void Remove(Guid guid){
-            componentdb.Remove(guid);
+        private int ContainsByName(string name) {
+            return Items.FindIndex((e) => e.Name == name);
         }
 
-        public void Replace(Guid guid, Item item){
-            componentdb.Remove(guid);
-            Add(guid,item);
+        private int ContainsByGuid(Guid guid) {
+            return Items.FindIndex((e) => e.Uid == guid);
+        }
+
+        private int ContainsByRef(BaseItem item) {
+            return Items.FindIndex((e) => e == item);
+        }
+        
+        public BaseItem GetByName(string name) {
+            var index = ContainsByName(name);
+            if (index == -1)
+                return null;
+            else {
+                return Items[index];
+            }
+        }
+
+        public void RemoveByRef(BaseItem item) {
+            Items.Remove(item);
+        }
+
+        public void RemoveByGuid(Guid guid) {
+            Items.RemoveAll((e) => e.Uid == guid);
+        }
+
+        public void RemoveByName(string name) {
+            Items.RemoveAll((e) => e.Name == name);
         }
     }
 }

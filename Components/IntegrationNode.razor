@@ -1,6 +1,9 @@
 @inherits Group
+
+@if (!hidden)
+{
 <div id=@Uid class="tb-item tb-draggable @CssClass @CssSelect"
-     ondragover="event.preventDefault()"
+     
      @ondblclick:preventDefault
      @ondblclick:stopPropagation
      @ondblclick="TriggerRenameModal">@Title 
@@ -11,12 +14,14 @@
     <br/>
 
     <div class="tb-flex">
-        @for(int i = 0; i < MAX_IFACES; i++){
+        @for (int i = 0; i < MAX_IFACES; i++)
+        {
             <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
         }
     </div>
                 
 </div>
+}
 
 <TelerikWindow Modal="true" @bind-Visible="@renameModal">
     <WindowTitle>

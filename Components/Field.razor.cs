@@ -7,8 +7,6 @@ using TreeBuilder.Services;
 namespace TreeBuilder.Components {
     public partial class Field : Group {
 
-        [Parameter] public string Name { get; set; } = null;
-
         protected override void OnInitialized() {
 
         }

@@ -22,6 +22,9 @@ namespace TreeBuilder.Components {
         public override void HandleOnDrop()
         {
             if(Payload.GetType() == typeof(Interface)){
+                // Dirty Hack to allow the ghost Integration Node to hide
+                (Payload as Interface).HandleOnDragEnd();
+                // End Hack
                 IntegrationNode inode = AddIntegrationNode();
                 if (Payload.Field.GetType() != typeof(IntegrationField)) {
                     // Remove

@@ -1,22 +1,34 @@
 ﻿@page "/"
-
-<button @onclick="AddGroup">Add a group</button><br/>
-<button @onclick="AddInterface">Add an interface</button><br/>
-<button @onclick="AddIntegrationNode">Add an integration node</button><br/>
-<button @onclick="(()=>StateHasChanged())">Refresh State</button><br/>
-
+@using TreeBuilder.Services
+@inject ComponentTracker ComponentTracker; 
 <div class="container">
+    <div class="row">
+        <div class="col col-6">
+            <button @onclick="AddGroup">Add a group</button><br/>
+            <button @onclick="AddInterface">Add an interface</button><br/>
+            <button @onclick="AddIntegrationNode">Add an integration node</button><br/>
+            <button @onclick="(() => StateHasChanged())">Refresh State</button><br/>
+        </div>
+        <div class="col col-6">
+            <!-- Where the floating Node will go -->
+           
+                <IntegrationNode Name="GhostNode" @ref="nodeRef"></IntegrationNode>
+            
+        </div>
+    </div>
+
     <div class="row">
         <div class="col col-6">
             <Field @ref=fieldRef></Field>
         </div>
         <div class="col col-6">
-            <IntegrationField @ref=integrationRef></IntegrationField>
+            <IntegrationField Name="IntegrationField" @ref="integrationRef"></IntegrationField>
         </div>
     </div>
-</div>
-
+    
 <Trash></Trash>
+
+</div>
 
 @code {
 
@@ -24,12 +36,31 @@
 
     IntegrationField integrationRef { get; set; }
 
-    protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
+    IntegrationNode nodeRef { get; set; }
 
-    
+    protected override void OnInitialized()
+    {
+
+    }
+
+    protected override void OnParametersSet()
+    {
+
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ComponentTracker.Add(nodeRef);
+            ComponentTracker.Add(integrationRef);
+        }
+        nodeRef.hidden = true;
+    }
+
+
+
+
 
     public void AddGroup(){
         fieldRef.AddGroup();

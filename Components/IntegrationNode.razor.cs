@@ -7,16 +7,25 @@ namespace TreeBuilder.Components {
         
         public const int MAX_IFACES = 4;
 
+        public bool hidden = false;
+
         protected override void OnInitialized() {
             Items.Add(null);
             Items.Add(null);
             Items.Add(null);
             Items.Add(null);
+            if (Name == "GhostNode")
+                hidden = true;
         }
 
         public void DestroyNode() {
             Parent.Items.Remove(this);
             Field.Refresh();
+        }
+
+        public void Redraw()
+        {
+            StateHasChanged();
         }
 
         /*
