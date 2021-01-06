@@ -1,6 +1,6 @@
 @inherits BaseItem
 
-<div id=@Uid draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect" 
+<div id=@Uid draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect fit-this-text" 
             @ondragstart:stopPropagation   
             @ondragstart="@(()=>HandleOnDragStart(this))"
             @onclick:stopPropagation
@@ -8,7 +8,7 @@
             @onclick="SelectAction"
             @ondblclick:preventDefault
             @ondblclick:stopPropagation
-            @ondblclick="TriggerRenameModal">@Title</div>
+            @ondblclick="TriggerRenameModal"><p>@Title</p></div>
 
 <TelerikWindow Modal="true" @bind-Visible="@renameModal">
     <WindowTitle>

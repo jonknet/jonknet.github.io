@@ -14,6 +14,11 @@ namespace TreeBuilder.Components {
             Items.Add(null);
         }
 
+        public void DestroyNode() {
+            Parent.Items.Remove(this);
+            Field.Refresh();
+        }
+
         /*
          public override void HandleOnDrop()
         {

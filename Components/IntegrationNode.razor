@@ -1,19 +1,29 @@
 @inherits Group
 <div id=@Uid class="tb-item tb-draggable @CssClass @CssSelect"
-                draggable = "true"
-                ondragover="event.preventDefault()"
-                @ondragstart:stopPropagation
-                @ondragstart="@(()=>HandleOnDragStart(this))"
-                @ondragend="HandleOnDragEnd"
-                @ondblclick:preventDefault
-                @ondblclick:stopPropagation
-                @ondblclick="TriggerRenameModal"
-                @onclick="Debug_Output">@Title <br/>
+     ondragover="event.preventDefault()"
+     @ondblclick:preventDefault
+     @ondblclick:stopPropagation
+     @ondblclick="TriggerRenameModal">@Title 
+    <i class="fas fa-times-circle tb-closeicon"
+       @onclick:stopPropagation
+       @onclick:preventDefault
+       @onclick="DestroyNode"></i>
+    <br/>
 
-                <div class="tb-flex">
-                @for(int i = 0; i < MAX_IFACES; i++){
-                    <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
-                }
-                </div>
+    <div class="tb-flex">
+        @for(int i = 0; i < MAX_IFACES; i++){
+            <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
+        }
+    </div>
                 
 </div>
+
+<TelerikWindow Modal="true" @bind-Visible="@renameModal">
+    <WindowTitle>
+        <strong>Rename</strong>
+    </WindowTitle>
+    <WindowContent>
+        <TelerikTextBox @bind-Value="Title" Label="Enter new title"></TelerikTextBox><br/>
+        <TelerikButton OnClick="TriggerRenameModal">Save</TelerikButton>
+    </WindowContent>
+</TelerikWindow>
