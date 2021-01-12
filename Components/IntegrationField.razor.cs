@@ -1,18 +1,54 @@
 using System;
+using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace TreeBuilder.Components {
-    public partial class IntegrationField : Field {
+    public partial class IntegrationField : Field
+    {
+
+        public IntegrationField()
+        {
+            ClassType = CLASS_TYPE.INTEGRATIONFIELD;
+        }
+
+        [Inject] private ILocalStorageService LocalStorageService { get; set; }
+        protected override async Task OnInitializedAsync()
+        {
+            if (await LocalStorageService.ContainKeyAsync("TreeBuilder_IntegrationField")) {
+                IntegrationField _if = JsonConvert.DeserializeObject<IntegrationField>(await LocalStorageService.GetItemAsStringAsync("TreeBuilder_IntegrationField"), new JsonSerializerSettings()
+                {
+                    PreserveReferencesHandling = PreserveReferencesHandling.All,
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+            Console.WriteLine(_if);
+            Items = _if.Items;
+            Title = _if.Title;
+            Uid = _if.Uid;
+            
+            }
+        }
+
         public IntegrationNode AddIntegrationNode(){
             IntegrationNode inode = new IntegrationNode();
-            inode.Items.Add(null);
-            inode.Items.Add(null);
-            inode.Items.Add(null);
-            inode.Items.Add(null);
+            for(int i = 0; i < 4; i++)
+            {
+                Interface iface = new Interface();
+                iface.Name = "Empty";
+                iface.Index = i;
+                inode.Items.Add(iface);
+            }
             inode.Field = this;
             inode.Parent = this;
             Items.Add(inode);
-            Refresh();
+            // Redraw();
             return inode;
+        }
+
+        public async void SaveSession()
+        {
+            await LocalStorageService.SetItemAsync("TreeBuilder_IntegrationField", this as BaseItem);
         }
         public override void HandleOnDrop()
         {
@@ -36,6 +72,8 @@ namespace TreeBuilder.Components {
                 Payload.Parent = inode;
                 
                 base.StateHasChanged();
+
+                SaveToLocalStorageCallback.InvokeAsync();
             }
         }
 

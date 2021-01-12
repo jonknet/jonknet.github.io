@@ -17,8 +17,10 @@
         <br/>
 
         <div class="tb-flex">
-            @for (int i = 0; i < MAX_IFACES; i++) {
-                <IntegrationSlot Iface=@(Items[i] as Interface) Parent=@this Index=@i></IntegrationSlot>
+            @for (int i = 0; i < Items.Count; i++) {
+                
+                    <IntegrationSlot Iface=@(Items[i].Iface as Interface) Parent=@this Index=@i SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[i]></IntegrationSlot>
+                
             }
         </div>
     </div>

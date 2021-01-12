@@ -10,6 +10,11 @@ namespace TreeBuilder.Components {
         
         [Inject] ComponentTracker cTracker { get; set; }
 
+        public Interface()
+        {
+            ClassType = CLASS_TYPE.INTERFACE;
+        }
+
         public override void HandleOnDragStart(BaseItem item) {
             Payload = item;
             IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
@@ -22,6 +27,8 @@ namespace TreeBuilder.Components {
             node.hidden = true;
             CssClass = "";
             node.Redraw();
+            SaveToLocalStorageCallback.InvokeAsync();
+            /*
             for(int i = 0; i < IntegrationNode.MAX_IFACES; i++) {
                 if (node.Items[i] != null) {
                     // must've dropped on the ghost node, add the node to the field
@@ -33,7 +40,7 @@ namespace TreeBuilder.Components {
                     StateHasChanged();
                     return;
                 }
-            }
+            }*/
         }
         
     }

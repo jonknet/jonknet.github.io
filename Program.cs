@@ -3,6 +3,10 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Blazored.LocalStorage;
+using Blazored.LocalStorage.StorageOptions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +26,18 @@ namespace TreeBuilder
             builder.Services.AddSingleton<ComponentTracker>();
             
             builder.Services.AddTelerikBlazor();
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                IgnoreNullValues = true,
+                IncludeFields = true
+            };
+            builder.Services.AddBlazoredLocalStorage(config =>
+            {
+                config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                config.JsonSerializerOptions.IncludeFields = true;
+                
+            });
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
             await builder.Build().RunAsync();
         }

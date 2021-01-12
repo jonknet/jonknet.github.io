@@ -10,10 +10,10 @@
 
     <CascadingValue Value="this">
             @foreach(var item in Items){
-                @if(item.GetType() == typeof(Group)){
-                    <Group Uid=@item.Uid Title=@item.Title Instance=@item Parent=this Items=@((item as Group).Items) @key=item></Group>
-                } else if(item.GetType() == typeof(Interface)){
-                    <Interface Uid=@item.Uid Title=@item.Title Instance=@item Parent=this @key=item></Interface>
+                @if(item.ClassType == CLASS_TYPE.GROUP){
+                    <Group Uid=@item.Uid Title=@item.Title Parent=@this Items=@(item.Items) SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=item></Group>
+                } else if(item.ClassType == CLASS_TYPE.INTERFACE){
+                    <Interface Uid=@item.Uid Title=@item.Title Parent=@this SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=item></Interface>
                 }
             }
     </CascadingValue>

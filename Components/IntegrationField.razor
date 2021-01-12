@@ -1,15 +1,12 @@
 @using System.ComponentModel.DataAnnotations
 @inherits Field
 
-<div id=@Uid class="tb-field @CssClass"
-                ondragover="event.preventDefault();"
-                @ondrop:stopPropagation
-                @ondrop:preventDefault
-                @ondrop="HandleOnDrop">
+<div id=@Uid class="tb-field @CssClass">
 
     <CascadingValue Value=this>
-            @foreach(BaseItem item in Items){
-                <IntegrationNode Uid=@item.Uid Title=@item.Title Instance=@item Items=@((item as Group).Items) Parent=@item.Parent></IntegrationNode>
+            @foreach(var item in Items)
+            {
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Items=@item.Items SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback Parent=@this @key="item"></IntegrationNode>
             }
     </CascadingValue>
 

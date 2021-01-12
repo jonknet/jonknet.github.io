@@ -1,14 +1,19 @@
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 
 namespace TreeBuilder.Components {
-    public partial class Group : BaseItem {
+    public partial class Group : BaseItem
+    {
 
-        [Parameter] public List<BaseItem> Items { get; set; } = new List<BaseItem>();
+        public Group()
+        {
+            ClassType = CLASS_TYPE.GROUP;
+        }
 
-        public virtual void HandleOnDrop(){
+        public override void HandleOnDrop(){
             if (Payload.GetType() != typeof(Interface) && Payload.GetType() != typeof(Group)) {
                 return;
             }
@@ -38,11 +43,16 @@ namespace TreeBuilder.Components {
                 }
             }
             Payload.Parent = this;
-            while(Payload.Parent != null){
+
+            SaveToLocalStorageCallback.InvokeAsync();
+
+            while (Payload.Parent != null){
                 Payload = Payload.Parent;
             }
-            (Payload as Field).Refresh();
+            (Payload as Field).Redraw();
             CssClass = "";
+
+            
         }
 
         public void Debug_Output(){

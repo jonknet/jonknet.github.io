@@ -1,19 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace TreeBuilder.Components {
-    public partial class BaseItem : ComponentBase {
-        
+
+    public enum CLASS_TYPE
+    {
+        BASECLASS,
+        FIELD,
+        GROUP,
+        INTEGRATIONFIELD,
+        INTEGRATIONNODE,
+        INTEGRATIONSLOT,
+        INTERFACE
+    }
+
+    public partial class BaseItem : ComponentBase
+    {
+
+        [Inject] private Blazored.LocalStorage.ILocalStorageService LocalStorageService { get; set; }
         [Parameter] public string Title { get; set; } = "Default Title";
         [Parameter] public Guid Uid { get; set; } = Guid.NewGuid();
-        [Parameter] public Group Parent { get; set; } = null;
-        [Parameter] public BaseItem Instance { get; set; } = null;
-        [CascadingParameter] public Field Field { get; set; } = null;
+        [Parameter][JsonIgnore] public Group Parent { get; set; } = null;
+        [CascadingParameter][JsonIgnore] public Field Field { get; set; } = null;
         [Parameter] public string Name { get; set; } = "";
-        
-        public string CssClass { get; set; } = "";
-        public string CssSelect { get; set; } = "";
-        public bool renameModal { get; set; } = false;
+        [Parameter] public int Index { get; set; }
+        [Parameter] public Interface Iface { get; set; } = null;
+        [Parameter][JsonIgnore] public EventCallback SaveToLocalStorageCallback { get; set; }
+        [Parameter] public BaseItem Instance { get; set; }
+        [JsonIgnore] public string CssClass { get; set; } = "";
+        [JsonIgnore] public string CssSelect { get; set; } = "";
+        [JsonIgnore] public bool renameModal { get; set; } = false;
+        public CLASS_TYPE ClassType { get; set; } = CLASS_TYPE.BASECLASS;
+
+        [Parameter] public List<BaseItem> Items { get; set; }= new List<BaseItem>();
 
         public static BaseItem Payload { get; set; } = null;
         public static BaseItem Selection { get; set; } = null;
@@ -43,6 +64,16 @@ namespace TreeBuilder.Components {
             CssClass = "";  
         }
 
+        public virtual async void HandleOnDrop()
+        {
+            await SaveToLocalStorageCallback.InvokeAsync();
+        }
+
+        public void SaveLocalState()
+        {
+            
+        }
+
         public void SelectAction(){
             // If in an IntegrationNode, don't select anything
             if(Field.GetType() == typeof(IntegrationField))
@@ -57,12 +88,12 @@ namespace TreeBuilder.Components {
                 CssSelect = "tb-dropborder";
                 Selection = this;
             }
-            Field.Refresh();
+            Field.Redraw();
         }
 
         public void TriggerRenameModal(){
             if(renameModal)
-                Instance.Title = Title;
+                this.Title = Title;
             renameModal = !renameModal;
         }
 /*        public void Rename(Item payload){
@@ -86,7 +117,12 @@ namespace TreeBuilder.Components {
             return null;
         }
 */
-        
+
+        public void Redraw()
+        {
+            StateHasChanged();
+        }
+
         public override bool Equals(object obj) {
             BaseItem item = obj as BaseItem;
             if (item == null) {
@@ -106,6 +142,15 @@ namespace TreeBuilder.Components {
             }
             if(Payload != null){
                 output += ($"Payload:{Payload.Uid} \n");
+            }
+
+            if (Items != null)
+            {
+                output += ("Items:{");
+                foreach (var item in Items)
+                {
+                    output += ($"{item},");
+                }
             }
             return output;
         }

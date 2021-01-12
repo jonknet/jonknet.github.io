@@ -6,12 +6,17 @@ using TreeBuilder.Services;
 namespace TreeBuilder.Components {
     public partial class IntegrationSlot : BaseItem {
         
-        [Parameter] public Interface Iface { get; set; } = null;
-        [Parameter] public int Index { get; set; }
+        
+        
 
         [Inject] public ComponentTracker cTracker { get; set; }
 
-        public void HandleOnDrop() {
+        public IntegrationSlot()
+        {
+            ClassType = CLASS_TYPE.INTEGRATIONSLOT;
+        }
+
+        public override void HandleOnDrop() {
 
             if(Payload.GetType() != typeof(Interface)){
                 return;
@@ -30,16 +35,38 @@ namespace TreeBuilder.Components {
             }
             else
             {
-                var i = Payload.Parent.Items.IndexOf(Payload);
-                Payload.Parent.Items[i] = null;
+                var i = -1;
+                foreach(var item in Parent.Items)
+                {
+                    i++;
+                    if (item.Iface == null)
+                        continue;
+                    if(item.Iface.Uid == Payload.Uid)
+                    {
+                        break;
+                    }
+                }
+                Console.WriteLine(i);
+                Payload.Parent.Items[i].Iface = null;
+                Payload.Parent.Items[i].Name = "Empty";
+
             }
-            Parent.Items[Index] = Payload;
+
+            
+            (Parent as IntegrationNode).Items[Index].Iface = Payload as Interface;
+            (Parent as IntegrationNode).Items[Index].Name = "";
+            Payload.Parent = this.Parent;
+            
+            
+            Payload.Field = this.Field;
 
             if (Field != null)
             {
-                Field.Refresh();
+                Field.Redraw();
             }
             CssClass = "";
+
+            SaveToLocalStorageCallback.InvokeAsync();
         }
     }
 }

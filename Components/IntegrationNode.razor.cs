@@ -1,26 +1,33 @@
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System;
+using Blazored.LocalStorage;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace TreeBuilder.Components {
     public partial class IntegrationNode : Group {
+
+        [Inject] ILocalStorageService LocalStorageService { get; set; }
         
         public const int MAX_IFACES = 4;
 
         public bool hidden = false;
 
-        protected override void OnInitialized() {
-            Items.Add(null);
-            Items.Add(null);
-            Items.Add(null);
-            Items.Add(null);
+        public IntegrationNode()
+        {
+            ClassType = CLASS_TYPE.INTEGRATIONNODE;
+        }
+
+        protected override async Task OnInitializedAsync() {
+            
             if (Name == "GhostNode")
                 hidden = true;
         }
 
         public void DestroyNode() {
             Parent.Items.Remove(this);
-            Field.Refresh();
+            Field.Redraw();
         }
 
         public void Redraw()

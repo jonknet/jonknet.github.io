@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 namespace TreeBuilder.Components {
     public partial class Trash : Item {
 
-        public void HandleOnDrop() {
+        public override void HandleOnDrop() {
             Console.WriteLine(Payload);
             
             // Hack for ghost integration node, once again
@@ -20,7 +20,9 @@ namespace TreeBuilder.Components {
                 Payload = Payload.Parent;
             }
 
-            (Payload as Field).Refresh();
+            (Payload as Field).Redraw();
+
+            base.HandleOnDrop();
         }
     }
 }
