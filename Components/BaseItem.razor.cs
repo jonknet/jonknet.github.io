@@ -61,7 +61,8 @@ namespace TreeBuilder.Components {
         }
 
         public virtual void HandleOnDragEnd(){
-            CssClass = "";  
+            CssClass = "";
+            Payload = null;
         }
 
         public virtual async void HandleOnDrop()

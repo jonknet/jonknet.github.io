@@ -18,7 +18,7 @@ namespace TreeBuilder.Components {
 
         public override void HandleOnDrop() {
 
-            if(Payload.GetType() != typeof(Interface)){
+            if(Payload.ClassType != CLASS_TYPE.INTERFACE){
                 return;
             }
 
@@ -29,14 +29,15 @@ namespace TreeBuilder.Components {
 
             // End Hack
 
-            if (Payload.Field != this.Field)
+            if (Payload.Parent.Field != Parent.Field)
             {
+                Console.WriteLine("Fields were not equal");
                 Payload.Parent.Items.Remove(Payload);
             }
             else
             {
                 var i = -1;
-                foreach(var item in Parent.Items)
+                foreach(var item in Payload.Parent.Items)
                 {
                     i++;
                     if (item.Iface == null)
@@ -66,7 +67,14 @@ namespace TreeBuilder.Components {
             }
             CssClass = "";
 
+            Payload = null;
+
             SaveToLocalStorageCallback.InvokeAsync();
+        }
+
+        public void DebugOutput()
+        {
+            Console.WriteLine($"Slot: Uid: {Uid}: Parent: {Parent.Uid}: Iface: {Iface}");
         }
     }
 }

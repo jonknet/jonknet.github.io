@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using TreeBuilder.Services;
+using System;
 
 namespace TreeBuilder.Components {
     
@@ -41,6 +42,11 @@ namespace TreeBuilder.Components {
                     return;
                 }
             }*/
+        }
+
+        public void DebugOutput()
+        {
+            Console.WriteLine($"Uid: {Uid}: ParentUid: {Parent.Uid}: Iface: {Iface}");
         }
         
     }

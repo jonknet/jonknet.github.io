@@ -6,10 +6,11 @@
      @ondragenter="HandleOnDragEnter"
      @ondragleave="HandleOnDragLeave"
      @ondrop:stopPropagation
-     @ondrop="HandleOnDrop">
+     @ondrop="HandleOnDrop"
+     @onclick="DebugOutput">
      
      @if (Iface != null) {
-          <Interface Uid=@Iface.Uid Name=@Iface.Name Parent="@this.Parent" Title="@Iface.Title"></Interface>
+          <Interface Uid=@Iface.Uid Name=@Iface.Name Parent="@this.Parent" Title="@Iface.Title" @key="Iface"></Interface>
      } 
      
 </div>  

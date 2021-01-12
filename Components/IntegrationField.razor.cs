@@ -34,13 +34,14 @@ namespace TreeBuilder.Components {
             IntegrationNode inode = new IntegrationNode();
             for(int i = 0; i < 4; i++)
             {
-                Interface iface = new Interface();
+                IntegrationSlot iface = new IntegrationSlot();
                 iface.Name = "Empty";
                 iface.Index = i;
+                iface.Field = this;
+                iface.Parent = inode;
                 inode.Items.Add(iface);
             }
-            inode.Field = this;
-            inode.Parent = this;
+            
             Items.Add(inode);
             // Redraw();
             return inode;
