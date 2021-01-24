@@ -4,9 +4,6 @@
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
      @ondragend="@(() => HandleOnDragEnd())"
-     @onclick:stopPropagation
-     @onclick:preventDefault
-     @onclick="DebugOutput"
      @ondblclick:preventDefault
      @ondblclick:stopPropagation
      @ondblclick="TriggerRenameModal">

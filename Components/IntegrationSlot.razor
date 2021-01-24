@@ -6,8 +6,7 @@
      @ondragenter="HandleOnDragEnter"
      @ondragleave="HandleOnDragLeave"
      @ondrop:stopPropagation
-     @ondrop="HandleOnDrop"
-     @onclick="DebugOutput">
+     @ondrop="HandleOnDrop">
      
      @if (Iface != null) {
           <Interface Uid=@Iface.Uid Name=@Iface.Name Parent="@this.Parent" Title="@Iface.Title" @key="Iface"></Interface>

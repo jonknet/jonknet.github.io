@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
@@ -46,6 +47,7 @@ namespace TreeBuilder.Components {
 
         public virtual void HandleOnInput(ChangeEventArgs args){
             Title = args.Value.ToString();
+            
         }  
 
         public virtual void HandleOnDragEnter(){
@@ -93,9 +95,28 @@ namespace TreeBuilder.Components {
         }
 
         public void TriggerRenameModal(){
-            if(renameModal)
-                this.Title = Title;
+            if (renameModal) {
+                
+                if (this.GetType() == typeof(Interface)) {
+                    foreach (var item in Parent.Items) {
+                        if (item.Iface != null && item.Iface.Uid == this.Uid) {
+                            item.Iface.Title = Title;
+                        }
+                    }   
+                } 
+                foreach (var item in Parent.Items) {
+                    if (item.Uid == this.Uid) {
+                        item.Title = Title;
+                    }
+                }   
+                SaveToLocalStorageCallback.InvokeAsync();
+            }
+
             renameModal = !renameModal;
+            
+
+
+            
         }
 /*        public void Rename(Item payload){
             Payload = payload;
