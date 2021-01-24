@@ -46,10 +46,7 @@ namespace TreeBuilder.Components {
 
             SaveToLocalStorageCallback.InvokeAsync();
 
-            while (Payload.Parent != null){
-                Payload = Payload.Parent;
-            }
-            (Payload as Field).Redraw();
+            Field.Redraw();
             CssClass = "";
 
             

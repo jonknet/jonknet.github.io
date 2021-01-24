@@ -17,11 +17,13 @@
         <br/>
 
         <div class="tb-flex">
-            @for (int i = 0; i < Items.Count; i++) {
-                
+ 
+                @for (int i = 0; i < Items.Count; i++) {
+
                     <IntegrationSlot Uid=@Items[i].Uid Iface=@(Items[i].Iface as Interface) Parent=@this Index=@i SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[i]></IntegrationSlot>
-                
-            }
+
+                }
+            
         </div>
     </div>
 }

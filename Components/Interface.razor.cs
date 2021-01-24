@@ -15,9 +15,12 @@ namespace TreeBuilder.Components {
         {
             ClassType = CLASS_TYPE.INTERFACE;
         }
+        protected override void OnInitialized() {
+            ClassType = CLASS_TYPE.INTERFACE;
+        }
 
         public override void HandleOnDragStart(BaseItem item) {
-            Payload = item;
+            Payload = item as Interface;
             IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
             node.hidden = false;
             node.Redraw();

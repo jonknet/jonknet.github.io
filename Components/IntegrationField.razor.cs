@@ -32,18 +32,8 @@ namespace TreeBuilder.Components {
 
         public IntegrationNode AddIntegrationNode(){
             IntegrationNode inode = new IntegrationNode();
-            for(int i = 0; i < 4; i++)
-            {
-                IntegrationSlot iface = new IntegrationSlot();
-                iface.Name = "Empty";
-                iface.Index = i;
-                iface.Field = this;
-                iface.Parent = inode;
-                inode.Items.Add(iface);
-            }
-            
-            Items.Add(inode);
             // Redraw();
+            Items.Add(inode);
             return inode;
         }
 
