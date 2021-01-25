@@ -10,6 +10,7 @@ namespace TreeBuilder.Components {
     public partial class Interface : BaseItem {
         
         [Inject] ComponentTracker cTracker { get; set; }
+        [Inject] private IntNodeMplex nMultiplexer { get; set; }
 
         public Interface()
         {
@@ -25,6 +26,8 @@ namespace TreeBuilder.Components {
             IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
             node.hidden = false;
             node.Redraw();
+            IntegrationField field = (cTracker.GetByName("IntegrationField") as IntegrationField);
+            field.ToggleExtraSlotsOn();
         }
 
         public override void HandleOnDragEnd() {
@@ -33,6 +36,8 @@ namespace TreeBuilder.Components {
             node.hidden = true;
             CssClass = "";
             node.Redraw();
+            IntegrationField field = (cTracker.GetByName("IntegrationField") as IntegrationField);
+            field.ToggleExtraSlotsOff();
             SaveToLocalStorageCallback.InvokeAsync();
             /*
             for(int i = 0; i < IntegrationNode.MAX_IFACES; i++) {

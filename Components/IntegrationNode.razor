@@ -18,14 +18,21 @@
 
         <div class="tb-flex">
             <div>    
-                <IntegrationSlot Uid=@Items[0].Uid Iface=@(Items[0].Iface as Interface) Parent=@this Index=0 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[0]></IntegrationSlot>
+                <IntegrationSlot Uid=@Items[0].Uid Iface=@(Items[0].Iface) Parent=@this Index=0 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[0]></IntegrationSlot>
             </div>
             <div class="flex-column">
-                @for (int i = 1; i < Items.Count; i++) {
+               
+                    @if (Items[1].Iface != null || showExtraSlots) {
+                        <IntegrationSlot Uid=@Items[1].Uid Iface=@(Items[1].Iface) Parent=@this Index=1 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[1]></IntegrationSlot>
+                    }
 
-                    <IntegrationSlot Uid=@Items[i].Uid Iface=@(Items[i].Iface as Interface) Parent=@this Index=@i SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[i]></IntegrationSlot>
+                    <IntegrationSlot Uid=@Items[2].Uid Iface=@(Items[2].Iface) Parent=@this Index=2 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[2]></IntegrationSlot>
 
-                }
+                    @if (Items[3].Iface != null || showExtraSlots) {
+                        <IntegrationSlot Uid=@Items[3].Uid Iface=@(Items[3].Iface) Parent=@this Index=3 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[3]></IntegrationSlot>
+                    }
+                
+
             </div>
             
         </div>

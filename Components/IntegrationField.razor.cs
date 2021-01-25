@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using TreeBuilder.Services;
 
 namespace TreeBuilder.Components {
     public partial class IntegrationField : Field
     {
 
+        public Dictionary<Guid, IntegrationNode> intNodeRefs = new Dictionary<Guid, IntegrationNode>();
         public IntegrationField()
         {
             ClassType = CLASS_TYPE.INTEGRATIONFIELD;
@@ -35,6 +38,24 @@ namespace TreeBuilder.Components {
             // Redraw();
             Items.Add(inode);
             return inode;
+        }
+
+        public void ToggleExtraSlotsOn() {
+            foreach (var node in intNodeRefs.Values) {
+                if (node.Items[2].Iface != null) {
+                    node.showExtraSlots = true;
+                    node.Redraw();
+                }
+            }
+        }
+        
+        public void ToggleExtraSlotsOff() {
+            foreach (var node in intNodeRefs.Values) {
+                if (node.Items[2].Iface != null) {
+                    node.showExtraSlots = false;
+                    node.Redraw();
+                }
+            }
         }
 
         public async void SaveSession()

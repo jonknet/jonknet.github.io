@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using TreeBuilder.Services;
 
 namespace TreeBuilder.Components {
 
@@ -21,6 +22,7 @@ namespace TreeBuilder.Components {
     {
 
         [Inject] private Blazored.LocalStorage.ILocalStorageService LocalStorageService { get; set; }
+        
         [Parameter] public string Title { get; set; } = "Default Title";
         [Parameter] public Guid Uid { get; set; } = Guid.NewGuid();
         [Parameter][JsonIgnore] public Group Parent { get; set; } = null;
@@ -33,6 +35,7 @@ namespace TreeBuilder.Components {
         [JsonIgnore] public string CssClass { get; set; } = "";
         [JsonIgnore] public string CssSelect { get; set; } = "";
         [JsonIgnore] public bool renameModal { get; set; } = false;
+        
         public CLASS_TYPE ClassType { get; set; } = CLASS_TYPE.BASECLASS;
 
         [Parameter] public List<BaseItem> Items { get; set; }= new List<BaseItem>();

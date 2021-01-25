@@ -6,7 +6,7 @@
     <CascadingValue Value=this>
             @foreach(var item in Items)
             {
-                <IntegrationNode Uid=@item.Uid Title=@item.Title Items=@item.Items SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback Parent=@this @key="item"></IntegrationNode>
+                <IntegrationNode Uid=@item.Uid Title=@item.Title Items=@item.Items SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback Parent=@this @key="item" @ref="intNodeRefs[item.Uid]"></IntegrationNode>
             }
     </CascadingValue>
 
