@@ -39,7 +39,7 @@ namespace TreeBuilder.Components {
             // Remove from previous location
             if (Payload.Field != Parent.Field)
             {
-                Console.WriteLine("Fields were not : " + Payload.Parent.Field.Uid + " " + Parent.Field.Uid);
+                //Console.WriteLine("Fields were not : " + Payload.Parent.Field.Uid + " " + Field.Uid);
                 //Payload.Parent.Items.Remove(Payload);
             }
             else

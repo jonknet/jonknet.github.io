@@ -20,6 +20,7 @@ namespace TreeBuilder.Components {
         }
 
         public override void HandleOnDragStart(BaseItem item) {
+            Console.WriteLine("OnDragStart");
             Payload = item as Interface;
             IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
             node.hidden = false;
@@ -27,6 +28,7 @@ namespace TreeBuilder.Components {
         }
 
         public override void HandleOnDragEnd() {
+            Console.WriteLine("DragEnd");
             IntegrationNode node = (cTracker.GetByName("GhostNode") as IntegrationNode);
             node.hidden = true;
             CssClass = "";

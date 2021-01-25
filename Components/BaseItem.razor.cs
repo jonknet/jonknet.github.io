@@ -116,7 +116,7 @@ namespace TreeBuilder.Components {
             
 
 
-            
+
         }
 /*        public void Rename(Item payload){
             Payload = payload;
