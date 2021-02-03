@@ -10,10 +10,10 @@
     
     <CascadingValue Value="@this" Name="Field">
             @foreach (var item in GroupItems) {
-                @if (item.GetType() == typeof(Group)) {
+                @if (Is<Group>(item)) {
                     <Group Guid=@item.Guid Title=@item.Title GroupItems=@((item as Group).GroupItems) Parent=@this @key=@item.Guid></Group>
                 }
-                else if (item.GetType() == typeof(Interface)) {
+                else if (Is<Interface>(item)) {
                     <Interface Guid=@item.Guid Title=@item.Title Parent=@this @key=@item.Guid></Interface>
                 }
             }

@@ -14,8 +14,8 @@ namespace TreeBuilder.Services {
 
         public JsonSerializerSettings settings = new JsonSerializerSettings()
         {
-            PreserveReferencesHandling = PreserveReferencesHandling.All,
-            NullValueHandling = NullValueHandling.Ignore,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            NullValueHandling = NullValueHandling.Include,
             TypeNameHandling = TypeNameHandling.All,
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
@@ -26,11 +26,13 @@ namespace TreeBuilder.Services {
 
         public void Save(IntegrationField intField, GroupField grpField)
         {
+            LocalStorageService.Clear();
             LocalStorageService.SetItem<string>("TreeBuilder_IntegrationField", JsonConvert.SerializeObject(intField, settings));
             LocalStorageService.SetItem<string>("TreeBuilder_GroupField", JsonConvert.SerializeObject(grpField, settings));
         }
         
         public void SaveToSessionStorage() {
+            LocalStorageService.Clear();
             LocalStorageService.SetItem<string>("TreeBuilder_IntegrationField", JsonConvert.SerializeObject(IntegrationField, settings));
             LocalStorageService.SetItem<string>("TreeBuilder_GroupField", JsonConvert.SerializeObject(GroupField, settings));
         }

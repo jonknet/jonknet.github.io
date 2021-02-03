@@ -5,19 +5,24 @@ using TreeBuilder.Components;
 namespace TreeBuilder.ComponentsRedux {
     
     public enum InterfacePosition {
-        Left,
-        RightTop,
-        RightMiddle,
-        RightBottom
+        Left = 0,
+        RightTop = 1,
+        RightMiddle = 2,
+        RightBottom = 3
     }
     
     public partial class InterfaceSlot : BaseClass {
         
-        [Parameter] public InterfacePosition Position { get; set; }
+        [Parameter] public int Position { get; set; }
         
+
+        protected override void OnInitialized() {
+            
+        }
+
         public override void HandleOnDrop() {
 
-            if (Payload.GetType() != typeof(Interface)) {
+            if (!Is<Interface>(Payload)) {
                 return;
             }
             
@@ -31,19 +36,26 @@ namespace TreeBuilder.ComponentsRedux {
             // Remove from previous field if switching fields
             if (Payload.Field != this.Field) { 
                 Payload.Parent.GroupItems.Remove(Payload);
-            } else if(Payload.Parent.GetType() == typeof(InterfaceSlot)){
+            } else if(Is<InterfaceSlot>(Payload.Parent)){
                 // Remove from previous slot by nulling it out
-                (Payload.Parent.Parent as IntegrationNode).Interfaces[(int) (Payload.Parent as InterfaceSlot).Position] = null;
+                Interface[] interfaces = (Payload.Parent.Parent as IntegrationNode).Interfaces;
+                for (int i = 0; i < interfaces.Length; i++) {
+                    if (interfaces[i] != null && interfaces[i].Equals(Payload)) {
+                        interfaces[i] = null;
+                        break;
+                    }
+                }
             }
 
             // Add to this slot
             
-            (Parent as IntegrationNode).Interfaces[(int) Position] = 
-                Payload as Interface;
+            (Parent as IntegrationNode).Interfaces[Position] = Payload as Interface;
             Payload.Parent = this;
             Payload.Field = Field;
 
             CssClass = "";
+            
+            RenderService.Redraw();
 
             Storage.SaveToSessionStorage();
         }

@@ -14,22 +14,22 @@
 
     <div class="tb-flex">
             <div>
-                <InterfaceSlot Position=@InterfacePosition.Left Parent=@this></InterfaceSlot>
+                <InterfaceSlot Position=0 Parent=@this></InterfaceSlot>
             </div>
             <div class="flex-column">
                    
-                <InterfaceSlot Position=@InterfacePosition.RightTop Parent=@this></InterfaceSlot>
+                <InterfaceSlot Position=1 Parent=@this></InterfaceSlot>
                 
-                <InterfaceSlot Position=@InterfacePosition.RightMiddle Parent=@this></InterfaceSlot>
+                <InterfaceSlot Position=2 Parent=@this></InterfaceSlot>
                 
-                <InterfaceSlot Position=@InterfacePosition.RightBottom Parent=@this></InterfaceSlot>
+                <InterfaceSlot Position=3 Parent=@this></InterfaceSlot>
                 
             </div>
         </div>
         <div class="flex-column">
             
             @foreach (IntegrationNode node in IntegrationNodes) {
-                <IntegrationNode Guid=@node.Guid IntegrationNodes=@node.IntegrationNodes Interfaces=@node.Interfaces Parent=@this @key=@node.Guid></IntegrationNode>
+                <IntegrationNode Guid=@node.Guid Interfaces=@node.Interfaces Parent=@this @key=@node.Guid></IntegrationNode>
             }
             
         </div>

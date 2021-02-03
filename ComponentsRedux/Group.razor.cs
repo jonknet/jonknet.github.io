@@ -6,16 +6,19 @@ using TreeBuilder.Components;
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class Group : BaseClass {
+        protected override void OnInitialized() {
+            
+        }
 
         public override void HandleOnDrop() {
 
-            if (Payload.GetType() != typeof(Interface) && Payload.GetType() != typeof(Group))
+            if (!Is<Interface>(Payload) && !Is<Group>(Payload))
             {
                 return;
             }
 
             // Dirty ugly hack
-            if (Payload.GetType() == typeof(Interface)) {
+            if (Is<Interface>(Payload)) {
                 //(Payload as Interface).HandleOnDragEnd();
             }
             // End hack

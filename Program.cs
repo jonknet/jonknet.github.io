@@ -38,7 +38,7 @@ namespace TreeBuilder
                 config.JsonSerializerOptions.IncludeFields = true;
                 
             });
-            //builder.Logging.SetMinimumLevel(LogLevel.Trace);
+            builder.Logging.SetMinimumLevel(LogLevel.Trace);
             await builder.Build().RunAsync();
         }
     }

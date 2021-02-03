@@ -7,14 +7,14 @@ using TreeBuilder.Components;
 namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationNode : IntegrationField {
 
-        [Parameter] public List<Interface> Interfaces { get; set; } = new List<Interface> {null, null, null, null};
+        [Parameter] public Interface[] Interfaces { get; set; } = new Interface[4] { null, null, null, null };
 
-        public IntegrationNode() : base() {
-            
+        public IntegrationNode() {
+
         }
-
         protected override void OnInitialized() {
-            
+            Parent = Storage.IntegrationField;
+            Field = Storage.IntegrationField;
         }
 
         public override void HandleOnDrop()
@@ -30,7 +30,8 @@ namespace TreeBuilder.ComponentsRedux {
             } else if (Is<IntegrationNode>(Payload.Parent)) {
                 (Payload.Parent as IntegrationNode).RemoveNode<IntegrationNode>(Payload.Parent as IntegrationNode, Payload as IntegrationNode);
             }
-            
+
+            NodeReferences.Remove(Payload.Guid);
             IntegrationNodes.Add(Payload as IntegrationNode);
             Payload.Parent = this;
             

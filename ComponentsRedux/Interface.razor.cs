@@ -1,10 +1,15 @@
-﻿using TreeBuilder.Classes;
+﻿using System;
+using TreeBuilder.Classes;
 using TreeBuilder.Components;
 
 namespace TreeBuilder.ComponentsRedux {
     
     public partial class Interface : BaseClass {
-        public Interface() : base() {
+
+        public Interface() {
+
+        }
+        protected override void OnInitialized() {
             
         }
     }

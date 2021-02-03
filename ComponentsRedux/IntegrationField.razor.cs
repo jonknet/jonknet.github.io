@@ -15,6 +15,7 @@ namespace TreeBuilder.ComponentsRedux {
         protected override void OnInitialized() {
             IntegrationField intField = Storage.LoadIntegrationField();
             if (intField != null) {
+                IntegrationNodes.Clear();
                 IntegrationNodes = intField.IntegrationNodes;
                 Title = intField.Title;
             }
@@ -34,6 +35,7 @@ namespace TreeBuilder.ComponentsRedux {
             if (Is<IntegrationNode>(Payload)) {
                 IntegrationNodes.Add(Payload as IntegrationNode);
                 (Payload.Parent as IntegrationNode).RemoveNode(Payload.Parent as IntegrationNode, Payload as IntegrationNode);
+                NodeReferences.Remove(Payload.Guid);
                 Payload.Parent = this;
                 Payload.Field = this;
             }

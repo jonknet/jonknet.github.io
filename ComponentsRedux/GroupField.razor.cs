@@ -10,6 +10,7 @@ namespace TreeBuilder.ComponentsRedux {
         protected override void OnInitialized() {
             GroupField groupField = Storage.LoadGroupField();
             if (groupField != null) {
+                GroupItems.Clear();
                 GroupItems = groupField.GroupItems;
                 Title = groupField.Title;
             }
