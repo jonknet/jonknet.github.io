@@ -9,7 +9,7 @@ using TreeBuilder.Services;
 namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationField : Group {
 
-        public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new Dictionary<Guid, IntegrationNode>();
+        [JsonIgnore] public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new Dictionary<Guid, IntegrationNode>();
         [Parameter] public List<IntegrationNode> IntegrationNodes { get; set; } = new List<IntegrationNode>();
 
         protected override void OnInitialized() {
@@ -27,24 +27,44 @@ namespace TreeBuilder.ComponentsRedux {
             //(Payload as Interface).HandleOnDragEnd();
             // End Hack
             
-            if (Payload == this) {
+            if (Is<IntegrationNode>(Payload) && (ContainsNode(Payload as IntegrationNode) || (Payload as IntegrationNode).HasNodesOnTop())) {
                 return;
             }
 
-            if (Payload.GetType() == typeof(IntegrationNode)) {
-                GroupItems.Add(Payload as IntegrationNode);
-                Payload.Parent.GroupItems.Remove(Payload);
+            if (Is<IntegrationNode>(Payload)) {
+                IntegrationNodes.Add(Payload as IntegrationNode);
+                (Payload.Parent as IntegrationNode).RemoveNode(Payload.Parent as IntegrationNode, Payload as IntegrationNode);
                 Payload.Parent = this;
                 Payload.Field = this;
             }
+
+            RenderService.Redraw();
             
             Storage.SaveToSessionStorage();
+        }
+        
+        // Helper methods
+        public void RemoveNode<T>(T BaseNode, IntegrationNode TargetNode) where T : IntegrationField {
+            foreach (IntegrationNode node in BaseNode.IntegrationNodes) {
+                if (node.Equals(TargetNode)) {
+                    BaseNode.IntegrationNodes.Remove(TargetNode);
+                    return;
+                }
+                RemoveNode(node, TargetNode);
+            }
+        }
+
+        public bool HasNodesOnTop() {
+            return (IntegrationNodes.Count > 0) ? true : false;
+        }
+
+        public bool ContainsNode(IntegrationNode Node) {
+            return IntegrationNodes.Contains(Node);
         }
         
         public override string ToString()
         {
             return "IntegrationField: \r\n" + base.ToString();
         }
-
     }
 }

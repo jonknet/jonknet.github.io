@@ -11,10 +11,8 @@
     @Title
 
     <br/>
-    
 
-    
-        <div class="tb-flex">
+    <div class="tb-flex">
             <div>
                 <InterfaceSlot Position=@InterfacePosition.Left Parent=@this></InterfaceSlot>
             </div>
@@ -31,7 +29,7 @@
         <div class="flex-column">
             
             @foreach (IntegrationNode node in IntegrationNodes) {
-                <IntegrationNode IntegrationNodes=@node.IntegrationNodes Interfaces=@node.Interfaces Parent=@this></IntegrationNode>
+                <IntegrationNode Guid=@node.Guid IntegrationNodes=@node.IntegrationNodes Interfaces=@node.Interfaces Parent=@this @key=@node.Guid></IntegrationNode>
             }
             
         </div>

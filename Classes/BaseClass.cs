@@ -25,14 +25,7 @@ namespace TreeBuilder.Classes {
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new List<BaseClass>();
 
         public BaseClass() {
-            Guid = Guid.NewGuid();
-            Title = "";
-            Parent = null;
-            Field = null;
-            CssClass = "";
-            CssSelect = "";
-            Payload = null;
-            Selection = null;
+
         }
 
         public virtual void HandleOnDragEnter(){
@@ -45,11 +38,11 @@ namespace TreeBuilder.Classes {
 
         public virtual void HandleOnDragStart(BaseClass payload){
             Payload = payload;
+            Console.WriteLine(payload.Guid);
         }
 
         public virtual void HandleOnDragEnd(){
             CssClass = "";
-            Payload = null;
         }
         
         public virtual void HandleOnDrop() {
@@ -58,6 +51,10 @@ namespace TreeBuilder.Classes {
 
         public virtual void Render() {
             StateHasChanged();
+        }
+
+        public static bool Is<T>(BaseClass Base) {
+            return Base is T;
         }
 
         public override bool Equals(object obj)
@@ -76,6 +73,5 @@ namespace TreeBuilder.Classes {
             string str = $"Guid: {Guid}\r\nTitle: {Title}\r\n";
             return str;
         }
-
     }
 }
