@@ -1,0 +1,39 @@
+﻿@inherits IntegrationField
+
+<div draggable="true" class="tb-item tb-draggable @CssClass @CssSelect"
+     ondragover="event.preventDefault()"
+     @ondragstart:stopPropagation
+     @ondragstart="@(() => HandleOnDragStart(this))"
+     @ondragend="HandleOnDragEnd"
+     @ondrop:stopPropagation
+     @ondrop="HandleOnDrop">
+        
+    @Title
+
+    <br/>
+    
+
+    
+        <div class="tb-flex">
+            <div>
+                <InterfaceSlot Interface=@Interfaces[0] Position=@InterfacePosition.Left Parent=@this></InterfaceSlot>
+            </div>
+            <div class="flex-column">
+                   
+                <InterfaceSlot Interface=@Interfaces[1] Position=@InterfacePosition.RightTop Parent=@this></InterfaceSlot>
+                
+                <InterfaceSlot Interface=@Interfaces[2] Position=@InterfacePosition.RightMiddle Parent=@this></InterfaceSlot>
+                
+                <InterfaceSlot Interface=@Interfaces[3] Position=@InterfacePosition.RightBottom Parent=@this></InterfaceSlot>
+                
+            </div>
+        </div>
+        <div class="flex-column">
+            
+            @foreach (IntegrationNode node in IntegrationNodes) {
+                <IntegrationNode IntegrationNodes=@node.IntegrationNodes Interfaces=@node.Interfaces Parent=@this></IntegrationNode>
+            }
+            
+        </div>
+    
+</div>

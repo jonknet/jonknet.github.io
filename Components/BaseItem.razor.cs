@@ -39,7 +39,8 @@ namespace TreeBuilder.Components {
         public CLASS_TYPE ClassType { get; set; } = CLASS_TYPE.BASECLASS;
 
         [Parameter] public List<BaseItem> Items { get; set; }= new List<BaseItem>();
-
+        [Parameter] public List<IntegrationNode> Nodes { get; set; } = new List<IntegrationNode>();
+        
         public static BaseItem Payload { get; set; } = null;
         public static BaseItem Selection { get; set; } = null;
         

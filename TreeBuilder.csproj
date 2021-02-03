@@ -16,10 +16,33 @@
     <Compile Update="Components\IntegrationSlot.razor.cs">
       <DependentUpon>IntegrationSlot.razor.razor</DependentUpon>
     </Compile>
+    <Compile Remove="Components\**" />
+    <Compile Remove="Services\IntNodeMplex.cs" />
+    <Compile Remove="Services\ComponentTracker.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces" />
+    <EmbeddedResource Remove="Components\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Components\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\BaseItem.razor" />
+    <_ContentIncludedByDefault Remove="Components\Field.razor" />
+    <_ContentIncludedByDefault Remove="Components\Group.razor" />
+    <_ContentIncludedByDefault Remove="Components\IntegrationField.razor" />
+    <_ContentIncludedByDefault Remove="Components\IntegrationNode.razor" />
+    <_ContentIncludedByDefault Remove="Components\IntegrationSlot.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interface.razor" />
+    <_ContentIncludedByDefault Remove="Components\Item.razor" />
+    <_ContentIncludedByDefault Remove="Components\Trash.razor" />
   </ItemGroup>
 
 </Project>

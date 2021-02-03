@@ -1,0 +1,27 @@
+﻿@inherits TreeBuilder.Classes.BaseClass
+
+<div class="tb-group tb-item tb-draggable @CssClass @CssSelect"
+     draggable="true"
+     ondragover="event.preventDefault()"
+     @ondragstart:stopPropagation
+     @ondragstart="@(() => HandleOnDragStart(this))"
+     @ondragend="HandleOnDragEnd"
+     @ondragenter="HandleOnDragEnter"
+     @ondragleave="HandleOnDragLeave"
+     @ondrop:stopPropagation
+     @ondrop="HandleOnDrop">
+    
+    @Title : @Guid : @Parent.Guid
+
+    
+    @foreach (var item in GroupItems) {
+        if (item.GetType() == typeof(Group)) {
+            <Group Guid=@item.Guid Title=@item.Title GroupItems=@((item as Group).GroupItems) Parent=@this @key=@item.Guid></Group>
+        }
+        else if (item.GetType() == typeof(Interface)) {
+            <Interface Guid=@item.Guid Title=@item.Title Parent=@this @key=@item.Guid></Interface>
+        }
+    }
+    
+
+</div>

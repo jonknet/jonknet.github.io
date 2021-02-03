@@ -2,18 +2,19 @@
 
 @if (!hidden)
 {
-    <div id=@Uid class="tb-item tb-draggable @CssClass @CssSelect"
+    <div id=@Uid draggable="true" class="tb-item tb-draggable @CssClass @CssSelect"
          @ondblclick:preventDefault
          @ondblclick:stopPropagation
-         @ondblclick="TriggerRenameModal">
+         @ondblclick="TriggerRenameModal"
+         ondragover="event.preventDefault()"
+         @ondragstart:stopPropagation
+         @ondragstart="@(() => HandleOnDragStart(this))"
+         @ondragend="HandleOnDragEnd"
+         @ondrop:stopPropagation
+         @ondrop="HandleOnDrop">
         
         @Title
-        
-        <i class="fas fa-times-circle tb-closeicon"
-           @onclick:stopPropagation
-           @onclick:preventDefault
-           @onclick="DestroyNode"></i>
-        
+
         <br/>
 
         <div class="tb-flex">
@@ -22,19 +23,24 @@
             </div>
             <div class="flex-column">
                
-                    @if (Items[1].Iface != null || showExtraSlots) {
-                        <IntegrationSlot Uid=@Items[1].Uid Iface=@(Items[1].Iface) Parent=@this Index=1 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[1]></IntegrationSlot>
-                    }
+                @if (Items[1].Iface != null || showExtraSlots) {
+                    <IntegrationSlot Uid=@Items[1].Uid Iface=@(Items[1].Iface) Parent=@this Index=1 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[1]></IntegrationSlot>
+                }
 
-                    <IntegrationSlot Uid=@Items[2].Uid Iface=@(Items[2].Iface) Parent=@this Index=2 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[2]></IntegrationSlot>
+                <IntegrationSlot Uid=@Items[2].Uid Iface=@(Items[2].Iface) Parent=@this Index=2 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[2]></IntegrationSlot>
 
-                    @if (Items[3].Iface != null || showExtraSlots) {
-                        <IntegrationSlot Uid=@Items[3].Uid Iface=@(Items[3].Iface) Parent=@this Index=3 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[3]></IntegrationSlot>
-                    }
+                @if (Items[3].Iface != null || showExtraSlots) {
+                    <IntegrationSlot Uid=@Items[3].Uid Iface=@(Items[3].Iface) Parent=@this Index=3 SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback @key=Items[3]></IntegrationSlot>
+                }
                 
 
             </div>
             
+        </div>
+        <div class="flex-column">
+            @foreach (var node in Nodes) {
+                <IntegrationNode Uid=@node.Uid Items=@node.Items Nodes=@node.Nodes Parent=@this SaveToLocalStorageCallback=@this.SaveToLocalStorageCallback></IntegrationNode>
+            }
         </div>
     </div>
 }

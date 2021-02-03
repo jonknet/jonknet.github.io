@@ -1,0 +1,14 @@
+﻿@inherits TreeBuilder.Classes.BaseClass
+
+<div class="tb-integrationslot @CssClass"
+     ondragover="event.preventDefault()"
+     @ondragenter="HandleOnDragEnter"
+     @ondragleave="HandleOnDragLeave"
+     @ondrop:stopPropagation
+     @ondrop="HandleOnDrop">
+     
+    @if (Interface != null) {
+        <Interface Title="@Interface.Title" Parent="@this.Parent" @key="Interface"></Interface>
+    } 
+     
+</div>  

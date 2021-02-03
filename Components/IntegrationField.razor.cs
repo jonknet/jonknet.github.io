@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
@@ -9,8 +10,7 @@ using TreeBuilder.Services;
 namespace TreeBuilder.Components {
     public partial class IntegrationField : Field
     {
-
-        public Dictionary<Guid, IntegrationNode> intNodeRefs = new Dictionary<Guid, IntegrationNode>();
+        [JsonIgnore] public Dictionary<Guid, IntegrationNode> intNodeRefs = new Dictionary<Guid, IntegrationNode>();
         public IntegrationField()
         {
             ClassType = CLASS_TYPE.INTEGRATIONFIELD;
@@ -26,10 +26,12 @@ namespace TreeBuilder.Components {
                     NullValueHandling = NullValueHandling.Ignore
                 });
             Console.WriteLine(_if);
+            
             Items = _if.Items;
             Title = _if.Title;
             Uid = _if.Uid;
             
+
             }
         }
 
@@ -85,8 +87,16 @@ namespace TreeBuilder.Components {
                 
                 base.StateHasChanged();
 
-                SaveToLocalStorageCallback.InvokeAsync();
+            } else if (Payload.GetType() == typeof(IntegrationNode)) {
+                if (Items.Contains(Payload)) {
+                    return;
+                }
+                Items.Add(Payload);
+                Payload.Parent.Nodes.Remove(Payload as IntegrationNode);
+                Payload.Parent = this;
+                Payload.Field = this;
             }
+            SaveToLocalStorageCallback.InvokeAsync();
         }
 
     }

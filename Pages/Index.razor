@@ -1,10 +1,10 @@
-﻿@page "/"
+﻿@page "/Index2"
 @using TreeBuilder.Services
 @using Newtonsoft.Json
 @using Blazored.LocalStorage 
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorageService;
 
-@inject ComponentTracker ComponentTracker; 
+@*@inject ComponentTracker ComponentTracker; 
 <div class="container">
     <div class="row">
         <div class="col col-6">
@@ -30,11 +30,11 @@
     <Trash></Trash>
 </div>
 
-@OutJson
+@OutJson*@
 
 @code {
 
-    public State StateImport { get; set; } = new State();
+    /*public State StateImport { get; set; } = new State();
 
     public Field fieldRef { get; set; }
 
@@ -48,7 +48,8 @@
     {
         PreserveReferencesHandling = PreserveReferencesHandling.All,
         NullValueHandling = NullValueHandling.Ignore,
-        TypeNameHandling = TypeNameHandling.All
+        TypeNameHandling = TypeNameHandling.All,
+        Formatting = Formatting.Indented
     };
 
     protected override async void OnInitialized() {
@@ -95,7 +96,8 @@
         OutJson = "";
 
 
-        OutJson = JsonConvert.SerializeObject(fieldRef, settings) + "/n";
+        OutJson = JsonConvert.SerializeObject(fieldRef, settings) + " ";
+        OutJson += JsonConvert.SerializeObject(integrationRef, settings);
 
     }
 
@@ -125,7 +127,7 @@
         integrationRef.AddIntegrationNode();
         //StateImport.IntegrationField.Redraw();
         SaveState();
-    }
+    }*/
 }
 
         

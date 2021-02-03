@@ -1,0 +1,10 @@
+﻿@inherits TreeBuilder.Classes.BaseClass
+
+<div draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect"
+     @ondragstart:stopPropagation
+     @ondragstart="@(() => HandleOnDragStart(this))"
+     @ondragend="HandleOnDragEnd">
+    
+    <p>@Title</p>
+    
+</div>

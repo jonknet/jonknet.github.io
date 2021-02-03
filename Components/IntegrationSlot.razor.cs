@@ -88,7 +88,7 @@ namespace TreeBuilder.Components {
             }
             CssClass = "";
 
-            Payload = null;
+            
 
             SaveToLocalStorageCallback.InvokeAsync();
         }

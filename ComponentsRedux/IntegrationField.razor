@@ -1,0 +1,13 @@
+﻿@inherits Group
+
+<div class="tb-field @CssClass"
+     ondragover="event.preventDefault()"
+     @ondrop:stopPropagation
+     @ondrop="HandleOnDrop">
+    
+    <CascadingValue Value="@this" Name="Field">
+        @foreach (IntegrationNode item in IntegrationNodes) {
+            <IntegrationNode Guid=@item.Guid Title=@item.Title IntegrationNodes=@item.IntegrationNodes Interfaces=@item.Interfaces Parent=@this @key=item.Guid @ref="NodeReferences[item.Guid]"></IntegrationNode>
+        }
+    </CascadingValue>
+</div>

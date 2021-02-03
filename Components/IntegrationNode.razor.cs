@@ -12,6 +12,7 @@ namespace TreeBuilder.Components {
 
         [Inject] ILocalStorageService LocalStorageService { get; set; }
         [Inject] public ComponentTracker cTracker { get; set; }
+
         
         
         public const int MAX_IFACES = 4;
@@ -37,6 +38,7 @@ namespace TreeBuilder.Components {
         }
 
         protected override async Task OnInitializedAsync() {
+            ClassType = CLASS_TYPE.INTEGRATIONNODE;
             if (Name == "GhostNode") {
                 hidden = true;
             }
@@ -63,24 +65,28 @@ namespace TreeBuilder.Components {
 
         }
 
-        /*
-         public override void HandleOnDrop()
+        
+        public override void HandleOnDrop()
         {
-            if(Payload.GetType() != typeof(Interface) || Items.Contains(Payload) || Items.Count == MAX_IFACES){
+            if(Payload.GetType() != typeof(IntegrationNode) || Payload == this || Payload.Parent == this){
                 return;
             }
 
-            Items.Add(Payload);
-            Payload.Parent.Items.Remove(Payload);
-            
-            Payload.Parent = this;
-            while(Payload.Parent != null){
-                Payload = Payload.Parent;
+            if (Payload.Parent.Nodes.Contains(Payload as IntegrationNode)) {
+                Console.WriteLine("Removing from IntNode " + Payload.Uid);
+                Payload.Parent.Nodes.Remove(Payload as IntegrationNode);
+            } else {
+                Console.WriteLine("Removing from Field " + Payload.Uid);
+                Payload.Parent.Items.Remove(Payload);
             }
-            (Payload as Field).Refresh();
-            CssClass = "";
             
+            Nodes.Add(Payload as IntegrationNode);
+            Payload.Parent = this;
+
+
+
+            SaveToLocalStorageCallback.InvokeAsync();
         }
-        */
+        
     }
 }
