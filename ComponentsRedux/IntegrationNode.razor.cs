@@ -19,15 +19,20 @@ namespace TreeBuilder.ComponentsRedux {
 
         public override void HandleOnDrop()
         {
-            if(Payload.GetType() != typeof(IntegrationNode) || Payload == this || Payload.Parent == this){
+            if(Payload.GetType() != typeof(IntegrationNode) || Payload == this){
                 return;
             }
 
-            if (Payload.Parent.GetType() == typeof(IntegrationNode) || Payload.Parent.GetType() == typeof(IntegrationField)) {
-                (Payload.Parent as IntegrationNode).GroupItems.Remove(Payload as IntegrationNode);
-                GroupItems.Add(Payload as IntegrationNode);
-                Payload.Parent = this;
+            if (Payload.Parent.GetType() == typeof(IntegrationField)) {
+                (Payload.Field as IntegrationField).IntegrationNodes.Remove(Payload as IntegrationNode);
+            } else if (Payload.Parent.GetType() == typeof(IntegrationNode)) {
+                (Payload.Parent as IntegrationNode).IntegrationNodes.Remove(Payload as IntegrationNode);
             }
+            
+            IntegrationNodes.Add(Payload as IntegrationNode);
+            Payload.Parent = this;
+            
+            RenderService.Redraw();
             
             Storage.SaveToSessionStorage();
         }

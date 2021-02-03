@@ -7,8 +7,8 @@
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
      
-    @if (Interface != null) {
-        <Interface Title="@Interface.Title" Parent="@this.Parent" @key="Interface"></Interface>
+    @if (((Parent as IntegrationNode).Interfaces[(int)Position]) != null) {
+        <Interface Title=@((Parent as IntegrationNode).Interfaces[(int)Position].Title) Parent="@this" @key=@((Parent as IntegrationNode).Interfaces[(int)Position])></Interface>
     } 
      
 </div>  

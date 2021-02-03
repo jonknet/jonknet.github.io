@@ -18,14 +18,13 @@ namespace TreeBuilder.ComponentsRedux {
                 IntegrationNodes = intField.IntegrationNodes;
                 Title = intField.Title;
             }
-            
         }
         
         public override void HandleOnDrop()
         {
             
             // Dirty Hack to allow the ghost Integration Node to hide
-            (Payload as Interface).HandleOnDragEnd();
+            //(Payload as Interface).HandleOnDragEnd();
             // End Hack
             
             if (Payload == this) {
@@ -34,9 +33,9 @@ namespace TreeBuilder.ComponentsRedux {
 
             if (Payload.GetType() == typeof(IntegrationNode)) {
                 GroupItems.Add(Payload as IntegrationNode);
-                (Payload.Parent as Group).GroupItems.Remove(Payload as IntegrationNode);
+                Payload.Parent.GroupItems.Remove(Payload);
                 Payload.Parent = this;
-                Payload.Field = this as Group;
+                Payload.Field = this;
             }
             
             Storage.SaveToSessionStorage();
