@@ -48,7 +48,7 @@
     }
 
     public void AddGroup() {
-        fieldRef.GroupItems.Add(new Group());
+        fieldRef.GroupItems.Add(new Group(fieldRef,fieldRef));
         Console.WriteLine(fieldRef.GroupItems.Count);
         StateHasChanged();
         StorageService.SaveToSessionStorage();
@@ -57,13 +57,13 @@
     }
 
     public void AddInterface() {
-        fieldRef.GroupItems.Add(new Interface());
+        fieldRef.GroupItems.Add(new Interface(fieldRef,fieldRef));
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }
 
     public void AddIntegrationNode() {
-        integrationRef.IntegrationNodes.Add(new IntegrationNode());
+        integrationRef.IntegrationNodes.Add(new IntegrationNode(integrationRef,integrationRef));
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }

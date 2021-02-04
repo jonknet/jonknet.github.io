@@ -3,14 +3,7 @@ using TreeBuilder.Classes;
 using TreeBuilder.Components;
 
 namespace TreeBuilder.ComponentsRedux {
-    
-    public enum InterfacePosition {
-        Left = 0,
-        RightTop = 1,
-        RightMiddle = 2,
-        RightBottom = 3
-    }
-    
+
     public partial class InterfaceSlot : BaseClass {
         
         [Parameter] public int Position { get; set; }

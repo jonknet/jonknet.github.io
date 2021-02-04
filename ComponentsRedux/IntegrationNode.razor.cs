@@ -10,7 +10,11 @@ namespace TreeBuilder.ComponentsRedux {
         [Parameter] public Interface[] Interfaces { get; set; } = new Interface[4] { null, null, null, null };
 
         public IntegrationNode() {
-
+            
+        }
+        public IntegrationNode(BaseClass Parent, Group Field) {
+            this.Parent = Parent;
+            this.Field = Field;
         }
         protected override void OnInitialized() {
             Parent = Storage.IntegrationField;

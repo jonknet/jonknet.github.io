@@ -15,5 +15,33 @@ namespace TreeBuilder.ComponentsRedux {
                 Title = groupField.Title;
             }
         }
+
+        public override void HandleOnDrop() {
+            if (Is<IntegrationNode>(Payload) || Payload.Field != this.Field) {
+                return;
+            }
+
+            if (Is<Interface>(Payload)) {
+                if (Is<IntegrationNode>(Payload.Parent)) {
+                    Interface[] interfaces = (Payload.Parent as IntegrationNode).Interfaces;
+                    for (int i = 0; i < interfaces.Length; i++) {
+                        if (interfaces[i] != null && interfaces[i].Equals(Payload)) {
+                            interfaces[i] = null;
+                            break;
+                        }
+                    }
+                }
+            } else if (Is<Group>(Payload)) {
+                Payload.Parent.GroupItems.Remove(Payload);
+            }
+
+            GroupItems.Add(Payload);
+            Payload.Parent = this;
+            Payload.Field = this;
+
+            RenderService.Redraw();
+            
+            Storage.SaveToSessionStorage();
+        }
     }
 }

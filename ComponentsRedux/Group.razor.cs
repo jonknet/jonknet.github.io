@@ -6,13 +6,21 @@ using TreeBuilder.Components;
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class Group : BaseClass {
+
+        public Group() {
+            
+        }
+        public Group(BaseClass Parent, Group Field) : base(Parent, Field) {
+            
+        }
+        
         protected override void OnInitialized() {
             
         }
 
         public override void HandleOnDrop() {
 
-            if (!Is<Interface>(Payload) && !Is<Group>(Payload))
+            if (Is<IntegrationNode>(Payload) || Payload.Field != this.Field || Payload == this)
             {
                 return;
             }

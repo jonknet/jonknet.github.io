@@ -15,7 +15,7 @@ namespace TreeBuilder.Classes {
         [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
         [Parameter] public string Title { get; set; } = "";
         [Parameter] public BaseClass Parent { get; set; } = null;
-        [CascadingParameter] public Group Field { get; set; } = null;
+        [CascadingParameter(Name = "Field")] public Group Field { get; set; } = null;
         public string CssClass { get; set; } = "";
         public string CssSelect { get; set; } = "";
         
@@ -25,7 +25,11 @@ namespace TreeBuilder.Classes {
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new List<BaseClass>();
 
         public BaseClass() {
-
+            
+        }
+        public BaseClass(BaseClass Parent, Group Field) {
+            this.Parent = Parent;
+            this.Field = Field;
         }
 
         public virtual void HandleOnDragEnter(){
