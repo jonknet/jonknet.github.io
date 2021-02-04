@@ -4,9 +4,7 @@ using TreeBuilder.Classes;
 namespace TreeBuilder.ComponentsRedux {
     public partial class InterfaceSlot : BaseClass {
         [Parameter] public int Position { get; set; }
-        
         [Parameter] public string DomId { get; set; }
-
         public override void HandleOnDrop() {
             if (!Is<Interface>(EventState.Payload)) return;
 

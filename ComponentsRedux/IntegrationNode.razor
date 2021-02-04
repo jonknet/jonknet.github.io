@@ -19,13 +19,13 @@
         <div class="flex-column InterfaceSlots">
             
              
-            <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass="tb-hidden" @ref=EventState.RightTop></InterfaceSlot>
+            <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass=@((Interfaces[(int)InterfaceSlotPosition.RightTop] == null) ? "tb-interfaceslot tb-hidden" : "tb-interfaceslot") @ref=@EventState.RightTop></InterfaceSlot>
             
 
             <InterfaceSlot DomId="Right" Position="2" Parent="@(this)"></InterfaceSlot>
 
              
-            <InterfaceSlot DomId="RightBottom" Position="3" Parent="@(this)" CssClass="tb-hidden" @ref=EventState.RightBottom></InterfaceSlot>
+            <InterfaceSlot DomId="RightBottom" Position="3" Parent="@(this)" CssClass=@((Interfaces[(int)InterfaceSlotPosition.RightBottom] == null) ? "tb-interfaceslot tb-hidden" : "tb-interfaceslot") @ref=@EventState.RightBottom></InterfaceSlot>
             
 
         </div>

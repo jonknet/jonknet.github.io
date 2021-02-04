@@ -43,6 +43,7 @@
     <_ContentIncludedByDefault Remove="Components\Interface.razor" />
     <_ContentIncludedByDefault Remove="Components\Item.razor" />
     <_ContentIncludedByDefault Remove="Components\Trash.razor" />
+    <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
   </ItemGroup>
 
 </Project>
