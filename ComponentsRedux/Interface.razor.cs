@@ -13,7 +13,8 @@ namespace TreeBuilder.ComponentsRedux {
             EventState.Payload = Payload;
             // Set DraggingEvent to signal 1) Ghost Node should appear and 2) Additional interface slots may appear
             EventState.DraggingEvent = true;
-            RenderService.Redraw();
+            RenderService.GhostNode.Render();
+            RenderService.IntegrationField.Render();
         }
 
     }

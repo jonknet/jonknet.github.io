@@ -9,7 +9,7 @@ namespace TreeBuilder.ComponentsRedux {
         Left = 0,
         Right = 2,
         RightTop = 1,
-        RightBottom = 4
+        RightBottom = 3
     }
     public partial class IntegrationNode : IntegrationField {
         [Parameter] public Interface[] Interfaces { get; set; } = new Interface[4] {null, null, null, null};

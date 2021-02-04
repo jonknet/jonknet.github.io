@@ -18,13 +18,13 @@
         </div>
         <div class="flex-column">
             
-            @if (EventState.DraggingEvent && Interfaces[(int)InterfaceSlotPosition.Right] != null) {
+            @if ((EventState.DraggingEvent && Interfaces[(int)InterfaceSlotPosition.Right] != null) || Interfaces[(int)InterfaceSlotPosition.RightTop] != null) {
                 <InterfaceSlot Position="1" Parent="@(this)"></InterfaceSlot>
             }
 
             <InterfaceSlot Position="2" Parent="@(this)"></InterfaceSlot>
 
-            @if (EventState.DraggingEvent && Interfaces[(int) InterfaceSlotPosition.Right] != null) {
+            @if ((EventState.DraggingEvent && Interfaces[(int) InterfaceSlotPosition.Right] != null) || Interfaces[(int)InterfaceSlotPosition.RightBottom] != null) {
                 <InterfaceSlot Position="3" Parent="@(this)"></InterfaceSlot>
             }
 
