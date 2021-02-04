@@ -16,9 +16,9 @@ namespace TreeBuilder.ComponentsRedux {
                 EventState.Payload.Parent == this) return;
 
             // Dirty ugly hack
-            if (Is<Interface>(EventState.Payload)) {
-                EventState.Payload.HandleOnDragEnd();
-            }
+            //if (Is<Interface>(EventState.Payload)) {
+            //    EventState.Payload.HandleOnDragEnd();
+            //}
             // End hack
 
             GroupItems.Add(EventState.Payload);

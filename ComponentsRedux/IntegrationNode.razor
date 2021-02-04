@@ -1,6 +1,6 @@
 ﻿@inherits IntegrationField
 
-<div draggable="true" class="tb-item tb-draggable @CssClass @CssSelect"
+<div draggable="true" class="tb-integrationnode tb-draggable @CssClass @CssSelect"
      ondragover="event.preventDefault()"
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
@@ -16,17 +16,17 @@
         <div>
             <InterfaceSlot Position="0" Parent="@(this)"></InterfaceSlot>
         </div>
-        <div class="flex-column">
+        <div class="flex-column InterfaceSlots">
             
-            @if ((EventState.DraggingEvent && Interfaces[(int)InterfaceSlotPosition.Right] != null) || Interfaces[(int)InterfaceSlotPosition.RightTop] != null) {
-                <InterfaceSlot Position="1" Parent="@(this)"></InterfaceSlot>
-            }
+             
+            <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass="tb-hidden" @ref=EventState.RightTop></InterfaceSlot>
+            
 
-            <InterfaceSlot Position="2" Parent="@(this)"></InterfaceSlot>
+            <InterfaceSlot DomId="Right" Position="2" Parent="@(this)"></InterfaceSlot>
 
-            @if ((EventState.DraggingEvent && Interfaces[(int) InterfaceSlotPosition.Right] != null) || Interfaces[(int)InterfaceSlotPosition.RightBottom] != null) {
-                <InterfaceSlot Position="3" Parent="@(this)"></InterfaceSlot>
-            }
+             
+            <InterfaceSlot DomId="RightBottom" Position="3" Parent="@(this)" CssClass="tb-hidden" @ref=EventState.RightBottom></InterfaceSlot>
+            
 
         </div>
     </div>

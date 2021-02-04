@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
@@ -10,6 +11,7 @@ namespace TreeBuilder.Classes {
     public class BaseClass : ComponentBase {
         [Inject] protected StorageService Storage { get; set; }
         [Inject] protected RenderService RenderService { get; set; }
+        [Inject] protected IJSRuntime JS { get; set; }
 
         [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
         [Parameter] public string Title { get; set; } = "";
@@ -17,7 +19,7 @@ namespace TreeBuilder.Classes {
 
         [CascadingParameter(Name = "Field")] [JsonIgnore] public Group Field { get; set; } = null;
 
-        [JsonIgnore] public string CssClass { get; set; } = "";
+        [Parameter] [JsonIgnore] public string CssClass { get; set; } = "";
         [JsonIgnore] public string CssSelect { get; set; } = "";
 
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new();
@@ -42,17 +44,19 @@ namespace TreeBuilder.Classes {
         }
 
         public virtual void HandleOnDragEnd() {
-            CssClass = "";
+            Console.WriteLine("HandleOnDragEnd");
             EventState.DraggingEvent = false;
             RenderService.Redraw();
+            CssClass = "";
+            JS.InvokeVoidAsync("HideExcessSlots");
         }
 
         public virtual void HandleOnDrop() {
             Storage.SaveToSessionStorage();
         }
 
-        public virtual void Render() {
-            StateHasChanged();
+        public virtual async Task Render() {
+            await InvokeAsync(StateHasChanged);
         }
 
         public static bool Is<T>(BaseClass Base) {

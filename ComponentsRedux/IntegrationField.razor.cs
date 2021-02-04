@@ -23,7 +23,7 @@ namespace TreeBuilder.ComponentsRedux {
 
         public override void HandleOnDrop() {
             // Dirty Hack to allow the ghost Integration Node to hide
-            EventState.Payload.HandleOnDragEnd();
+            //EventState.Payload.HandleOnDragEnd();
             // End Hack
 
             if (Is<IntegrationNode>(EventState.Payload) && (ContainsNode(EventState.Payload as IntegrationNode) ||

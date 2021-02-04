@@ -104,6 +104,7 @@ a, .btn-link {
     }
 
     .tb-integrationslot {
+        
         width: 100px;
         height: 25px;
         background-color: white;
@@ -113,7 +114,14 @@ a, .btn-link {
     }
     
     .tb-integrationnode {
-        display: block;
+        display: flex;
+        border: 2px solid black;
+        border-radius: 10px;
+        height: 100px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        vertical-align: center;
     }
 
     .tb-closeicon {
