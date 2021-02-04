@@ -1,0 +1,26 @@
+﻿@inherits IntegrationNode
+
+@if (EventState.DraggingEvent) {
+    <div class="tb-item @CssClass">
+
+        Drop an Interface here on a slot to create a new Integration
+
+        <br/>
+
+        <div class="tb-flex">
+            
+                <div class="tb-integrationslot"
+                     ondragover="event.preventDefault()"
+                     @ondrop:stopPropagation
+                     @ondrop="(() => HandleOnDrop(InterfaceSlotPosition.Left))">
+                </div>
+
+                <div class="tb-integrationslot"
+                     ondragover="event.preventDefault()"
+                     @ondrop:stopPropagation
+                     @ondrop="(() => HandleOnDrop(InterfaceSlotPosition.Right))">
+                </div>
+            
+        </div>
+    </div>
+}

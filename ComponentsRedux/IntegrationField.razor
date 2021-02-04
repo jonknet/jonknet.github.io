@@ -4,9 +4,9 @@
      ondragover="event.preventDefault()"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
-    
-    <CascadingValue Value=this Name="Field">
-        @foreach (IntegrationNode item in IntegrationNodes) {
+
+    <CascadingValue Value="this" Name="Field">
+        @foreach (var item in IntegrationNodes) {
             <IntegrationNode Guid=@item.Guid Title=@item.Title IntegrationNodes=@item.IntegrationNodes Interfaces=@item.Interfaces Parent=this @key=item.Guid @ref="NodeReferences[item.Guid]"></IntegrationNode>
         }
     </CascadingValue>

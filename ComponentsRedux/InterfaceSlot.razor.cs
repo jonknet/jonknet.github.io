@@ -1,53 +1,42 @@
 ﻿using Microsoft.AspNetCore.Components;
 using TreeBuilder.Classes;
-using TreeBuilder.Components;
 
 namespace TreeBuilder.ComponentsRedux {
-
     public partial class InterfaceSlot : BaseClass {
-        
         [Parameter] public int Position { get; set; }
-        
-
-        protected override void OnInitialized() {
-            
-        }
 
         public override void HandleOnDrop() {
+            if (!Is<Interface>(EventState.Payload)) return;
 
-            if (!Is<Interface>(Payload)) {
-                return;
-            }
-            
             // Hack: ondragend from Interface doesnt seem to be called when dropping an interface between two of the same items
             // Need to hide the Ghost Integration Node until I can figure out a way
-            
-            //(Payload as Interface).HandleOnDragEnd();
+
+            EventState.Payload.HandleOnDragEnd();
 
             // End Hack
-            
+
             // Remove from previous field if switching fields
-            if (Payload.Field != this.Field) { 
-                Payload.Parent.GroupItems.Remove(Payload);
-            } else if(Is<InterfaceSlot>(Payload.Parent)){
+            if (EventState.Payload.Field != Field) {
+                EventState.Payload.Parent.GroupItems.Remove(EventState.Payload);
+            }
+            else if (Is<InterfaceSlot>(EventState.Payload.Parent)) {
                 // Remove from previous slot by nulling it out
-                Interface[] interfaces = (Payload.Parent.Parent as IntegrationNode).Interfaces;
-                for (int i = 0; i < interfaces.Length; i++) {
-                    if (interfaces[i] != null && interfaces[i].Equals(Payload)) {
+                var interfaces = (EventState.Payload.Parent.Parent as IntegrationNode).Interfaces;
+                for (var i = 0; i < interfaces.Length; i++)
+                    if (interfaces[i] != null && interfaces[i].Equals(EventState.Payload)) {
                         interfaces[i] = null;
                         break;
                     }
-                }
             }
 
             // Add to this slot
-            
-            (Parent as IntegrationNode).Interfaces[Position] = Payload as Interface;
-            Payload.Parent = this;
-            Payload.Field = Field;
+
+            (Parent as IntegrationNode).Interfaces[Position] = EventState.Payload as Interface;
+            EventState.Payload.Parent = this;
+            EventState.Payload.Field = Field;
 
             CssClass = "";
-            
+
             RenderService.Redraw();
 
             Storage.SaveToSessionStorage();

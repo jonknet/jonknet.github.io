@@ -1,21 +1,21 @@
 ﻿@page "/"
-@using TreeBuilder.Services
-@inject TreeBuilder.Services.StorageService StorageService
+
+@inject StorageService StorageService
 @inject RenderService RenderService
 
-@namespace TreeBuilder.ComponentsRedux
+@namespace TreeBuilder.Pages
 
 <div class="container">
     <div class="row">
         <div class="col col-6">
-            <button @onclick="AddGroup">Add a group</button><br />
-            <button @onclick="AddInterface">Add an interface</button><br />
-            <button @onclick="AddIntegrationNode">Add an integration node</button><br />
+            <button @onclick="AddGroup">Add a group</button><br/>
+            <button @onclick="AddInterface">Add an interface</button><br/>
+            <button @onclick="AddIntegrationNode">Add an integration node</button><br/>
         </div>
-        @*<div class="col col-6">
+        <div class="col col-6">
             <!-- Where the floating Node will go -->
-            <IntegrationNode Name="GhostNode" @ref="nodeRef"></IntegrationNode>
-        </div>*@
+            <IntegrationGhostNode @ref="ghostRef"></IntegrationGhostNode>
+        </div>
     </div>
     <div class="row">
         <div class="col col-6">
@@ -25,18 +25,16 @@
             <IntegrationField @ref="integrationRef"></IntegrationField>
         </div>
     </div>
-    
+
 </div>
 
 @code {
 
     public GroupField fieldRef { get; set; }
     public IntegrationField integrationRef { get; set; }
+    public IntegrationGhostNode ghostRef { get; set; }
 
-    protected override void OnInitialized()
-    {
-        
-    }
+    protected override void OnInitialized() { }
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) {
@@ -44,11 +42,12 @@
             StorageService.IntegrationField = integrationRef;
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
+            RenderService.GhostNode = ghostRef;
         }
     }
 
     public void AddGroup() {
-        fieldRef.GroupItems.Add(new Group(fieldRef,fieldRef));
+        fieldRef.GroupItems.Add(new Group(fieldRef, fieldRef));
         Console.WriteLine(fieldRef.GroupItems.Count);
         StateHasChanged();
         StorageService.SaveToSessionStorage();
@@ -57,13 +56,14 @@
     }
 
     public void AddInterface() {
-        fieldRef.GroupItems.Add(new Interface(fieldRef,fieldRef));
+        fieldRef.GroupItems.Add(new Interface(fieldRef, fieldRef));
+
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }
 
     public void AddIntegrationNode() {
-        integrationRef.IntegrationNodes.Add(new IntegrationNode(integrationRef,integrationRef));
+        integrationRef.IntegrationNodes.Add(new IntegrationNode(integrationRef, integrationRef));
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }

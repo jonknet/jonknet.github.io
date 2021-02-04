@@ -2,59 +2,43 @@
 using System;
 using System.Collections.Generic;
 using TreeBuilder.Classes;
-using TreeBuilder.Components;
+
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class Group : BaseClass {
+        public Group() { }
+        public Group(BaseClass Parent, Group Field) : base(Parent, Field) { }
 
-        public Group() {
-            
-        }
-        public Group(BaseClass Parent, Group Field) : base(Parent, Field) {
-            
-        }
-        
-        protected override void OnInitialized() {
-            
-        }
+        protected override void OnInitialized() { }
 
         public override void HandleOnDrop() {
-
-            if (Is<IntegrationNode>(Payload) || Payload.Field != this.Field || Payload == this)
-            {
-                return;
-            }
+            if (Is<IntegrationNode>(EventState.Payload) || EventState.Payload.Field != Field || EventState.Payload == this ||
+                EventState.Payload.Parent == this) return;
 
             // Dirty ugly hack
-            if (Is<Interface>(Payload)) {
-                //(Payload as Interface).HandleOnDragEnd();
+            if (Is<Interface>(EventState.Payload)) {
+                EventState.Payload.HandleOnDragEnd();
             }
             // End hack
 
-            GroupItems.Add(Payload);
+            GroupItems.Add(EventState.Payload);
 
-            Payload.Parent.GroupItems.Remove(Payload);
+            EventState.Payload.Parent.GroupItems.Remove(EventState.Payload);
 
-            Payload.Parent = this;
+            EventState.Payload.Parent = this;
 
-            Payload.Field = Field;
+            EventState.Payload.Field = Field;
 
             RenderService.Redraw();
 
             Storage.SaveToSessionStorage();
 
             CssClass = "";
-            
-
         }
 
-        public override string ToString()
-        {
-            string str = "Group: \r\n" + base.ToString() + "Items: \r\n";
-            foreach(var item in GroupItems)
-            {
-                str += $"{item}\r\n";
-            }
+        public override string ToString() {
+            var str = "Group: \r\n" + base.ToString() + "Items: \r\n";
+            foreach (var item in GroupItems) str += $"{item}\r\n";
             return str;
         }
     }

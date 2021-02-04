@@ -7,31 +7,35 @@
      @ondragend="HandleOnDragEnd"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
-        
+
     @Title
 
     <br/>
 
     <div class="tb-flex">
-            <div>
-                <InterfaceSlot Position=0 Parent=@this></InterfaceSlot>
-            </div>
-            <div class="flex-column">
-                   
-                <InterfaceSlot Position=1 Parent=@this></InterfaceSlot>
-                
-                <InterfaceSlot Position=2 Parent=@this></InterfaceSlot>
-                
-                <InterfaceSlot Position=3 Parent=@this></InterfaceSlot>
-                
-            </div>
+        <div>
+            <InterfaceSlot Position="0" Parent="@(this)"></InterfaceSlot>
         </div>
         <div class="flex-column">
             
-            @foreach (IntegrationNode node in IntegrationNodes) {
-                <IntegrationNode Guid=@node.Guid Interfaces=@node.Interfaces Parent=@this @key=@node.Guid></IntegrationNode>
+            @if (EventState.DraggingEvent && Interfaces[(int)InterfaceSlotPosition.Right] != null) {
+                <InterfaceSlot Position="1" Parent="@(this)"></InterfaceSlot>
             }
-            
+
+            <InterfaceSlot Position="2" Parent="@(this)"></InterfaceSlot>
+
+            @if (EventState.DraggingEvent && Interfaces[(int) InterfaceSlotPosition.Right] != null) {
+                <InterfaceSlot Position="3" Parent="@(this)"></InterfaceSlot>
+            }
+
         </div>
-    
+    </div>
+    <div class="flex-column">
+
+        @foreach (var node in IntegrationNodes) {
+            <IntegrationNode Guid=@node.Guid Interfaces=@node.Interfaces Parent=@(this) @key=@node.Guid></IntegrationNode>
+        }
+
+    </div>
+
 </div>

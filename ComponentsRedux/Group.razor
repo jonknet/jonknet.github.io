@@ -1,4 +1,4 @@
-﻿@inherits TreeBuilder.Classes.BaseClass
+﻿@inherits BaseClass
 
 <div class="tb-group tb-item tb-draggable @CssClass @CssSelect"
      draggable="true"
@@ -10,10 +10,10 @@
      @ondragleave="HandleOnDragLeave"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
-    
+
     @Title : @Guid : @Parent.Guid
 
-    
+
     @foreach (var item in GroupItems) {
         if (Is<Group>(item)) {
             <Group Guid=@item.Guid Title=@item.Title GroupItems=@((item as Group).GroupItems) Parent=this @key=@item.Guid></Group>
@@ -22,6 +22,6 @@
             <Interface Guid=@item.Guid Title=@item.Title Parent=this @key=@item.Guid></Interface>
         }
     }
-    
+
 
 </div>
