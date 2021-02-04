@@ -1,0 +1,129 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+a, .btn-link {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+    .tb-draggable {
+        cursor: move;
+    }
+
+    .tb-item {
+        /*margin-top: 10px;*/
+        border: 2px solid black;
+        border-radius: 10px;
+    }
+
+    .tb-dropshadow {
+        box-shadow: -5px 5px 5px grey;
+    }
+    
+    .tb-group {
+        display: flex;
+        min-width: 400px;
+        min-height: 200px;
+        background-color: rgb(212, 158, 9);
+        padding: 10px;
+        flex-direction: column;
+        text-align: center;
+        
+    }
+
+    .tb-interface {
+        width: 93px;
+        height: 20px;
+        background-color: rgb(80, 42, 216);
+        margin: 2px;
+        padding: 2px;
+        font-size: x-small;
+        align-self: center;
+    }
+
+    .tb-dropborder {
+        border-color: red;
+        border-width: 2px;
+        border-style: solid;
+    }
+
+    .tb-field {
+        width: 500px;
+        height: 500px;
+    }
+
+    .tb-flex {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .tb-integrationslot {
+        width: 100px;
+        height: 25px;
+        background-color: white;
+        border: 2px solid black;
+        margin-right: 2px;
+        margin-bottom: 5px;
+    }
+    
+    .tb-integrationnode {
+        display: block;
+    }
+
+    .tb-closeicon {
+        font-size: 16px; 
+        float: right; 
+        color: firebrick; 
+        margin-right: 2px; 
+        margin-top: 2px;
+    }
+    
+    .tb-hidden {
+        display: none;
+    }
