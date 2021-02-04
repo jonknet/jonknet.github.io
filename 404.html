@@ -25,8 +25,50 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fitext@latest/dist/fitext.umd.js'></script>
     <script>
-        function FitText() {
-            fitext(true);
+        // Workaround for chrome bug
+        function SetTimeoutWrapper(func){
+            console.log("settimeoutwrapper" + func.toString());
+            setTimeout(func,0);
+        }
+        
+        function UnhideAdditionalSlots(){
+            setTimeout(() => {
+                // Get list of all IntegrationNodes
+                var elements = document.getElementsByClassName("InterfaceSlots");
+                for(var i = 0; i < elements.length; i++){
+                    ToggleSlots(elements[i]);
+                }
+            },0);
+        }
+        
+        function HideExcessSlots(){
+            setTimeout(() => {
+                var elements = document.getElementsByClassName("InterfaceSlots");
+                for (var i = 0; i < elements.length; i++) {
+                    ShowFullSlots(elements[i]);
+                }
+            },0);
+        }
+        
+        function ToggleSlots(item){
+            if(item.children.Right.children.length == 1){
+                // Contains Interface
+                item.children.RightTop.setAttribute("class","tb-integrationslot");
+                item.children.RightBottom.setAttribute("class","tb-integrationslot");
+            }
+        }
+        
+        function ShowFullSlots(item){
+            if(item.children.RightTop.children.length == 1){
+                item.children.RightTop.setAttribute("class","tb-integrationslot");
+            } else {
+                item.children.RightTop.setAttribute("class","tb-integrationslot tb-hidden");
+            }
+            if(item.children.RightBottom.children.length == 1){
+                item.children.RightBottom.setAttribute("class","tb-integrationslot");
+            } else {
+                item.children.RightBottom.setAttribute("class","tb-integrationslot tb-hidden");
+            }
         }
     </script>
 </body>
