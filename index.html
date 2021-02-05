@@ -106,6 +106,7 @@
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
             console.log(str);
             dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id);
+            e.removeAttribute("contenteditable");
         }
         
     </script>
