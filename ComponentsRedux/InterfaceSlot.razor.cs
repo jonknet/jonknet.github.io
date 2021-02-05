@@ -19,7 +19,7 @@ namespace TreeBuilder.ComponentsRedux {
             else if (Is<InterfaceSlot>(EventState.Payload.Parent)) {
                 // Remove from previous slot by nulling it out
                 var interfaces = (EventState.Payload.Parent.Parent as IntegrationNode).Interfaces;
-                for (var i = 0; i < interfaces.Count; i++)
+                for (var i = 0; i < interfaces.Length; i++)
                     if (interfaces[i] != null && interfaces[i].Equals(EventState.Payload)) {
                         interfaces[i] = null;
                         break;

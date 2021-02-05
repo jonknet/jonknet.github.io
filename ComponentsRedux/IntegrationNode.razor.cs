@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using TreeBuilder.Classes;
 
 namespace TreeBuilder.ComponentsRedux {
@@ -15,21 +17,21 @@ namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationNode : IntegrationField {
         public static int CurrentDomId = 32847;
 
-        [Parameter] public List<Interface> Interfaces { get; set; } = new List<Interface>(4) {null, null, null, null};
-
-        public int DomId { get; set; }
-        
-        public IntegrationNode() : base() {
+        public IntegrationNode() {
             DomId = CurrentDomId;
             CurrentDomId++;
         }
 
-        public IntegrationNode(BaseClass Parent, Group Field) : base(Parent,Field) {
+        public IntegrationNode(BaseClass Parent, Group Field) : base(Parent, Field) {
             this.Parent = Parent;
             this.Field = Field;
             DomId = CurrentDomId;
             CurrentDomId++;
         }
+
+        [Parameter] public Interface[] Interfaces { get; set; } =  { null, null, null, null };
+
+        public int DomId { get; set; }
 
         protected override void OnInitialized() {
             Parent = Storage.IntegrationField;

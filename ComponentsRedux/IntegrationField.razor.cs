@@ -6,11 +6,11 @@ using TreeBuilder.Classes;
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationField : Group {
+        public IntegrationField() { }
+        public IntegrationField(BaseClass Parent, Group Field) : base(Parent, Field) { }
         [JsonIgnore] public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new();
         [Parameter] public List<IntegrationNode> IntegrationNodes { get; set; } = new();
 
-        public IntegrationField(){ }
-        public IntegrationField(BaseClass Parent, Group Field) : base(Parent,Field){ }
         protected override void OnInitialized() {
             Field = this;
             var intField = Storage.LoadIntegrationField();
@@ -52,10 +52,19 @@ namespace TreeBuilder.ComponentsRedux {
             }
         }
 
+        /// <summary>
+        ///     Returns true if an IntegrationNode contains other nodes
+        /// </summary>
+        /// <returns>true if this IntegrationNode contains other nodes</returns>
         public bool HasNodesOnTop() {
             return IntegrationNodes.Count > 0 ? true : false;
         }
 
+        /// <summary>
+        ///     Returns boolean if this IntegrationField contains the node
+        /// </summary>
+        /// <param name="Node">Node to find</param>
+        /// <returns>true if found, false if otherwise</returns>
         public bool ContainsNode(IntegrationNode Node) {
             return IntegrationNodes.Contains(Node);
         }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Blazored.LocalStorage;
+﻿using Blazored.LocalStorage;
 using Newtonsoft.Json;
-using TreeBuilder.Classes;
 using TreeBuilder.ComponentsRedux;
 
 namespace TreeBuilder.Services {
@@ -14,7 +11,7 @@ namespace TreeBuilder.Services {
 
         public JsonSerializerSettings settings = new()
         {
-            PreserveReferencesHandling = PreserveReferencesHandling.All,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             NullValueHandling = NullValueHandling.Include,
             TypeNameHandling = TypeNameHandling.All,
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -30,7 +27,6 @@ namespace TreeBuilder.Services {
                 JsonConvert.SerializeObject(intField, settings));
             LocalStorageService.SetItem("TreeBuilder_GroupField",
                 JsonConvert.SerializeObject(grpField, settings));
-            
         }
 
         public void SaveToSessionStorage() {
@@ -39,7 +35,6 @@ namespace TreeBuilder.Services {
                 JsonConvert.SerializeObject(IntegrationField, settings));
             LocalStorageService.SetItem("TreeBuilder_GroupField",
                 JsonConvert.SerializeObject(GroupField, settings));
-       
         }
 
         public GroupField LoadGroupField() {
@@ -53,6 +48,5 @@ namespace TreeBuilder.Services {
             return JsonConvert.DeserializeObject<IntegrationField>(
                 LocalStorageService.GetItemAsString("TreeBuilder_IntegrationField"), settings);
         }
-        
     }
 }

@@ -5,6 +5,6 @@
      @ondragstart="@(() => HandleOnDragStart(this))"
      @ondragend="HandleOnDragEnd">
 
-    <div id=@Guid contenteditable="true" onfocus="HandleOnFocus(this)" onblur="HandleOnBlur(this)">@Title</div>
+    <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onblur="HandleOnBlur(this)">@Title</div>
 
 </div>

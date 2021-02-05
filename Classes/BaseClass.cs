@@ -12,6 +12,17 @@ namespace TreeBuilder.Classes {
     ///     BaseClass of all types
     /// </summary>
     public class BaseClass : ComponentBase {
+        public BaseClass() {
+            Guid = Guid.NewGuid();
+            Title = "Default";
+        }
+
+        public BaseClass(BaseClass Parent, Group Field) {
+            this.Parent = Parent;
+            this.Field = Field;
+            Guid = Guid.NewGuid();
+            Title = "Default";
+        }
 
 
         [Inject] protected StorageService Storage { get; set; }
@@ -31,21 +42,9 @@ namespace TreeBuilder.Classes {
 
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new();
 
-        public BaseClass() {
-            Guid = Guid.NewGuid();
-            Title = "Default";
-        }
+        public bool IsEditable = false;
 
-        public BaseClass(BaseClass Parent, Group Field) {
-            this.Parent = Parent;
-            this.Field = Field;
-            Guid = Guid.NewGuid();
-            Title = "Default";
-        }
-
-        protected override void OnInitialized() {
-            
-        }
+        protected override void OnInitialized() { }
 
         public virtual void HandleOnDragEnter() {
             CssClass = "tb-dropborder";
@@ -63,12 +62,13 @@ namespace TreeBuilder.Classes {
             EventState.Payload = payload;
             EventState.DraggingEvent = true;
             if (payload is Interface) {
-                Interface iface = payload as Interface;
+                var iface = payload as Interface;
                 if (iface.Parent.Parent != null && iface.Parent.Parent is IntegrationNode) {
                     EventState.LastDomId = (iface.Parent.Parent as IntegrationNode).DomId;
                     JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), true);
                 }
             }
+
             RenderService.Redraw();
         }
 
@@ -92,6 +92,12 @@ namespace TreeBuilder.Classes {
             await InvokeAsync(StateHasChanged);
         }
 
+        /// <summary>
+        ///     Helper method to determine class type
+        /// </summary>
+        /// <param name="Base">Class you want to check</param>
+        /// <typeparam name="T">Type to check for</typeparam>
+        /// <returns></returns>
         public static bool Is<T>(BaseClass Base) {
             return Base is T;
         }

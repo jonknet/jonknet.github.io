@@ -10,7 +10,7 @@
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 
-    <div id=@Guid contenteditable="true" onfocus="HandleOnFocus(this)" onblur="HandleOnBlur(this)">@Title</div>
+    <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onfocus="HandleOnFocus(this)" onblur="HandleOnBlur(this)">@Title</div>
 
     <br/>
 
