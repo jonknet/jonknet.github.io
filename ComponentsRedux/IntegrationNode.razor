@@ -1,24 +1,30 @@
-﻿@inherits IntegrationField
+﻿@using System.Timers
+@inherits IntegrationField
 
 <div id="@DomId.ToString()" draggable="true" class="tb-integrationnode tb-draggable @CssClass @CssSelect"
-     @ondragover:preventDefault
      @ondragenter:stopPropagation
      @ondragenter="HandleOnDragEnter"
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
+     @ondragleave:stopPropagation
+     @ondragleave="@(() => HandleOnDragLeave(this))"
      @ondragend="HandleOnDragEnd"
+     @ondragover:stopPropagation
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 
-    <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onfocus="HandleOnFocus(this)" onblur="HandleOnBlur(this)">@Title</div>
+    <div id="@Guid" contenteditable="@IsEditable" 
+         @onclick="(() => IsEditable=true)" 
+         onfocus="HandleOnFocus(this)" 
+         onblur="HandleOnBlur(this)">@Title</div>
 
     <br/>
 
-    <div class="tb-flex" @ondragenter="HandleOnDragEnter">
+    <div class="tb-flex">
         <div>
-            <InterfaceSlot Position="0" Parent="@(this)"></InterfaceSlot>
+            <InterfaceSlot DomId="Left" Position="0" Parent="@(this)"></InterfaceSlot>
         </div>
-        <div class="flex-column InterfaceSlots" @ondragenter="HandleOnDragEnter">
+        <div class="flex-column InterfaceSlots">
 
 
             <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightTop] == null ? "tb-hidden" : "") @ref=@EventState.RightTop></InterfaceSlot>
@@ -32,10 +38,10 @@
 
         </div>
     </div>
-    <div class="flex-column" @ondragenter="HandleOnDragEnter">
+    <div class="flex-column">
 
         @foreach (var node in IntegrationNodes) {
-            <IntegrationNode Guid=@node.Guid Interfaces=@node.Interfaces Parent=@(this) @key=@node.Guid></IntegrationNode>
+            <IntegrationNode DomId=@node.DomId Guid=@node.Guid Interfaces=@node.Interfaces Parent=@(this) @key=@node.Guid></IntegrationNode>
         }
 
     </div>

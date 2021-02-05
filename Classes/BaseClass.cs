@@ -28,6 +28,7 @@ namespace TreeBuilder.Classes {
         [Inject] protected StorageService Storage { get; set; }
         [Inject] protected RenderService RenderService { get; set; }
         [Inject] protected IJSRuntime JS { get; set; }
+        [Inject] protected EventState EventState { get; set; }
 
         [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
         [Parameter] public string Title { get; set; } = "Default";
@@ -51,21 +52,21 @@ namespace TreeBuilder.Classes {
             RenderService.Redraw();
         }
 
-        public virtual void HandleOnDragLeave() {
-            Console.WriteLine("HandleOnDragLeave");
+        public virtual void HandleOnDragLeave(BaseClass payload) {
+            
             CssClass = "";
             RenderService.Redraw();
         }
 
         public virtual void HandleOnDragStart(BaseClass payload) {
-            Console.WriteLine("HandleOnDragStart");
+            
             EventState.Payload = payload;
-            EventState.DraggingEvent = true;
             if (payload is Interface) {
+                EventState.DraggingEvent = true;
                 var iface = payload as Interface;
                 if (iface.Parent.Parent != null && iface.Parent.Parent is IntegrationNode) {
                     EventState.LastDomId = (iface.Parent.Parent as IntegrationNode).DomId;
-                    JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), true);
+                    ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), true);
                 }
             }
 
@@ -73,10 +74,14 @@ namespace TreeBuilder.Classes {
         }
 
         public virtual void HandleOnDragEnd() {
-            Console.WriteLine("HandleOnDragEnd");
+            
             EventState.DraggingEvent = false;
             CssClass = "";
-            JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
+            if (EventState.Payload is Interface) {
+                JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
+            }
+
+            EventState.LastDomId = -1;
             RenderService.Redraw();
         }
 
@@ -85,11 +90,13 @@ namespace TreeBuilder.Classes {
         }
 
         public virtual void HandleOnDrop() {
+            EventState.DraggingEvent = false;
+            CssClass = "";
             Storage.SaveToSessionStorage();
         }
 
-        public virtual async Task Render() {
-            await InvokeAsync(StateHasChanged);
+        public virtual void Render() {
+            StateHasChanged();
         }
 
         /// <summary>

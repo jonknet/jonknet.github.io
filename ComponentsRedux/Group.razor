@@ -7,7 +7,7 @@
      @ondragstart="@(() => HandleOnDragStart(this))"
      @ondragend="HandleOnDragEnd"
      @ondragenter="HandleOnDragEnter"
-     @ondragleave="HandleOnDragLeave"
+     @ondragleave="(()=>HandleOnDragLeave(this))"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 

@@ -7,10 +7,10 @@ namespace TreeBuilder.Services {
         public GroupField GroupField { get; set; }
         public IntegrationGhostNode GhostNode { get; set; }
 
-        public async Task Redraw() {
-            await IntegrationField.Render();
-            await GroupField.Render();
-            await GhostNode.Render();
+        public void Redraw() {
+            IntegrationField.Render();
+            GroupField.Render();
+            GhostNode.Render();
         }
     }
 }

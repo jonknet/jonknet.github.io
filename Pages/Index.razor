@@ -1,8 +1,11 @@
 ﻿@page "/"
 
+@using TreeBuilder.Classes
+
 @inject StorageService StorageService
 @inject RenderService RenderService
 @inject EventState EventState
+@inject Classes.Version Version
 
 @namespace TreeBuilder.Pages
 
@@ -35,7 +38,9 @@
     public IntegrationField integrationRef { get; set; }
     public IntegrationGhostNode ghostRef { get; set; }
 
-    protected override void OnInitialized() { }
+    protected override void OnInitialized() {
+        Console.WriteLine("TreeBuilder. Version: " + Version);
+    }
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) {

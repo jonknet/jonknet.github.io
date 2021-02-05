@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
@@ -31,7 +32,7 @@ namespace TreeBuilder.ComponentsRedux {
 
         [Parameter] public Interface[] Interfaces { get; set; } =  { null, null, null, null };
 
-        public int DomId { get; set; }
+        [Parameter] public int DomId { get; set; }
 
         protected override void OnInitialized() {
             Parent = Storage.IntegrationField;
@@ -41,10 +42,17 @@ namespace TreeBuilder.ComponentsRedux {
         }
 
         public override void HandleOnDragEnter() {
-            Console.WriteLine("HandleOnDragEnter");
-            if (EventState.LastDomId != -1) JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
-            JS.InvokeVoidAsync("ToggleSlots", DomId.ToString(), true);
-            EventState.LastDomId = DomId;
+            
+            if (!Is<Interface>(EventState.Payload)) {
+                return;
+            }
+
+            if (EventState.LastDomId != DomId) {
+                ((IJSInProcessRuntime) JS).InvokeVoid("ToggleSlots", DomId.ToString(), true);
+                ((IJSInProcessRuntime) JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
+                EventState.LastDomId = DomId;
+            }
+
             base.HandleOnDragEnter();
         }
 

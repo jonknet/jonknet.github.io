@@ -20,6 +20,7 @@ namespace TreeBuilder {
             builder.Services.AddScoped<StorageService>();
             builder.Services.AddScoped<RenderService>();
             builder.Services.AddScoped<EventState>();
+            builder.Services.AddScoped<Classes.Version>();
             builder.Services.AddTelerikBlazor();
             var options = new JsonSerializerOptions
             {

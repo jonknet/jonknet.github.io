@@ -20,9 +20,7 @@ namespace TreeBuilder.ComponentsRedux {
 
             RenderService.Redraw();
 
-            Storage.SaveToSessionStorage();
-
-            CssClass = "";
+            base.HandleOnDrop();
         }
 
         public override string ToString() {

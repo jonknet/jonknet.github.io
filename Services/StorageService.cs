@@ -48,5 +48,17 @@ namespace TreeBuilder.Services {
             return JsonConvert.DeserializeObject<IntegrationField>(
                 LocalStorageService.GetItemAsString("TreeBuilder_IntegrationField"), settings);
         }
+
+        public void SaveValue<T>(string Key, T Value) {
+            LocalStorageService.SetItem(Key, Value);
+        }
+
+        public T LoadValue<T>(string Key) {
+            return LocalStorageService.GetItem<T>(Key);
+        }
+
+        public void ClearAllKeys() {
+            LocalStorageService.Clear();
+        }
     }
 }

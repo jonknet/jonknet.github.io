@@ -42,7 +42,7 @@ namespace TreeBuilder.Classes {
                         RuntimeGroups[item.Guid] = item as Group;
                     else if (item is Interface) RuntimeInterfaces[item.Guid] = item as Interface;
                 }
-                catch (ArgumentException e) {
+                catch (ArgumentException) {
                     continue;
                 }
 
@@ -64,7 +64,7 @@ namespace TreeBuilder.Classes {
                         if (iface != null)
                             RuntimeInterfaces[iface.Guid] = iface;
                 }
-                catch (ArgumentException e) {
+                catch (ArgumentException) {
                     continue;
                 }
 

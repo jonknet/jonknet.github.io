@@ -1,10 +1,12 @@
-﻿@inherits BaseClass
+﻿@using System.Timers;
+@using System.Reflection.Metadata.Ecma335
+@inherits BaseClass
 
 <div draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect"
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
      @ondragend="HandleOnDragEnd">
 
-    <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onblur="HandleOnBlur(this)">@Title</div>
+    <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onblur="HandleOnBlur(this)" >@Title</div>
 
 </div>
