@@ -26,50 +26,71 @@
     <script src='https://cdn.jsdelivr.net/npm/fitext@latest/dist/fitext.umd.js'></script>
     <script>
         // Workaround for chrome bug
-        function SetTimeoutWrapper(func){
-            console.log("settimeoutwrapper" + func.toString());
-            setTimeout(func,0);
-        }
-        
-        function UnhideAdditionalSlots(){
+        function ToggleSlots(domid,on){
             setTimeout(() => {
-                // Get list of all IntegrationNodes
-                var elements = document.getElementsByClassName("InterfaceSlots");
-                for(var i = 0; i < elements.length; i++){
-                    ToggleSlots(elements[i]);
+                var item = document.getElementById(domid);
+                item = item.getElementsByClassName("InterfaceSlots")[0];
+                Right = item.children.Right;
+                RightTop = item.children.RightTop;
+                RightBottom = item.children.RightBottom;
+                
+                var numActive = RightTop.children.length + Right.children.length + RightBottom.children.length;
+                
+                if(on == true && numActive >= 1){
+                    RightTop.setAttribute("class","tb-integrationslot");
+                    RightBottom.setAttribute("class","tb-integrationslot");
+                    Right.setAttribute("class","tb-integrationslot");
+                } else if(Right.children.length == 0 && on == true && numActive >= 1){
+                    if(RightTop.children.length == 0){
+                        RightTop.setAttribute("class","tb-integrationslot tb-hidden");
+                    }
+                    if(RightBottom.children.length == 0) {
+                        RightBottom.setAttribute("class", "tb-integrationslot tb-hidden");
+                    }
+                    Right.setAttribute("class","tb-integrationslot tb-hidden");
+                } else if(on == true && numActive == 0){
+                    RightTop.setAttribute("class","tb-integrationslot tb-hidden");
+                    RightBottom.setAttribute("class","tb-integrationslot tb-hidden");
+                    Right.setAttribute("class","tb-integrationslot");
                 }
+                
+                if(on == false){
+                    if(RightTop.children.length == 0){
+                        RightTop.setAttribute("class","tb-integrationslot tb-hidden");
+                    }
+                    if(RightBottom.children.length == 0){
+                        RightBottom.setAttribute("class","tb-integrationslot tb-hidden");
+                    }
+                    if(numActive == 0){
+                        // if none
+                        Right.setAttribute("class","tb-integrationslot");
+                    } else if(Right.children.length == 0 && numActive >= 1){
+                        Right.setAttribute("class","tb-integrationslot tb-hidden");
+                    }
+                    
+                    
+                }
+                
             },0);
         }
         
-        function HideExcessSlots(){
-            setTimeout(() => {
-                var elements = document.getElementsByClassName("InterfaceSlots");
-                for (var i = 0; i < elements.length; i++) {
-                    ShowFullSlots(elements[i]);
-                }
-            },0);
+        var dotNetRef;
+        
+        function UpdateTitleHelper(ref){
+            dotNetRef = ref;
         }
         
-        function ToggleSlots(item){
-            if(item.children.Right.children.length == 1){
-                // Contains Interface
-                item.children.RightTop.setAttribute("class","tb-integrationslot");
-                item.children.RightBottom.setAttribute("class","tb-integrationslot");
-            }
+        function HandleOnFocus(e){
+            console.log("onfocus fired: " + e);
+        }
+
+        function HandleOnBlur(e){
+            console.log("onblur fired: " + e);
+            var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
+            console.log(str);
+            dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id);
         }
         
-        function ShowFullSlots(item){
-            if(item.children.RightTop.children.length == 1){
-                item.children.RightTop.setAttribute("class","tb-integrationslot");
-            } else {
-                item.children.RightTop.setAttribute("class","tb-integrationslot tb-hidden");
-            }
-            if(item.children.RightBottom.children.length == 1){
-                item.children.RightBottom.setAttribute("class","tb-integrationslot");
-            } else {
-                item.children.RightBottom.setAttribute("class","tb-integrationslot tb-hidden");
-            }
-        }
     </script>
 </body>
 
