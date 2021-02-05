@@ -37,6 +37,9 @@
         
         function ToggleSlots(domid,on){
             setTimeout(() => {
+                console.debug("ToggleSlots domid:" + domid + " on:" + on);
+                if(domid == -1)
+                    return;
                 var item = document.getElementById(domid);
                 item = item.getElementsByClassName("InterfaceSlots")[0];
                 Right = item.children.Right;
