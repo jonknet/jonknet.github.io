@@ -23,9 +23,18 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script src='https://cdn.jsdelivr.net/npm/fitext@latest/dist/fitext.umd.js'></script>
     <script>
-        // Workaround for chrome bug
+        
+        /*
+            There is a chrome bug where if the DOM is updated during a drag event, the event will 
+            be cancelled and DragEnd will be called unexpectedly. In order to get around this,
+            the modification to the DOM needs to be done in a setTimeout(function,0) call. This
+            following code is responsible for showing and unshowing additional slots by manipulating
+            the CSS tags of the HTML elements directly. 
+            
+            Called from .NET via JSInterop.                   
+         */
+        
         function ToggleSlots(domid,on){
             setTimeout(() => {
                 var item = document.getElementById(domid);
@@ -36,6 +45,7 @@
                 
                 var numActive = RightTop.children.length + Right.children.length + RightBottom.children.length;
                 
+                // Show as many as possible
                 if(on == true && numActive >= 1){
                     RightTop.setAttribute("class","tb-integrationslot");
                     RightBottom.setAttribute("class","tb-integrationslot");
@@ -54,6 +64,7 @@
                     Right.setAttribute("class","tb-integrationslot");
                 }
                 
+                // Hide as many as possible
                 if(on == false){
                     if(RightTop.children.length == 0){
                         RightTop.setAttribute("class","tb-integrationslot tb-hidden");
@@ -84,6 +95,9 @@
             console.log("onfocus fired: " + e);
         }
 
+        /*
+            Calls UpdateTitle from .NET when Title div loses focus
+         */
         function HandleOnBlur(e){
             console.log("onblur fired: " + e);
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
