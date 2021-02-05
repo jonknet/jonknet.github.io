@@ -2,7 +2,7 @@
 
 <div class="tb-field @CssClass"
      ondragover="event.preventDefault()"
-     @ondragenter="HandleOnDragEnter"
+     @ondragenter="(()=>HandleOnDragEnter(this))"
      @ondragleave="(()=>HandleOnDragLeave(this))"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">

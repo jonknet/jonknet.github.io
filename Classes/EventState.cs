@@ -13,6 +13,7 @@ namespace TreeBuilder.Classes {
         public static InterfaceSlot RightBottom;
 
         public static int LastDomId = -1;
+        public static BaseClass ItemActive = null;
 
         public static bool DraggingEvent = false;
 
@@ -20,9 +21,10 @@ namespace TreeBuilder.Classes {
         public static Dictionary<Guid, Group> RuntimeGroups = new();
         public static Dictionary<Guid, Interface> RuntimeInterfaces = new();
 
-        public EventState(StorageService storage, IJSRuntime js) {
+        public EventState(StorageService storage, IJSRuntime js, RenderService render) {
             Storage = storage;
             JS = js;
+            RenderService = render;
 
             var dotNetRef = DotNetObjectReference.Create(this);
             JS.InvokeVoidAsync("UpdateTitleHelper", dotNetRef);
@@ -30,6 +32,7 @@ namespace TreeBuilder.Classes {
 
         private StorageService Storage { get; }
         private IJSRuntime JS { get; }
+        private RenderService RenderService { get; }
 
         /// <summary>
         ///     Extracts Group and Interfaces and inserts them into their respective Dictionaries
@@ -80,6 +83,8 @@ namespace TreeBuilder.Classes {
         /// <param name="objGuid">Guid of the object to update</param>
         [JSInvokable]
         public void UpdateTitle(string newTitle, string objGuid) {
+            Console.WriteLine($"UpdateTitle {newTitle} {objGuid}");
+            
             var guid = Guid.Parse(objGuid);
 
             if (RuntimeGroups.ContainsKey(guid)) {
@@ -96,6 +101,7 @@ namespace TreeBuilder.Classes {
             }
 
             Storage.SaveToSessionStorage();
+            RenderService.Redraw();
         }
     }
 }

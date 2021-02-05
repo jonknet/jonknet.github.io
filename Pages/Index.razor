@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@inherits BaseClass
 @using TreeBuilder.Classes
 
 @inject StorageService StorageService
@@ -9,7 +9,7 @@
 
 @namespace TreeBuilder.Pages
 
-<div class="container">
+<div class="container" @ondragenter="(()=>HandleOnDragEnter(this))">
     <div class="row">
         <div class="col col-6">
             <button @onclick="AddGroup">Add a group</button><br/>

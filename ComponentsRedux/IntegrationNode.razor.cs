@@ -41,7 +41,7 @@ namespace TreeBuilder.ComponentsRedux {
             CurrentDomId++;
         }
 
-        public override void HandleOnDragEnter() {
+        public override void HandleOnDragEnter(BaseClass payload) {
             
             if (!Is<Interface>(EventState.Payload)) {
                 return;
@@ -53,7 +53,7 @@ namespace TreeBuilder.ComponentsRedux {
                 EventState.LastDomId = DomId;
             }
 
-            base.HandleOnDragEnter();
+            base.HandleOnDragEnter(payload);
         }
 
         public override void HandleOnDrop() {

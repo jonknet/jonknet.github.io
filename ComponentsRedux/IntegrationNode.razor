@@ -3,7 +3,7 @@
 
 <div id="@DomId.ToString()" draggable="true" class="tb-integrationnode tb-draggable @CssClass @CssSelect"
      @ondragenter:stopPropagation
-     @ondragenter="HandleOnDragEnter"
+     @ondragenter="@(()=>HandleOnDragEnter(this))"
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
      @ondragleave:stopPropagation
@@ -14,8 +14,7 @@
      @ondrop="HandleOnDrop">
 
     <div id="@Guid" contenteditable="@IsEditable" 
-         @onclick="(() => IsEditable=true)" 
-         onfocus="HandleOnFocus(this)" 
+         @onclick="(() => IsEditable=true)"
          onblur="HandleOnBlur(this)">@Title</div>
 
     <br/>

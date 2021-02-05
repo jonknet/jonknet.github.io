@@ -23,8 +23,7 @@ namespace TreeBuilder.Classes {
             Guid = Guid.NewGuid();
             Title = "Default";
         }
-
-
+        
         [Inject] protected StorageService Storage { get; set; }
         [Inject] protected RenderService RenderService { get; set; }
         [Inject] protected IJSRuntime JS { get; set; }
@@ -45,21 +44,33 @@ namespace TreeBuilder.Classes {
 
         public bool IsEditable = false;
 
-        protected override void OnInitialized() { }
+        protected override void OnInitialized() {
+            #if DEBUG
+                Console.WriteLine(JsonConvert.SerializeObject(this,
+                    new JsonSerializerSettings(){
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    PreserveReferencesHandling = PreserveReferencesHandling.All}));
+            #endif
+        }
 
-        public virtual void HandleOnDragEnter() {
+        public virtual void HandleOnDragEnter(BaseClass target) {
+            if (target is not IntegrationNode) {
+                if (EventState.ItemActive is IntegrationNode) {
+                    ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", (EventState.ItemActive as IntegrationNode).DomId, false);
+                    EventState.LastDomId = (EventState.ItemActive as IntegrationNode).DomId;
+                }
+            }
+            EventState.ItemActive = target;
             CssClass = "tb-dropborder";
             RenderService.Redraw();
         }
 
         public virtual void HandleOnDragLeave(BaseClass payload) {
-            
             CssClass = "";
             RenderService.Redraw();
         }
 
         public virtual void HandleOnDragStart(BaseClass payload) {
-            
             EventState.Payload = payload;
             if (payload is Interface) {
                 EventState.DraggingEvent = true;
@@ -69,33 +80,26 @@ namespace TreeBuilder.Classes {
                     ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), true);
                 }
             }
-
             RenderService.Redraw();
         }
 
         public virtual void HandleOnDragEnd() {
-            
             EventState.DraggingEvent = false;
             CssClass = "";
             if (EventState.Payload is Interface) {
-                JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
+                ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
             }
-
             EventState.LastDomId = -1;
             RenderService.Redraw();
         }
-
-        public virtual void HandleOnChange(ChangeEventArgs e) {
-            Console.WriteLine(e.Value.ToString());
-        }
-
+        
         public virtual void HandleOnDrop() {
             EventState.DraggingEvent = false;
             CssClass = "";
             Storage.SaveToSessionStorage();
         }
 
-        public virtual void Render() {
+        public void Render() {
             StateHasChanged();
         }
 
