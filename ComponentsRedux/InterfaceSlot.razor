@@ -1,9 +1,7 @@
 ﻿@inherits BaseClass
 
-<div id=@DomId class="tb-integrationslot @CssClass"
+<div id="@DomId" class="tb-integrationslot @CssClass"
      ondragover="event.preventDefault()"
-     @ondragenter="HandleOnDragEnter"
-     @ondragleave="HandleOnDragLeave"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 

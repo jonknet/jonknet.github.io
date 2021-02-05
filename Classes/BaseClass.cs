@@ -8,47 +8,80 @@ using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
 
 namespace TreeBuilder.Classes {
+    /// <summary>
+    ///     BaseClass of all types
+    /// </summary>
     public class BaseClass : ComponentBase {
+
+
         [Inject] protected StorageService Storage { get; set; }
         [Inject] protected RenderService RenderService { get; set; }
         [Inject] protected IJSRuntime JS { get; set; }
 
         [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
-        [Parameter] public string Title { get; set; } = "";
-        [Parameter] [JsonIgnore] public BaseClass Parent { get; set; } = null;
+        [Parameter] public string Title { get; set; } = "Default";
+        [Parameter] [JsonIgnore] public BaseClass Parent { get; set; }
 
-        [CascadingParameter(Name = "Field")] [JsonIgnore] public Group Field { get; set; } = null;
+        [CascadingParameter(Name = "Field")]
+        [JsonIgnore]
+        public Group Field { get; set; }
 
         [Parameter] [JsonIgnore] public string CssClass { get; set; } = "";
         [JsonIgnore] public string CssSelect { get; set; } = "";
 
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new();
 
-        public BaseClass() { }
+        public BaseClass() {
+            Guid = Guid.NewGuid();
+            Title = "Default";
+        }
 
         public BaseClass(BaseClass Parent, Group Field) {
             this.Parent = Parent;
             this.Field = Field;
+            Guid = Guid.NewGuid();
+            Title = "Default";
+        }
+
+        protected override void OnInitialized() {
+            
         }
 
         public virtual void HandleOnDragEnter() {
             CssClass = "tb-dropborder";
+            RenderService.Redraw();
         }
 
         public virtual void HandleOnDragLeave() {
+            Console.WriteLine("HandleOnDragLeave");
             CssClass = "";
+            RenderService.Redraw();
         }
 
         public virtual void HandleOnDragStart(BaseClass payload) {
+            Console.WriteLine("HandleOnDragStart");
             EventState.Payload = payload;
+            EventState.DraggingEvent = true;
+            if (payload is Interface) {
+                Interface iface = payload as Interface;
+                if (iface.Parent.Parent != null && iface.Parent.Parent is IntegrationNode) {
+                    EventState.LastDomId = (iface.Parent.Parent as IntegrationNode).DomId;
+                    JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), true);
+                }
+            }
+            RenderService.Redraw();
         }
 
         public virtual void HandleOnDragEnd() {
             Console.WriteLine("HandleOnDragEnd");
             EventState.DraggingEvent = false;
-            RenderService.Redraw();
             CssClass = "";
-            JS.InvokeVoidAsync("HideExcessSlots");
+            JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
+            RenderService.Redraw();
+        }
+
+        public virtual void HandleOnChange(ChangeEventArgs e) {
+            Console.WriteLine(e.Value.ToString());
         }
 
         public virtual void HandleOnDrop() {

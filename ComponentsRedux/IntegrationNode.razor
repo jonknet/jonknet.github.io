@@ -1,36 +1,38 @@
 ﻿@inherits IntegrationField
 
-<div draggable="true" class="tb-integrationnode tb-draggable @CssClass @CssSelect"
-     ondragover="event.preventDefault()"
+<div id="@DomId.ToString()" draggable="true" class="tb-integrationnode tb-draggable @CssClass @CssSelect"
+     @ondragover:preventDefault
+     @ondragenter:stopPropagation
+     @ondragenter="HandleOnDragEnter"
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
      @ondragend="HandleOnDragEnd"
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 
-    @Title
+    <div id=@Guid contenteditable="true" onfocus="HandleOnFocus(this)" onblur="HandleOnBlur(this)">@Title</div>
 
     <br/>
 
-    <div class="tb-flex">
+    <div class="tb-flex" @ondragenter="HandleOnDragEnter">
         <div>
             <InterfaceSlot Position="0" Parent="@(this)"></InterfaceSlot>
         </div>
-        <div class="flex-column InterfaceSlots">
-            
-             
-            <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass=@((Interfaces[(int)InterfaceSlotPosition.RightTop] == null) ? "tb-interfaceslot tb-hidden" : "tb-interfaceslot") @ref=@EventState.RightTop></InterfaceSlot>
-            
+        <div class="flex-column InterfaceSlots" @ondragenter="HandleOnDragEnter">
 
-            <InterfaceSlot DomId="Right" Position="2" Parent="@(this)"></InterfaceSlot>
 
-             
-            <InterfaceSlot DomId="RightBottom" Position="3" Parent="@(this)" CssClass=@((Interfaces[(int)InterfaceSlotPosition.RightBottom] == null) ? "tb-interfaceslot tb-hidden" : "tb-interfaceslot") @ref=@EventState.RightBottom></InterfaceSlot>
-            
+            <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightTop] == null ? "tb-hidden" : "") @ref=@EventState.RightTop></InterfaceSlot>
+
+
+            <InterfaceSlot DomId="Right" Position="2" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.Right] == null && (Interfaces[(int) InterfaceSlotPosition.RightTop] != null || Interfaces[(int) InterfaceSlotPosition.RightBottom] != null) ? "tb-hidden" : "")></InterfaceSlot>
+
+
+            <InterfaceSlot DomId="RightBottom" Position="3" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightBottom] == null ? "tb-hidden" : "") @ref=@EventState.RightBottom></InterfaceSlot>
+
 
         </div>
     </div>
-    <div class="flex-column">
+    <div class="flex-column" @ondragenter="HandleOnDragEnter">
 
         @foreach (var node in IntegrationNodes) {
             <IntegrationNode Guid=@node.Guid Interfaces=@node.Interfaces Parent=@(this) @key=@node.Guid></IntegrationNode>

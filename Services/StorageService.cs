@@ -1,19 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using TreeBuilder.Classes;
 using TreeBuilder.ComponentsRedux;
 
 namespace TreeBuilder.Services {
     public class StorageService {
-        public ISyncLocalStorageService LocalStorageService;
+        public GroupField GroupField;
 
         public IntegrationField IntegrationField;
-        public GroupField GroupField;
+        public ISyncLocalStorageService LocalStorageService;
 
         public JsonSerializerSettings settings = new()
         {
-            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            PreserveReferencesHandling = PreserveReferencesHandling.All,
             NullValueHandling = NullValueHandling.Include,
             TypeNameHandling = TypeNameHandling.All,
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -25,18 +26,20 @@ namespace TreeBuilder.Services {
 
         public void Save(IntegrationField intField, GroupField grpField) {
             LocalStorageService.Clear();
-            LocalStorageService.SetItem<string>("TreeBuilder_IntegrationField",
+            LocalStorageService.SetItem("TreeBuilder_IntegrationField",
                 JsonConvert.SerializeObject(intField, settings));
-            LocalStorageService.SetItem<string>("TreeBuilder_GroupField",
+            LocalStorageService.SetItem("TreeBuilder_GroupField",
                 JsonConvert.SerializeObject(grpField, settings));
+            
         }
 
         public void SaveToSessionStorage() {
             LocalStorageService.Clear();
-            LocalStorageService.SetItem<string>("TreeBuilder_IntegrationField",
+            LocalStorageService.SetItem("TreeBuilder_IntegrationField",
                 JsonConvert.SerializeObject(IntegrationField, settings));
-            LocalStorageService.SetItem<string>("TreeBuilder_GroupField",
+            LocalStorageService.SetItem("TreeBuilder_GroupField",
                 JsonConvert.SerializeObject(GroupField, settings));
+       
         }
 
         public GroupField LoadGroupField() {
@@ -50,5 +53,6 @@ namespace TreeBuilder.Services {
             return JsonConvert.DeserializeObject<IntegrationField>(
                 LocalStorageService.GetItemAsString("TreeBuilder_IntegrationField"), settings);
         }
+        
     }
 }

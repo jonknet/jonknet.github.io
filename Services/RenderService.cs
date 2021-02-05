@@ -6,6 +6,7 @@ namespace TreeBuilder.Services {
         public IntegrationField IntegrationField { get; set; }
         public GroupField GroupField { get; set; }
         public IntegrationGhostNode GhostNode { get; set; }
+
         public async Task Redraw() {
             await IntegrationField.Render();
             await GroupField.Render();

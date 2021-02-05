@@ -8,19 +8,19 @@
         <br/>
 
         <div class="tb-flex">
-            
-                <div class="tb-integrationslot"
-                     ondragover="event.preventDefault()"
-                     @ondrop:stopPropagation
-                     @ondrop="(() => HandleOnDrop(InterfaceSlotPosition.Left))">
-                </div>
 
-                <div class="tb-integrationslot"
-                     ondragover="event.preventDefault()"
-                     @ondrop:stopPropagation
-                     @ondrop="(() => HandleOnDrop(InterfaceSlotPosition.Right))">
-                </div>
-            
+            <div class="tb-integrationslot"
+                 ondragover="event.preventDefault()"
+                 @ondrop:stopPropagation
+                 @ondrop="(() => HandleOnDrop(InterfaceSlotPosition.Left))">
+            </div>
+
+            <div class="tb-integrationslot"
+                 ondragover="event.preventDefault()"
+                 @ondrop:stopPropagation
+                 @ondrop="(() => HandleOnDrop(InterfaceSlotPosition.Right))">
+            </div>
+
         </div>
     </div>
 }

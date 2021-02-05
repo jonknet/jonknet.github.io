@@ -2,6 +2,7 @@
 
 @inject StorageService StorageService
 @inject RenderService RenderService
+@inject EventState EventState
 
 @namespace TreeBuilder.Pages
 
@@ -34,7 +35,9 @@
     public IntegrationField integrationRef { get; set; }
     public IntegrationGhostNode ghostRef { get; set; }
 
-    protected override void OnInitialized() { }
+    protected override void OnInitialized() {
+        
+    }
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) {
@@ -43,27 +46,32 @@
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
             RenderService.GhostNode = ghostRef;
+            
+            EventState.PopulateDictionaryGroupField(StorageService.GroupField.GroupItems);
+            EventState.PopulateDictionaryIntegrationsField(StorageService.IntegrationField.IntegrationNodes);
         }
     }
 
     public void AddGroup() {
-        fieldRef.GroupItems.Add(new Group(fieldRef, fieldRef));
-        Console.WriteLine(fieldRef.GroupItems.Count);
-        StateHasChanged();
+        Group grp = new Group(fieldRef, fieldRef);
+        EventState.RuntimeGroups[grp.Guid] = grp;
+        fieldRef.GroupItems.Add(grp);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
-        Console.WriteLine(integrationRef.ToString());
     }
 
     public void AddInterface() {
-        fieldRef.GroupItems.Add(new Interface(fieldRef, fieldRef));
-
+        Interface iface = new Interface(fieldRef, fieldRef);
+        EventState.RuntimeInterfaces[iface.Guid] = iface;
+        fieldRef.GroupItems.Add(iface);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }
 
     public void AddIntegrationNode() {
-        integrationRef.IntegrationNodes.Add(new IntegrationNode(integrationRef, integrationRef));
+        IntegrationNode node = new IntegrationNode(integrationRef, integrationRef);
+        EventState.RuntimeIntegrations[node.Guid] = node;
+        integrationRef.IntegrationNodes.Add(node);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }

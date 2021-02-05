@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using TreeBuilder.Classes;
-using TreeBuilder.Services;
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationField : Group {
         [JsonIgnore] public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new();
         [Parameter] public List<IntegrationNode> IntegrationNodes { get; set; } = new();
 
+        public IntegrationField(){ }
+        public IntegrationField(BaseClass Parent, Group Field) : base(Parent,Field){ }
         protected override void OnInitialized() {
             Field = this;
             var intField = Storage.LoadIntegrationField();
@@ -22,12 +22,9 @@ namespace TreeBuilder.ComponentsRedux {
         }
 
         public override void HandleOnDrop() {
-            // Dirty Hack to allow the ghost Integration Node to hide
-            //EventState.Payload.HandleOnDragEnd();
-            // End Hack
-
             if (Is<IntegrationNode>(EventState.Payload) && (ContainsNode(EventState.Payload as IntegrationNode) ||
-                                                 (EventState.Payload as IntegrationNode).HasNodesOnTop())) return;
+                                                            (EventState.Payload as IntegrationNode).HasNodesOnTop()))
+                return;
 
             if (Is<IntegrationNode>(EventState.Payload)) {
                 IntegrationNodes.Add(EventState.Payload as IntegrationNode);
