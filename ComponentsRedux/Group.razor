@@ -11,7 +11,7 @@
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 
-    @Title : @Guid : @Parent.Guid
+    <div id=@Guid contenteditable="true" onfocus="HandleOnFocus(this)" onblur="HandleOnBlur(this)">@Title</div>
 
 
     @foreach (var item in GroupItems) {

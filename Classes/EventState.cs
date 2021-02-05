@@ -32,9 +32,6 @@ namespace TreeBuilder.Classes {
 
             var dotNetRef = DotNetObjectReference.Create(this);
             JS.InvokeVoidAsync("UpdateTitleHelper", dotNetRef);
-            
-            
-            
         }
 
         public void PopulateDictionaryGroupField(List<BaseClass> gfd) {
