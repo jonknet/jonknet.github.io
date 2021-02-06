@@ -105,11 +105,13 @@
             console.log("onblur fired: " + e);
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
             console.log(str);
-            dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id);
+            dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id, null);
             e.removeAttribute("contenteditable");
         }
         
-        
+        var outputStorage = () => dotNetRef.invokeMethodAsync('OutputStorage');
+        var outputReferences = () => dotNetRef.invokeMethodAsync('OutputReferences');
+        var outputDictionaries = () => dotNetRef.invokeMethodAsync('OutputDictionaries');
         
     </script>
 </body>
