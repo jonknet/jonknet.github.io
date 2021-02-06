@@ -9,7 +9,8 @@ using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
 
 namespace TreeBuilder.Classes {
-    public class EventState {
+    public class EventState
+    {
         public static BaseClass Payload;
         public static BaseClass Selection;
 
@@ -25,7 +26,8 @@ namespace TreeBuilder.Classes {
         public static Dictionary<Guid, Group> RuntimeGroups = new();
         public static Dictionary<Guid, Interface> RuntimeInterfaces = new();
 
-        public EventState(StorageService storage, IJSRuntime js, RenderService render) {
+        public EventState(StorageService storage, IJSRuntime js, RenderService render)
+        {
             Storage = storage;
             JS = js;
             RenderService = render;
@@ -42,32 +44,40 @@ namespace TreeBuilder.Classes {
         ///     Extracts All Items and inserts them into their respective Dictionaries
         /// </summary>
         /// <param name="list">List of items</param>
-        public void PopulateDictionary(List<BaseClass> list) {
-            foreach (var item in list) {
-                try {
-                    if (item is IntegrationNode) {
+        public void PopulateDictionary(List<BaseClass> list)
+        {
+            foreach (var item in list)
+            {
+                try
+                {
+                    if (item is IntegrationNode)
+                    {
                         RuntimeIntegrations[item.Guid] = item as IntegrationNode;
-                        foreach (var i in (item as IntegrationNode).Interfaces) {
-                            if(i != null)
+                        foreach (var i in (item as IntegrationNode).Interfaces)
+                        {
+                            if (i != null)
                                 RuntimeInterfaces[i.Guid] = i;
                         }
-                    } else if (item is Group)
+                    }
+                    else if (item is Group)
                         RuntimeGroups[item.Guid] = item as Group;
-                    else if (item is Interface) 
+                    else if (item is Interface)
                         RuntimeInterfaces[item.Guid] = item as Interface;
                 }
-                catch (ArgumentException) {
+                catch (ArgumentException)
+                {
                     continue;
                 }
 
                 PopulateDictionary(item.GroupItems);
             }
         }
-        
-        
+
+
         [JSInvokable]
-        public void GetCommands() {
-            Console.WriteLine("OutputStorageList");
+        public void GetCommands()
+        {
+            Console.WriteLine("OutputStorage");
             Console.WriteLine("OutputDictionaries");
             Console.WriteLine("OutputReferences");
         }
@@ -80,9 +90,10 @@ namespace TreeBuilder.Classes {
                 Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
             }
         }
-        
+
         [JSInvokable]
-        public void OutputStorage() {
+        public void OutputStorage()
+        {
             List<BaseClass> list = Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList();
             OutputAll(list);
         }
@@ -96,24 +107,28 @@ namespace TreeBuilder.Classes {
                 {
                     foreach (var j in (i as IntegrationNode).Interfaces)
                     {
-                        if(j != null)
+                        if (j != null)
                             Console.WriteLine($"Guid:{j.Guid},Title:{j.Title},Type:Interface");
                     }
                 }
+
                 OutputAll(i.GroupItems);
             }
         }
 
         [JSInvokable]
-        public void OutputDictionaries() {
+        public void OutputDictionaries()
+        {
             List<BaseClass> list = RuntimeGroups.Values.Concat(RuntimeIntegrations.Values)
                 .Concat<BaseClass>(RuntimeInterfaces.Values).ToList();
-            foreach (var i in list) {
+            foreach (var i in list)
+            {
                 Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
             }
         }
 
-        public BaseClass FindItem(Guid guid) {
+        public BaseClass FindItem(Guid guid)
+        {
             Console.WriteLine($"FindItem Guid:{guid}");
 
             BaseClass output = null;
@@ -121,38 +136,46 @@ namespace TreeBuilder.Classes {
             if (output != null)
                 return output;
             output = Search(guid, Storage.IntegrationField.GroupItems);
+            if (output != null)
+                Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
             return output;
         }
 
-        private BaseClass Search(Guid guid, List<BaseClass> list)
-        {
-            BaseClass founditem = null;
-            list.ForEach(delegate(BaseClass item)
-            {
-                if (item.Guid == guid)
-                {
-                    founditem = item;
-                    return;
-                }
+        private BaseClass Search(Guid guid, List<BaseClass> list){
 
-                if (item is IntegrationNode)
+        BaseClass b = null;
+            foreach(var item in list) {
+
+            if (item.Guid == guid)
+            {
+                Console.WriteLine("FindItem searched for " + guid + " and found " + item.Guid);
+
+                b = item;
+                break;
+            }
+
+            if (item is IntegrationNode)
+            {
+                foreach (var i in (item as IntegrationNode).Interfaces)
                 {
-                    foreach(var i in (item as IntegrationNode).Interfaces)
+                    if (i != null && i.Guid == guid)
                     {
-                        if (i != null && i.Guid == guid)
-                        {
-                            founditem = item;
-                            return;
-                        }
+                        Console.WriteLine("FindItem searched for " + guid + " and found " + i.Guid);
+                        b = i;
+                        break;
                     }
                 }
-                Search(guid, item.GroupItems);
-            });
+            }
 
+            if (b != null)
+                return b;
+            return Search(guid, item.GroupItems);
             
-            return founditem;
-
         }
+
+    return b;
+
+}
 
         /// <summary>
         ///     Invoked from Javascript to update the title of an element
@@ -202,6 +225,24 @@ namespace TreeBuilder.Classes {
 
             Storage.SaveToSessionStorage();
             RenderService.Redraw();
+        }
+
+        public void DeleteItemFromStorage(BaseClass obj)
+        {
+            DeleteItemFromStorageInt(obj,Storage.GroupField.GroupItems);
+            DeleteItemFromStorageInt(obj,Storage.IntegrationField.GroupItems);
+        }
+        private void DeleteItemFromStorageInt(BaseClass obj, List<BaseClass> list)
+        {
+            if (list.Contains(obj))
+            {
+                list.Remove(obj);
+            }
+
+            foreach (var i in list)
+            {
+                DeleteItemFromStorageInt(obj, i.GroupItems);
+            }
         }
         
     }

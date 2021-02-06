@@ -130,7 +130,7 @@ namespace TreeBuilder.Classes {
         }
 
         public override string ToString() {
-            var str = $"Guid: {Guid}\r\nTitle: {Title}\r\n";
+            var str = $"Guid: {Guid} Title: {Title} Type: {GetType()}";
             return str;
         }
     }

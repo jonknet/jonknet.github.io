@@ -15,6 +15,7 @@ namespace TreeBuilder.ComponentsRedux {
             // Remove from previous field if switching fields
             if (EventState.Payload.Field != Field) {
                 EventState.Payload.Parent.GroupItems.Remove(EventState.Payload);
+                EventState.DeleteItemFromStorage(EventState.Payload);
             }
             else if (Is<InterfaceSlot>(EventState.Payload.Parent)) {
                 // Remove from previous slot by nulling it out

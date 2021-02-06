@@ -1,4 +1,5 @@
-﻿using TreeBuilder.Classes;
+﻿using System;
+using TreeBuilder.Classes;
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class Group : BaseClass {
@@ -6,28 +7,38 @@ namespace TreeBuilder.ComponentsRedux {
         public Group(BaseClass Parent, Group Field) : base(Parent, Field) { }
         
 
-        public override void HandleOnDrop() {
-            if (Is<IntegrationNode>(EventState.Payload) || EventState.Payload.Field != Field ||
-                EventState.Payload == this ||
-                EventState.Payload.Parent == this) return;
+        public override void HandleOnDrop()
+        {
+            Console.WriteLine($"This: {this}\r\nPayload: {EventState.Payload}\r\nField: {EventState.Payload.Field}\r\nParent: {EventState.Payload.Parent}");
+
+            if ((!EventState.Payload.Is<Interface>() && !EventState.Payload.Is<Group>()) ||
+                GroupItems.Contains(EventState.Payload) ||
+                EventState.Payload == this)
+            {
+                Console.WriteLine("HandleOnDrop denied");
+                return;
+            }
+            
+            EventState.DeleteItemFromStorage(EventState.Payload);
 
             GroupItems.Add(EventState.Payload);
 
-            EventState.Payload.Parent.GroupItems.Remove(EventState.Payload);
-
             EventState.Payload.Parent = this;
 
-            EventState.Payload.Field = Field;
-
+            if (Is<GroupField>())
+            {
+                EventState.Payload.Field = this;
+            }
+            else
+            {
+                EventState.Payload.Field = Field;
+            }
+            
+            CssClass = "";
+            EventState.DraggingEvent = false;
             RenderService.Redraw();
-
-            base.HandleOnDrop();
+            Storage.SaveToSessionStorage();
         }
-
-        public override string ToString() {
-            var str = "Group: \r\n" + base.ToString() + "Items: \r\n";
-            foreach (var item in GroupItems) str += $"{item}\r\n";
-            return str;
-        }
+        
     }
 }
