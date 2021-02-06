@@ -10,7 +10,7 @@
 @code {
     public static Guid Guid { get; set; }
     
-    public BaseClass BoundInstance { get; set; } = null;
+    public static BaseClass BoundInstance { get; set; } = null;
 
     public List<ContextMenuItem> MenuItems { get; set; }
 
@@ -21,7 +21,7 @@
         if (!string.IsNullOrEmpty(clickedItem.CommandName)) {
             switch (clickedItem.CommandName) {
                 case "rename":
-                    Console.WriteLine("Rename");
+                    Console.WriteLine("Rename " + Guid);
                     BaseClass.WindowsRef.isRenameModalVisible = true;
                     BaseClass.WindowsRef.Render();
                     break;
@@ -55,9 +55,9 @@
         base.OnInitialized();
     }
 
-    public void ShowMenu(MouseEventArgs e, Guid guid) {
+    public void ShowMenu(MouseEventArgs e, Guid guid, BaseClass obj) {
         Guid = guid;
-        BoundInstance = EventState.FindItem(guid);
+        BoundInstance = obj;
         ContextMenuRef.ShowAsync(e.ClientX, e.ClientY);
     }
     

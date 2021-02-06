@@ -6,6 +6,7 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Telerik.Blazor.Components;
 using TreeBuilder.ComponentsRedux;
+using TreeBuilder.ComponentsRedux.TelerikUI;
 using TreeBuilder.Services;
 
 namespace TreeBuilder.Classes {
@@ -42,19 +43,22 @@ namespace TreeBuilder.Classes {
         public static ModalWindows WindowsRef { get; set; }
         public static ContextMenu ContextMenuRef { get; set; }
 
+        public static Dictionary<Guid, BaseClass> Instances { get; set; } = new Dictionary<Guid, BaseClass>();
+
         public bool IsEditable = false;
 
         protected override void OnInitialized() {
             #if DEBUG
                 Console.WriteLine(JsonConvert.SerializeObject(this,
                     new JsonSerializerSettings(){
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    PreserveReferencesHandling = PreserveReferencesHandling.All}));
+                        TypeNameHandling = TypeNameHandling.All,
+                        ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects}));
             #endif
         }
 
         public void SetTitle(string newTitle) {
-            Title = newTitle;
+            this.Title = newTitle;
         }
 
         public virtual void HandleOnDragEnter(BaseClass target) {

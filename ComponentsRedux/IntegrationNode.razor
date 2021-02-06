@@ -14,7 +14,7 @@
      @ondrop="HandleOnDrop"
      @oncontextmenu:stopPropagation
      @oncontextmenu:preventDefault="true"
-     @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid))">
+     @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid, this))">
 
     <div id="@Guid" contenteditable="@IsEditable" 
          @onclick="(() => IsEditable=true)"
@@ -43,7 +43,7 @@
     <div class="flex-column">
 
         @foreach (var node in GroupItems.Cast<IntegrationNode>()) {
-            <IntegrationNode DomId=@node.DomId Guid=@node.Guid Interfaces=@node.Interfaces Parent=@(this) @key=@node.Guid></IntegrationNode>
+            <IntegrationNode DomId=@node.DomId Guid=@node.Guid Interfaces=@node.Interfaces Parent=@node.Parent @key=@node.Guid @ref=@Instances[node.Guid]></IntegrationNode>
         }
 
     </div>

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Microsoft.JSInterop;
 using Telerik.DataSource.Extensions;
 using TreeBuilder.ComponentsRedux;
@@ -68,13 +69,38 @@ namespace TreeBuilder.Classes {
         public void GetCommands() {
             Console.WriteLine("OutputStorageList");
             Console.WriteLine("OutputDictionaries");
+            Console.WriteLine("OutputReferences");
         }
 
         [JSInvokable]
-        public void OutputStorageList() {
-            List<BaseClass> list = Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList();
-            foreach (var i in list) {
+        public void OutputReferences()
+        {
+            foreach (var i in BaseClass.Instances.Values)
+            {
                 Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
+            }
+        }
+        
+        [JSInvokable]
+        public void OutputStorage() {
+            List<BaseClass> list = Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList();
+            OutputAll(list);
+        }
+
+        private void OutputAll(List<BaseClass> list)
+        {
+            foreach (var i in list)
+            {
+                Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
+                if (i is IntegrationNode)
+                {
+                    foreach (var j in (i as IntegrationNode).Interfaces)
+                    {
+                        if(j != null)
+                            Console.WriteLine($"Guid:{j.Guid},Title:{j.Title},Type:Interface");
+                    }
+                }
+                OutputAll(i.GroupItems);
             }
         }
 
@@ -87,21 +113,45 @@ namespace TreeBuilder.Classes {
             }
         }
 
-        public BaseClass FindItem(Guid guid, List<BaseClass> list = null) {
+        public BaseClass FindItem(Guid guid) {
             Console.WriteLine($"FindItem Guid:{guid}");
-            
-            if (list == null) {
-                list = RuntimeGroups.Values.Concat(RuntimeIntegrations.Values)
-                    .Concat<BaseClass>(RuntimeInterfaces.Values).ToList();
-            }
 
-            foreach (var i in list) {
-                if (i.Guid == guid) {
-                    return i;
+            BaseClass output = null;
+            output = Search(guid, Storage.GroupField.GroupItems);
+            if (output != null)
+                return output;
+            output = Search(guid, Storage.IntegrationField.GroupItems);
+            return output;
+        }
+
+        private BaseClass Search(Guid guid, List<BaseClass> list)
+        {
+            BaseClass founditem = null;
+            list.ForEach(delegate(BaseClass item)
+            {
+                if (item.Guid == guid)
+                {
+                    founditem = item;
+                    return;
                 }
-            }
 
-            return null;
+                if (item is IntegrationNode)
+                {
+                    foreach(var i in (item as IntegrationNode).Interfaces)
+                    {
+                        if (i != null && i.Guid == guid)
+                        {
+                            founditem = item;
+                            return;
+                        }
+                    }
+                }
+                Search(guid, item.GroupItems);
+            });
+
+            
+            return founditem;
+
         }
 
         /// <summary>
@@ -110,15 +160,23 @@ namespace TreeBuilder.Classes {
         /// <param name="newTitle">The new title</param>
         /// <param name="objGuid">Guid of the object to update</param>
         [JSInvokable]
-        public void UpdateTitle(string newTitle, string objGuid) {
+        public void UpdateTitle(string newTitle, string objGuid, BaseClass obj) {
             Console.WriteLine($"UpdateTitle {newTitle} {objGuid}");
             
             var guid = Guid.Parse(objGuid);
-
+            
             BaseClass b = FindItem(guid);
             
             b.SetTitle(newTitle);
             b.IsEditable = false;
+
+            if (obj != null)
+            {
+                obj.SetTitle(newTitle);
+                obj.IsEditable = false;
+            }
+
+            Console.WriteLine(b.Title);
 
             Storage.SaveToSessionStorage();
             RenderService.Redraw();

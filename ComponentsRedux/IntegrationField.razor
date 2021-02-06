@@ -7,7 +7,7 @@
 
     <CascadingValue Value="this" Name="Field">
         @foreach (var item in GroupItems.Cast<IntegrationNode>()) {
-            <IntegrationNode Guid=@item.Guid Title=@item.Title GroupItems=@item.GroupItems Interfaces=@item.Interfaces Parent=this @key=item.Guid></IntegrationNode>
+            <IntegrationNode Guid=@item.Guid Title=@item.Title GroupItems=@item.GroupItems Interfaces=@item.Interfaces Parent=this @key=item.Guid @ref=@Instances[item.Guid]></IntegrationNode>
             
         }
     </CascadingValue>
