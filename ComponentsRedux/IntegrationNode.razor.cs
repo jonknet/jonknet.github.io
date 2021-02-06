@@ -40,20 +40,26 @@ namespace TreeBuilder.ComponentsRedux {
             DomId = CurrentDomId;
             CurrentDomId++;
         }
+        
+
 
         public override void HandleOnDragEnter(BaseClass payload) {
-            
-            if (!Is<Interface>(EventState.Payload)) {
+            Console.WriteLine($"OnDragEnter LastDomId:{EventState.LastDomId} DomId:{DomId}");
+
+            if (!Is<Interface>(EventState.Payload))
+            {
                 return;
             }
 
-            if (EventState.LastDomId != DomId) {
-                ((IJSInProcessRuntime) JS).InvokeVoid("ToggleSlots", DomId.ToString(), true);
-                ((IJSInProcessRuntime) JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
-                EventState.LastDomId = DomId;
+            if (EventState.LastDomId != -1 && EventState.LastDomId != DomId)
+            {
+                ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
             }
+            ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", DomId.ToString(), true);
+            EventState.LastDomId = DomId;
 
-            base.HandleOnDragEnter(payload);
+            CssClass = "tb-dropborder";
+            RenderService.Redraw();
         }
 
         public override void HandleOnDrop() {
@@ -71,7 +77,7 @@ namespace TreeBuilder.ComponentsRedux {
                     EventState.Payload as IntegrationNode);
 
             NodeReferences.Remove(EventState.Payload.Guid);
-            IntegrationNodes.Add(EventState.Payload as IntegrationNode);
+            GroupItems.Add(EventState.Payload as IntegrationNode);
             EventState.Payload.Parent = this;
 
             RenderService.Redraw();

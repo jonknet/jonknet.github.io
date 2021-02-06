@@ -1,7 +1,7 @@
 ﻿@using System.Timers
 @inherits IntegrationField
 
-<div id="@DomId.ToString()" draggable="true" class="tb-integrationnode tb-draggable @CssClass @CssSelect"
+<div id="@DomId.ToString()" draggable="true" class="tb-integrationnode tb-draggable tb-contextmenu @CssClass @CssSelect"
      @ondragenter:stopPropagation
      @ondragenter="@(()=>HandleOnDragEnter(this))"
      @ondragstart:stopPropagation
@@ -11,7 +11,10 @@
      @ondragend="HandleOnDragEnd"
      @ondragover:stopPropagation
      @ondrop:stopPropagation
-     @ondrop="HandleOnDrop">
+     @ondrop="HandleOnDrop"
+     @oncontextmenu:stopPropagation
+     @oncontextmenu:preventDefault="true"
+     @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid))">
 
     <div id="@Guid" contenteditable="@IsEditable" 
          @onclick="(() => IsEditable=true)"
@@ -21,28 +24,29 @@
 
     <div class="tb-flex">
         <div>
-            <InterfaceSlot DomId="Left" Position="0" Parent="@(this)"></InterfaceSlot>
+            <InterfaceSlot DomId="Left" Position="0" Parent="this"></InterfaceSlot>
         </div>
         <div class="flex-column InterfaceSlots">
 
 
-            <InterfaceSlot DomId="RightTop" Position="1" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightTop] == null ? "tb-hidden" : "") @ref=@EventState.RightTop></InterfaceSlot>
+            <InterfaceSlot DomId="RightTop" Position="1" Parent="this" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightTop] == null ? "tb-hidden" : "") @ref=@EventState.RightTop></InterfaceSlot>
 
 
-            <InterfaceSlot DomId="Right" Position="2" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.Right] == null && (Interfaces[(int) InterfaceSlotPosition.RightTop] != null || Interfaces[(int) InterfaceSlotPosition.RightBottom] != null) ? "tb-hidden" : "")></InterfaceSlot>
+            <InterfaceSlot DomId="Right" Position="2" Parent="this" CssClass=@(Interfaces[(int) InterfaceSlotPosition.Right] == null && (Interfaces[(int) InterfaceSlotPosition.RightTop] != null || Interfaces[(int) InterfaceSlotPosition.RightBottom] != null) ? "tb-hidden" : "")></InterfaceSlot>
 
 
-            <InterfaceSlot DomId="RightBottom" Position="3" Parent="@(this)" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightBottom] == null ? "tb-hidden" : "") @ref=@EventState.RightBottom></InterfaceSlot>
+            <InterfaceSlot DomId="RightBottom" Position="3" Parent="this" CssClass=@(Interfaces[(int) InterfaceSlotPosition.RightBottom] == null ? "tb-hidden" : "") @ref=@EventState.RightBottom></InterfaceSlot>
 
 
         </div>
     </div>
     <div class="flex-column">
 
-        @foreach (var node in IntegrationNodes) {
+        @foreach (var node in GroupItems.Cast<IntegrationNode>()) {
             <IntegrationNode DomId=@node.DomId Guid=@node.Guid Interfaces=@node.Interfaces Parent=@(this) @key=@node.Guid></IntegrationNode>
         }
 
     </div>
 
 </div>
+

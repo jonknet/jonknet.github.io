@@ -6,8 +6,9 @@
      @ondrop="HandleOnDrop">
 
     <CascadingValue Value="this" Name="Field">
-        @foreach (var item in IntegrationNodes) {
-            <IntegrationNode Guid=@item.Guid Title=@item.Title IntegrationNodes=@item.IntegrationNodes Interfaces=@item.Interfaces Parent=this @key=item.Guid></IntegrationNode>
+        @foreach (var item in GroupItems.Cast<IntegrationNode>()) {
+            <IntegrationNode Guid=@item.Guid Title=@item.Title GroupItems=@item.GroupItems Interfaces=@item.Interfaces Parent=this @key=item.Guid></IntegrationNode>
+            
         }
     </CascadingValue>
 </div>

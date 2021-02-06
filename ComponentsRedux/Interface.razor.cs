@@ -5,5 +5,7 @@ namespace TreeBuilder.ComponentsRedux {
         public Interface() { }
 
         public Interface(BaseClass Parent, Group Field) : base(Parent, Field) { }
+        
+
     }
 }

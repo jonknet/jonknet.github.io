@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.JSInterop;
+using Telerik.DataSource.Extensions;
 using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
 
@@ -35,45 +38,70 @@ namespace TreeBuilder.Classes {
         private RenderService RenderService { get; }
 
         /// <summary>
-        ///     Extracts Group and Interfaces and inserts them into their respective Dictionaries
+        ///     Extracts All Items and inserts them into their respective Dictionaries
         /// </summary>
-        /// <param name="gfd">GroupItems List from the GroupField</param>
-        public void PopulateDictionaryGroupField(List<BaseClass> gfd) {
-            foreach (var item in gfd) {
+        /// <param name="list">List of items</param>
+        public void PopulateDictionary(List<BaseClass> list) {
+            foreach (var item in list) {
                 try {
-                    if (item is Group)
+                    if (item is IntegrationNode) {
+                        RuntimeIntegrations[item.Guid] = item as IntegrationNode;
+                        foreach (var i in (item as IntegrationNode).Interfaces) {
+                            if(i != null)
+                                RuntimeInterfaces[i.Guid] = i;
+                        }
+                    } else if (item is Group)
                         RuntimeGroups[item.Guid] = item as Group;
-                    else if (item is Interface) RuntimeInterfaces[item.Guid] = item as Interface;
+                    else if (item is Interface) 
+                        RuntimeInterfaces[item.Guid] = item as Interface;
                 }
                 catch (ArgumentException) {
                     continue;
                 }
 
-                if (item.GroupItems != null && item.GroupItems.Count > 0)
-                    PopulateDictionaryGroupField(item.GroupItems);
+                PopulateDictionary(item.GroupItems);
+            }
+        }
+        
+        
+        [JSInvokable]
+        public void GetCommands() {
+            Console.WriteLine("OutputStorageList");
+            Console.WriteLine("OutputDictionaries");
+        }
+
+        [JSInvokable]
+        public void OutputStorageList() {
+            List<BaseClass> list = Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList();
+            foreach (var i in list) {
+                Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
             }
         }
 
-        /// <summary>
-        ///     Extracts IntegrationNodes and Interfaces and puts them in their respective Dictionaries
-        /// </summary>
-        /// <param name="ifd">List of IntegrationNodes</param>
-        public void PopulateDictionaryIntegrationsField(List<IntegrationNode> ifd) {
-            foreach (var item in ifd) {
-                RuntimeIntegrations[item.Guid] = item;
-
-                try {
-                    foreach (var iface in item.Interfaces)
-                        if (iface != null)
-                            RuntimeInterfaces[iface.Guid] = iface;
-                }
-                catch (ArgumentException) {
-                    continue;
-                }
-
-                if (item.IntegrationNodes != null && item.IntegrationNodes.Count > 0)
-                    PopulateDictionaryIntegrationsField(item.IntegrationNodes);
+        [JSInvokable]
+        public void OutputDictionaries() {
+            List<BaseClass> list = RuntimeGroups.Values.Concat(RuntimeIntegrations.Values)
+                .Concat<BaseClass>(RuntimeInterfaces.Values).ToList();
+            foreach (var i in list) {
+                Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
             }
+        }
+
+        public BaseClass FindItem(Guid guid, List<BaseClass> list = null) {
+            Console.WriteLine($"FindItem Guid:{guid}");
+            
+            if (list == null) {
+                list = RuntimeGroups.Values.Concat(RuntimeIntegrations.Values)
+                    .Concat<BaseClass>(RuntimeInterfaces.Values).ToList();
+            }
+
+            foreach (var i in list) {
+                if (i.Guid == guid) {
+                    return i;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -87,21 +115,36 @@ namespace TreeBuilder.Classes {
             
             var guid = Guid.Parse(objGuid);
 
-            if (RuntimeGroups.ContainsKey(guid)) {
-                RuntimeGroups[guid].Title = newTitle;
-                RuntimeGroups[guid].IsEditable = false;
-            }
-            else if (RuntimeIntegrations.ContainsKey(guid)){
-                RuntimeIntegrations[guid].Title = newTitle;
-                RuntimeIntegrations[guid].IsEditable = false;
-            }
-            else if (RuntimeInterfaces.ContainsKey(guid)) {
-                RuntimeInterfaces[guid].Title = newTitle;
-                RuntimeInterfaces[guid].IsEditable = false;
+            BaseClass b = FindItem(guid);
+            
+            b.SetTitle(newTitle);
+            b.IsEditable = false;
+
+            Storage.SaveToSessionStorage();
+            RenderService.Redraw();
+        }
+
+        public void DeleteItem(string objGuid) {
+            var guid = Guid.Parse(objGuid);
+
+            BaseClass b = FindItem(guid);
+            Console.WriteLine("Found " + b);
+
+            if (b.Is<Group>() || b.Is<IntegrationNode>()) {
+                b.Parent.GroupItems.Remove(b);
+            } else if (b.Is<Interface>()) {
+                if (b.Parent is InterfaceSlot) {
+                    (b.Parent.Parent as IntegrationNode).Interfaces[(b.Parent as InterfaceSlot).Position] = null;
+                }
+                else {
+                    b.Parent.GroupItems.Remove(b);
+                }
+                
             }
 
             Storage.SaveToSessionStorage();
             RenderService.Redraw();
         }
+        
     }
 }

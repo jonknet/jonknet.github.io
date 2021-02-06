@@ -1,0 +1,55 @@
+﻿@inject EventState EventState
+
+
+    <TelerikWindow Modal="true" @bind-Visible="@isRenameModalVisible">
+        <WindowTitle>
+            <strong>Rename</strong>
+        </WindowTitle>
+        <WindowContent>
+            <TelerikTextBox @bind-Value="NewTitle"></TelerikTextBox><br/>
+            <TelerikButton OnClick="@SaveTitle">Save</TelerikButton>
+            <TelerikButton OnClick="@(()=>isRenameModalVisible=false)">Cancel</TelerikButton>
+        </WindowContent>
+    </TelerikWindow>
+
+    <TelerikWindow Modal="true" @bind-Visible="@isDeleteModalVisible">
+        <WindowTitle>
+            <strong>Delete?</strong>
+        </WindowTitle>
+        <WindowContent>
+            Are you sure you want to delete this item?<br/>
+            <TelerikButton OnClick="@DeleteItem">Yes</TelerikButton>
+            <TelerikButton OnClick="@(()=>isDeleteModalVisible=false)">No</TelerikButton>
+        </WindowContent>
+    </TelerikWindow>
+
+
+@code{
+
+    [Parameter] public bool isRenameModalVisible { get; set; } = false;
+    [Parameter] public bool isDeleteModalVisible { get; set; } = false;
+
+    protected override void OnInitialized() {
+
+        base.OnInitialized();
+    }
+
+    
+
+    public string NewTitle { get; set; } = "";
+
+    public void SaveTitle() {
+        EventState.UpdateTitle(NewTitle, ContextMenu.Guid.ToString());
+        isRenameModalVisible = false;
+        NewTitle = "";
+    }
+
+    public void DeleteItem() {
+        EventState.DeleteItem(ContextMenu.Guid.ToString());
+        isDeleteModalVisible = false;
+    }
+
+    public void Render() {
+        StateHasChanged();
+    }
+}

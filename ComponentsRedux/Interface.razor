@@ -2,11 +2,15 @@
 @using System.Reflection.Metadata.Ecma335
 @inherits BaseClass
 
-<div draggable="true" class="tb-interface tb-item tb-draggable @CssClass @CssSelect"
+<div draggable="true" class="tb-interface tb-item tb-draggable tb-contextmenu @CssClass @CssSelect"
      @ondragstart:stopPropagation
      @ondragstart="@(() => HandleOnDragStart(this))"
-     @ondragend="HandleOnDragEnd">
+     @ondragend="HandleOnDragEnd"
+     @oncontextmenu:preventDefault="true"
+     @oncontextmenu:stopPropagation
+     @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid))">
 
     <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onblur="HandleOnBlur(this)" >@Title</div>
 
 </div>
+

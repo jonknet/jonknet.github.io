@@ -1,0 +1,74 @@
+﻿@using System
+@inject EventState EventState
+
+<TelerikContextMenu Selector=".tb-contextmenu" Data="@MenuItems"
+                    TextField="Text" IconField="Icon"
+                    OnClick="@( (ContextMenuItem itm) => ClickHandler(itm) )" @ref="ContextMenuRef">
+</TelerikContextMenu>
+
+
+@code {
+    public static Guid Guid { get; set; }
+    
+    public BaseClass BoundInstance { get; set; } = null;
+
+    public List<ContextMenuItem> MenuItems { get; set; }
+
+    public TelerikContextMenu<ContextMenuItem> ContextMenuRef;
+
+    public void ClickHandler(ContextMenuItem clickedItem)
+    {
+        if (!string.IsNullOrEmpty(clickedItem.CommandName)) {
+            switch (clickedItem.CommandName) {
+                case "rename":
+                    Console.WriteLine("Rename");
+                    BaseClass.WindowsRef.isRenameModalVisible = true;
+                    BaseClass.WindowsRef.Render();
+                    break;
+                case "delete":
+                    BaseClass.WindowsRef.isDeleteModalVisible = true;
+                    BaseClass.WindowsRef.Render();
+                    break;
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+
+        MenuItems = new List<ContextMenuItem>()
+        {
+            new ContextMenuItem
+            {
+                Text = "Rename",
+                Icon = "edit-tools",
+                CommandName = "rename"
+            },
+            new ContextMenuItem
+            {
+                Text = "Delete",
+                Icon = "delete",
+                CommandName = "delete"
+            }
+        };
+
+        base.OnInitialized();
+    }
+
+    public void ShowMenu(MouseEventArgs e, Guid guid) {
+        Guid = guid;
+        BoundInstance = EventState.FindItem(guid);
+        ContextMenuRef.ShowAsync(e.ClientX, e.ClientY);
+    }
+    
+    public void SetGuid(Guid guid) {
+        Guid = guid;
+    }
+
+    public class ContextMenuItem
+    {
+        public string Text { get; set; }
+        public string CommandName { get; set; }
+        public string Icon { get; set; }
+    }
+}

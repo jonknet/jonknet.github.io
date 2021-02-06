@@ -9,14 +9,13 @@ namespace TreeBuilder.ComponentsRedux {
         public IntegrationField() { }
         public IntegrationField(BaseClass Parent, Group Field) : base(Parent, Field) { }
         [JsonIgnore] public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new();
-        [Parameter] public List<IntegrationNode> IntegrationNodes { get; set; } = new();
 
         protected override void OnInitialized() {
             Field = this;
             var intField = Storage.LoadIntegrationField();
             if (intField != null) {
-                IntegrationNodes.Clear();
-                IntegrationNodes = intField.IntegrationNodes;
+                GroupItems.Clear();
+                GroupItems = intField.GroupItems;
                 Title = intField.Title;
             }
         }
@@ -27,7 +26,7 @@ namespace TreeBuilder.ComponentsRedux {
                 return;
 
             if (Is<IntegrationNode>(EventState.Payload)) {
-                IntegrationNodes.Add(EventState.Payload as IntegrationNode);
+                GroupItems.Add(EventState.Payload as IntegrationNode);
                 (EventState.Payload.Parent as IntegrationNode).RemoveNode(EventState.Payload.Parent as IntegrationNode,
                     EventState.Payload as IntegrationNode);
                 NodeReferences.Remove(EventState.Payload.Guid);
@@ -42,13 +41,13 @@ namespace TreeBuilder.ComponentsRedux {
 
         // Helper methods
         public void RemoveNode<T>(T BaseNode, IntegrationNode TargetNode) where T : IntegrationField {
-            foreach (var node in BaseNode.IntegrationNodes) {
+            foreach (var node in BaseNode.GroupItems) {
                 if (node.Equals(TargetNode)) {
-                    BaseNode.IntegrationNodes.Remove(TargetNode);
+                    BaseNode.GroupItems.Remove(TargetNode);
                     return;
                 }
 
-                RemoveNode(node, TargetNode);
+                RemoveNode(node as T, TargetNode);
             }
         }
 
@@ -57,7 +56,7 @@ namespace TreeBuilder.ComponentsRedux {
         /// </summary>
         /// <returns>true if this IntegrationNode contains other nodes</returns>
         public bool HasNodesOnTop() {
-            return IntegrationNodes.Count > 0 ? true : false;
+            return GroupItems.Count > 0 ? true : false;
         }
 
         /// <summary>
@@ -66,7 +65,7 @@ namespace TreeBuilder.ComponentsRedux {
         /// <param name="Node">Node to find</param>
         /// <returns>true if found, false if otherwise</returns>
         public bool ContainsNode(IntegrationNode Node) {
-            return IntegrationNodes.Contains(Node);
+            return GroupItems.Contains(Node);
         }
 
         public override string ToString() {

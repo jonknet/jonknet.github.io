@@ -29,7 +29,8 @@
             <IntegrationField @ref="integrationRef"></IntegrationField>
         </div>
     </div>
-
+    <ContextMenu @ref="ContextMenuRef"></ContextMenu>
+    <ModalWindows @ref="WindowsRef"></ModalWindows>
 </div>
 
 @code {
@@ -44,13 +45,13 @@
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) {
+            Console.WriteLine("OnAfterRender");
             StorageService.GroupField = fieldRef;
             StorageService.IntegrationField = integrationRef;
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
             RenderService.GhostNode = ghostRef;
-            EventState.PopulateDictionaryGroupField(StorageService.GroupField.GroupItems);
-            EventState.PopulateDictionaryIntegrationsField(StorageService.IntegrationField.IntegrationNodes);
+            EventState.PopulateDictionary(StorageService.GroupField.GroupItems.Concat(StorageService.IntegrationField.GroupItems).ToList());
         }
     }
 
@@ -73,7 +74,7 @@
     public void AddIntegrationNode() {
         var node = new IntegrationNode(integrationRef, integrationRef);
         EventState.RuntimeIntegrations[node.Guid] = node;
-        integrationRef.IntegrationNodes.Add(node);
+        integrationRef.GroupItems.Add(node);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }

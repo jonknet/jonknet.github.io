@@ -13,7 +13,7 @@ namespace TreeBuilder.ComponentsRedux {
                 Node.Interfaces[(int) InterfaceSlotPosition.Left] = EventState.Payload as Interface;
             else if (Position == InterfaceSlotPosition.Right)
                 Node.Interfaces[(int) InterfaceSlotPosition.Right] = EventState.Payload as Interface;
-            Storage.IntegrationField.IntegrationNodes.Add(Node);
+            Storage.IntegrationField.GroupItems.Add(Node);
             RenderService.Redraw();
             Storage.SaveToSessionStorage();
         }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using Telerik.Blazor.Components;
 using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
 
@@ -13,15 +14,12 @@ namespace TreeBuilder.Classes {
     /// </summary>
     public class BaseClass : ComponentBase {
         public BaseClass() {
-            Guid = Guid.NewGuid();
-            Title = "Default";
+            
         }
 
         public BaseClass(BaseClass Parent, Group Field) {
             this.Parent = Parent;
             this.Field = Field;
-            Guid = Guid.NewGuid();
-            Title = "Default";
         }
         
         [Inject] protected StorageService Storage { get; set; }
@@ -31,16 +29,18 @@ namespace TreeBuilder.Classes {
 
         [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
         [Parameter] public string Title { get; set; } = "Default";
-        [Parameter] [JsonIgnore] public BaseClass Parent { get; set; }
+        [Parameter] public BaseClass Parent { get; set; }
 
         [CascadingParameter(Name = "Field")]
-        [JsonIgnore]
         public Group Field { get; set; }
 
         [Parameter] [JsonIgnore] public string CssClass { get; set; } = "";
         [JsonIgnore] public string CssSelect { get; set; } = "";
 
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new();
+        
+        public static ModalWindows WindowsRef { get; set; }
+        public static ContextMenu ContextMenuRef { get; set; }
 
         public bool IsEditable = false;
 
@@ -53,14 +53,15 @@ namespace TreeBuilder.Classes {
             #endif
         }
 
+        public void SetTitle(string newTitle) {
+            Title = newTitle;
+        }
+
         public virtual void HandleOnDragEnter(BaseClass target) {
             if (target is not IntegrationNode) {
-                if (EventState.ItemActive is IntegrationNode) {
-                    ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", (EventState.ItemActive as IntegrationNode).DomId, false);
-                    EventState.LastDomId = (EventState.ItemActive as IntegrationNode).DomId;
-                }
+                ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId, false);
+                EventState.LastDomId = -1;
             }
-            EventState.ItemActive = target;
             CssClass = "tb-dropborder";
             RenderService.Redraw();
         }
@@ -109,8 +110,12 @@ namespace TreeBuilder.Classes {
         /// <param name="Base">Class you want to check</param>
         /// <typeparam name="T">Type to check for</typeparam>
         /// <returns></returns>
-        public static bool Is<T>(BaseClass Base) {
+        public bool Is<T>(BaseClass Base) {
             return Base is T;
+        }
+
+        public bool Is<T>() {
+            return this is T;
         }
 
         public override bool Equals(object obj) {

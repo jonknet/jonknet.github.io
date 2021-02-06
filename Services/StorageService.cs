@@ -14,7 +14,7 @@ namespace TreeBuilder.Services {
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             NullValueHandling = NullValueHandling.Include,
             TypeNameHandling = TypeNameHandling.All,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize
         };
 
         public StorageService(ISyncLocalStorageService LocalStorageService) {

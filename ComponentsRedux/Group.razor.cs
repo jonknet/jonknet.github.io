@@ -5,6 +5,7 @@ namespace TreeBuilder.ComponentsRedux {
         public Group() { }
         public Group(BaseClass Parent, Group Field) : base(Parent, Field) { }
         
+
         public override void HandleOnDrop() {
             if (Is<IntegrationNode>(EventState.Payload) || EventState.Payload.Field != Field ||
                 EventState.Payload == this ||
