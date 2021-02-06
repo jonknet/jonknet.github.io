@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using Telerik.DataSource.Extensions;
 using TreeBuilder.ComponentsRedux;
@@ -133,8 +134,10 @@ namespace TreeBuilder.Classes {
 
             BaseClass output = null;
             output = Search(guid, Storage.GroupField.GroupItems);
-            if (output != null)
+            if (output != null){
+                Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
                 return output;
+            }
             output = Search(guid, Storage.IntegrationField.GroupItems);
             if (output != null)
                 Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
@@ -169,7 +172,7 @@ namespace TreeBuilder.Classes {
 
             if (b != null)
                 return b;
-            return Search(guid, item.GroupItems);
+            b = Search(guid, item.GroupItems);
             
         }
 
@@ -213,15 +216,20 @@ namespace TreeBuilder.Classes {
 
             if (b.Is<Group>() || b.Is<IntegrationNode>()) {
                 b.Parent.GroupItems.Remove(b);
-            } else if (b.Is<Interface>()) {
+            } else if (b.Is<Interface>())
+            {
+                Console.WriteLine(b.Parent.GetType());
                 if (b.Parent is InterfaceSlot) {
                     (b.Parent.Parent as IntegrationNode).Interfaces[(b.Parent as InterfaceSlot).Position] = null;
+                    Console.WriteLine("Removed interface from " + (b.Parent as InterfaceSlot).Position);
                 }
                 else {
                     b.Parent.GroupItems.Remove(b);
                 }
                 
             }
+
+            DeleteItemFromStorage(b);
 
             Storage.SaveToSessionStorage();
             RenderService.Redraw();
@@ -237,6 +245,7 @@ namespace TreeBuilder.Classes {
             if (list.Contains(obj))
             {
                 list.Remove(obj);
+                return;
             }
 
             foreach (var i in list)

@@ -57,7 +57,7 @@
 
     public void ShowMenu(MouseEventArgs e, Guid guid, BaseClass obj) {
         Guid = guid;
-        BoundInstance = obj;
+        BoundInstance = EventState.FindItem(Guid);
         ContextMenuRef.ShowAsync(e.ClientX, e.ClientY);
     }
     

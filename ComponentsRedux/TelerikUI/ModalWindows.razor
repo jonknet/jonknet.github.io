@@ -1,4 +1,5 @@
 ﻿@inject EventState EventState
+@inject StorageService Storage
 
 
     <TelerikWindow Modal="true" @bind-Visible="@isRenameModalVisible">
@@ -42,11 +43,16 @@
         EventState.UpdateTitle(NewTitle, ContextMenu.Guid.ToString(), ContextMenu.BoundInstance);
         isRenameModalVisible = false;
         NewTitle = "";
+        StateHasChanged();
+        Storage.SaveToSessionStorage();
     }
 
     public void DeleteItem() {
         EventState.DeleteItem(ContextMenu.Guid.ToString());
         isDeleteModalVisible = false;
+        StateHasChanged();
+        Storage.SaveToSessionStorage();
+        
     }
 
     public void Render() {

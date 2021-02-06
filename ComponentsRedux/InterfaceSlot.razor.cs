@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Components;
 using TreeBuilder.Classes;
 
 namespace TreeBuilder.ComponentsRedux {
@@ -11,11 +13,15 @@ namespace TreeBuilder.ComponentsRedux {
 
             // Hack to make sure the additional slots go away
             Parent.HandleOnDragEnd();
+            
+            BaseClass b = EventState.FindItem(EventState.Payload.Guid);
+            b.Parent = this;
+            b.Field = Field;
 
             // Remove from previous field if switching fields
             if (EventState.Payload.Field != Field) {
                 EventState.Payload.Parent.GroupItems.Remove(EventState.Payload);
-                EventState.DeleteItemFromStorage(EventState.Payload);
+                
             }
             else if (Is<InterfaceSlot>(EventState.Payload.Parent)) {
                 // Remove from previous slot by nulling it out
@@ -29,9 +35,10 @@ namespace TreeBuilder.ComponentsRedux {
 
             // Add to this slot
 
-            (Parent as IntegrationNode).Interfaces[Position] = EventState.Payload as Interface;
-            EventState.Payload.Parent = this;
-            EventState.Payload.Field = Field;
+            (Parent as IntegrationNode).Interfaces[Position] = b as Interface;
+
+            Console.WriteLine($"{GetType()} {Field.GetType()}");
+
 
             CssClass = "";
 
