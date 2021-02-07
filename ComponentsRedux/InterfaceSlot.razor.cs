@@ -17,6 +17,8 @@ namespace TreeBuilder.ComponentsRedux {
             BaseClass b = EventState.FindItem(EventState.Payload.Guid);
             b.Parent = this;
             b.Field = Field;
+            
+            EventState.DeleteItem(EventState.Payload.Guid.ToString());
 
             // Remove from previous field if switching fields
             if (EventState.Payload.Field != Field) {

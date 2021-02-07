@@ -30,9 +30,13 @@ namespace TreeBuilder.Classes {
 
         [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
         [Parameter] public string Title { get; set; } = "Default";
-        [Parameter] public BaseClass Parent { get; set; }
+        
+        [Parameter] 
+        [JsonProperty(IsReference = true)] 
+        public BaseClass Parent { get; set; }
 
         [CascadingParameter(Name = "Field")]
+        [JsonProperty(IsReference = true)]
         public Group Field { get; set; }
 
         [Parameter] [JsonIgnore] public string CssClass { get; set; } = "";
@@ -45,7 +49,7 @@ namespace TreeBuilder.Classes {
 
         public static Dictionary<Guid, BaseClass> Instances { get; set; } = new Dictionary<Guid, BaseClass>();
 
-        public bool IsEditable = false;
+        [JsonIgnore] public bool IsEditable = false;
 
         protected override void OnInitialized() {
             #if DEBUG

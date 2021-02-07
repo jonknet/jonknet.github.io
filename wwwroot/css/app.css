@@ -65,11 +65,12 @@ a, .btn-link {
     
     .tb-group {
         display: flex;
-        min-width: 150px;
+        min-width: 170px;
         max-width: 300px;
-        min-height: 100px;
+        min-height: 75px;
         background-color: rgb(212, 158, 9);
         padding: 10px;
+        margin: 5px;
         flex-direction: column;
         text-align: center;
         z-index: 25;
@@ -77,14 +78,15 @@ a, .btn-link {
     }
 
     .tb-interface {
-        width: 93px;
-        height: 20px;
+        width: 146px;
+        height: 33px;
         background-color: rgb(80, 42, 216);
-        margin: 2px;
-        padding: 2px;
-        font-size: x-small;
+        margin: 0px;
+        padding: 0px;
+        font-size: small;
         align-self: center;
         z-index: 100;
+        margin-bottom: 5px;
     }
 
     .tb-dropborder {
@@ -99,7 +101,7 @@ a, .btn-link {
         align-items: center;
         vertical-align: top;
         width: 500px;
-        height: 500px;
+        min-height: 500px;
     }
 
     .tb-flex {
@@ -111,24 +113,26 @@ a, .btn-link {
     }
 
     .tb-integrationslot {
-        width: 100px;
-        height: 25px;
+        width: 150px;
+        height: 35px;
         background-color: white;
         border: 2px solid black;
-        margin-right: 2px;
-        margin-bottom: 5px;
+        margin-right: 0px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
     
     .tb-integrationnode {
         display: inline-table;
         border: 2px solid black;
         border-radius: 10px;
-        min-height: 200px;
-        min-width: 250px;
+        min-height: 130px;
+        min-width: 310px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         z-index: 50;
+        margin: 5px;
     }
 
     .tb-closeicon {
@@ -148,5 +152,5 @@ a, .btn-link {
     }
     
     .tb-interfaceslots {
-        height: 90px;
+        height: 120px;
     }

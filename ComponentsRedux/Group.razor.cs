@@ -19,7 +19,7 @@ namespace TreeBuilder.ComponentsRedux {
                 return;
             }
             
-            EventState.DeleteItemFromStorage(EventState.Payload);
+            EventState.DeleteItem(EventState.Payload.Guid.ToString());
 
             GroupItems.Add(EventState.Payload);
 

@@ -8,6 +8,7 @@ namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationField : Group {
         public IntegrationField() { }
         public IntegrationField(BaseClass Parent, Group Field) : base(Parent, Field) { }
+        
         [JsonIgnore] public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new();
 
         protected override void OnInitialized() {

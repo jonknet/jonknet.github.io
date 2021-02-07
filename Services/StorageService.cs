@@ -22,7 +22,6 @@ namespace TreeBuilder.Services {
         }
 
         public void Save(IntegrationField intField, GroupField grpField) {
-            LocalStorageService.Clear();
             LocalStorageService.SetItem("TreeBuilder_IntegrationField",
                 JsonConvert.SerializeObject(intField, settings));
             LocalStorageService.SetItem("TreeBuilder_GroupField",
@@ -30,7 +29,6 @@ namespace TreeBuilder.Services {
         }
 
         public void SaveToSessionStorage() {
-            LocalStorageService.Clear();
             LocalStorageService.SetItem("TreeBuilder_IntegrationField",
                 JsonConvert.SerializeObject(IntegrationField, settings));
             LocalStorageService.SetItem("TreeBuilder_GroupField",

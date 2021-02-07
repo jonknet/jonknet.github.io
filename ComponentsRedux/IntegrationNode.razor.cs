@@ -35,7 +35,10 @@ namespace TreeBuilder.ComponentsRedux {
         [Parameter] public int DomId { get; set; }
 
         protected override void OnInitialized() {
-            Parent = Storage.IntegrationField;
+            if (Parent == null)
+            {
+                Parent = Field;
+            }
             Field = Storage.IntegrationField;
             DomId = CurrentDomId;
             CurrentDomId++;

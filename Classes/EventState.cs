@@ -9,7 +9,8 @@ using Telerik.DataSource.Extensions;
 using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
 
-namespace TreeBuilder.Classes {
+namespace TreeBuilder.Classes
+{
     public class EventState
     {
         public static BaseClass Payload;
@@ -76,14 +77,6 @@ namespace TreeBuilder.Classes {
 
 
         [JSInvokable]
-        public void GetCommands()
-        {
-            Console.WriteLine("OutputStorage");
-            Console.WriteLine("OutputDictionaries");
-            Console.WriteLine("OutputReferences");
-        }
-
-        [JSInvokable]
         public void OutputReferences()
         {
             foreach (var i in BaseClass.Instances.Values)
@@ -93,14 +86,11 @@ namespace TreeBuilder.Classes {
         }
 
         [JSInvokable]
-        public void OutputStorage()
+        public void OutputAll(List<BaseClass> list = null)
         {
-            List<BaseClass> list = Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList();
-            OutputAll(list);
-        }
-
-        private void OutputAll(List<BaseClass> list)
-        {
+            if(list == null)
+                list = Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList();
+            
             foreach (var i in list)
             {
                 Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
@@ -134,51 +124,51 @@ namespace TreeBuilder.Classes {
 
             BaseClass output = null;
             output = Search(guid, Storage.GroupField.GroupItems);
-            if (output != null){
+            if (output != null)
+            {
                 Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
                 return output;
             }
+
             output = Search(guid, Storage.IntegrationField.GroupItems);
             if (output != null)
                 Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
             return output;
         }
 
-        private BaseClass Search(Guid guid, List<BaseClass> list){
-
-        BaseClass b = null;
-            foreach(var item in list) {
-
-            if (item.Guid == guid)
+        private BaseClass Search(Guid guid, List<BaseClass> list)
+        {
+            BaseClass b = null;
+            foreach (var item in list)
             {
-                Console.WriteLine("FindItem searched for " + guid + " and found " + item.Guid);
-
-                b = item;
-                break;
-            }
-
-            if (item is IntegrationNode)
-            {
-                foreach (var i in (item as IntegrationNode).Interfaces)
+                if (item.Guid == guid)
                 {
-                    if (i != null && i.Guid == guid)
+                    Console.WriteLine("FindItem searched for " + guid + " and found " + item.Guid);
+
+                    b = item;
+                    break;
+                }
+
+                if (item is IntegrationNode)
+                {
+                    foreach (var i in (item as IntegrationNode).Interfaces)
                     {
-                        Console.WriteLine("FindItem searched for " + guid + " and found " + i.Guid);
-                        b = i;
-                        break;
+                        if (i != null && i.Guid == guid)
+                        {
+                            Console.WriteLine("FindItem searched for " + guid + " and found " + i.Guid);
+                            b = i;
+                            break;
+                        }
                     }
                 }
+
+                if (b != null)
+                    return b;
+                b = Search(guid, item.GroupItems);
             }
 
-            if (b != null)
-                return b;
-            b = Search(guid, item.GroupItems);
-            
+            return b;
         }
-
-    return b;
-
-}
 
         /// <summary>
         ///     Invoked from Javascript to update the title of an element
@@ -186,13 +176,14 @@ namespace TreeBuilder.Classes {
         /// <param name="newTitle">The new title</param>
         /// <param name="objGuid">Guid of the object to update</param>
         [JSInvokable]
-        public void UpdateTitle(string newTitle, string objGuid, BaseClass obj) {
+        public void UpdateTitle(string newTitle, string objGuid, BaseClass obj)
+        {
             Console.WriteLine($"UpdateTitle {newTitle} {objGuid}");
-            
+
             var guid = Guid.Parse(objGuid);
-            
+
             BaseClass b = FindItem(guid);
-            
+
             b.SetTitle(newTitle);
             b.IsEditable = false;
 
@@ -208,25 +199,32 @@ namespace TreeBuilder.Classes {
             RenderService.Redraw();
         }
 
-        public void DeleteItem(string objGuid) {
+        public void DeleteItem(string objGuid)
+        {
             var guid = Guid.Parse(objGuid);
 
             BaseClass b = FindItem(guid);
             Console.WriteLine("Found " + b);
 
-            if (b.Is<Group>() || b.Is<IntegrationNode>()) {
+            if (b.Is<Group>() || b.Is<IntegrationNode>())
+            {
                 b.Parent.GroupItems.Remove(b);
-            } else if (b.Is<Interface>())
+            }
+            else if (b.Is<Interface>())
             {
                 Console.WriteLine(b.Parent.GetType());
-                if (b.Parent is InterfaceSlot) {
-                    (b.Parent.Parent as IntegrationNode).Interfaces[(b.Parent as InterfaceSlot).Position] = null;
-                    Console.WriteLine("Removed interface from " + (b.Parent as InterfaceSlot).Position);
+                if (b.Parent is IntegrationNode)
+                {
+                    Interface[] iarray = (b.Parent as IntegrationNode).Interfaces;
+                    int idx = iarray.IndexOf(b);
+                    if (iarray.IndexOf(b) != -1)
+                        iarray[iarray.IndexOf(b)] = null;
+                    Console.WriteLine("Removed interface from " + idx);
                 }
-                else {
+                else
+                {
                     b.Parent.GroupItems.Remove(b);
                 }
-                
             }
 
             DeleteItemFromStorage(b);
@@ -235,11 +233,12 @@ namespace TreeBuilder.Classes {
             RenderService.Redraw();
         }
 
-        public void DeleteItemFromStorage(BaseClass obj)
+        private void DeleteItemFromStorage(BaseClass obj)
         {
-            DeleteItemFromStorageInt(obj,Storage.GroupField.GroupItems);
-            DeleteItemFromStorageInt(obj,Storage.IntegrationField.GroupItems);
+            DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
+            DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
         }
+
         private void DeleteItemFromStorageInt(BaseClass obj, List<BaseClass> list)
         {
             if (list.Contains(obj))
@@ -250,9 +249,15 @@ namespace TreeBuilder.Classes {
 
             foreach (var i in list)
             {
+                if (i.Is<IntegrationNode>())
+                {
+                    Interface[] iarray = (i as IntegrationNode).Interfaces;
+                    if (iarray.IndexOf(obj) != -1)
+                        iarray.SetValue(null, iarray.IndexOf(obj));
+                }
+
                 DeleteItemFromStorageInt(obj, i.GroupItems);
             }
         }
-        
     }
 }
