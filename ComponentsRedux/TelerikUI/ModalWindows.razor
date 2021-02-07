@@ -47,6 +47,13 @@
         Storage.SaveToSessionStorage();
     }
 
+    public void ShowDeleteWindow()
+    {
+        isDeleteModalVisible = true;
+        ContextMenu.Guid = EventState.Payload.Guid;
+        StateHasChanged();
+    }
+
     public void DeleteItem() {
         EventState.DeleteItem(ContextMenu.Guid.ToString());
         isDeleteModalVisible = false;
