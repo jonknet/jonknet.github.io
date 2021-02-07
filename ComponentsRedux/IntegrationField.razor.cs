@@ -22,15 +22,14 @@ namespace TreeBuilder.ComponentsRedux {
         }
 
         public override void HandleOnDrop() {
-            if (Is<IntegrationNode>(EventState.Payload) && (ContainsNode(EventState.Payload as IntegrationNode) ||
-                                                            (EventState.Payload as IntegrationNode).HasNodesOnTop()))
+            if (Is<IntegrationNode>(EventState.Payload) && (ContainsNode(EventState.Payload as IntegrationNode)))
                 return;
 
-            if (Is<IntegrationNode>(EventState.Payload)) {
+            if (Is<IntegrationNode>(EventState.Payload))
+            {
+                EventState.DeleteItem(EventState.Payload.Guid.ToString());
                 GroupItems.Add(EventState.Payload as IntegrationNode);
-                (EventState.Payload.Parent as IntegrationNode).RemoveNode(EventState.Payload.Parent as IntegrationNode,
-                    EventState.Payload as IntegrationNode);
-                NodeReferences.Remove(EventState.Payload.Guid);
+                //NodeReferences.Remove(EventState.Payload.Guid);
                 EventState.Payload.Parent = this;
                 EventState.Payload.Field = this;
             }

@@ -56,7 +56,7 @@ namespace TreeBuilder.Classes {
                 Console.WriteLine(JsonConvert.SerializeObject(this,
                     new JsonSerializerSettings(){
                         TypeNameHandling = TypeNameHandling.All,
-                        ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                         PreserveReferencesHandling = PreserveReferencesHandling.Objects}));
             #endif
         }
@@ -81,6 +81,7 @@ namespace TreeBuilder.Classes {
 
         public virtual void HandleOnDragStart(BaseClass payload) {
             EventState.Payload = payload;
+            Console.WriteLine(EventState.Payload);
             if (payload is Interface) {
                 EventState.DraggingEvent = true;
                 var iface = payload as Interface;

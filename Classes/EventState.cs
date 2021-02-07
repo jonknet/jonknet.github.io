@@ -124,14 +124,11 @@ namespace TreeBuilder.Classes
 
             BaseClass output = null;
             output = Search(guid, Storage.GroupField.GroupItems);
-            if (output != null)
+            if (output == null)
             {
-                Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
-                return output;
+                output = Search(guid, Storage.IntegrationField.GroupItems);
             }
-
-            output = Search(guid, Storage.IntegrationField.GroupItems);
-            if (output != null)
+            if(output != null)
                 Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
             return output;
         }
@@ -141,30 +138,31 @@ namespace TreeBuilder.Classes
             BaseClass b = null;
             foreach (var item in list)
             {
+                Console.WriteLine(item);
                 if (item.Guid == guid)
                 {
                     Console.WriteLine("FindItem searched for " + guid + " and found " + item.Guid);
 
-                    b = item;
-                    break;
+                    return item;
                 }
 
                 if (item is IntegrationNode)
                 {
                     foreach (var i in (item as IntegrationNode).Interfaces)
                     {
+                        Console.WriteLine(i);
                         if (i != null && i.Guid == guid)
                         {
                             Console.WriteLine("FindItem searched for " + guid + " and found " + i.Guid);
-                            b = i;
-                            break;
+                            return i;
                         }
                     }
                 }
-
+                
+                if(item.GroupItems.Count > 0)
+                    b = Search(guid, item.GroupItems);
                 if (b != null)
                     return b;
-                b = Search(guid, item.GroupItems);
             }
 
             return b;

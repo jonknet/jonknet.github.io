@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -67,22 +68,23 @@ namespace TreeBuilder.ComponentsRedux {
 
         public override void HandleOnDrop() {
             if (!Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
-                Is<IntegrationNode>(EventState.Payload) && ContainsNode(EventState.Payload as IntegrationNode) ||
-                Is<IntegrationNode>(EventState.Payload) && HasNodesOnTop())
+                (Is<IntegrationNode>(EventState.Payload) && ContainsNode(EventState.Payload as IntegrationNode)))
+            {
+                Console.WriteLine(GetType() + " : HandleOnDrop" + " Failed drop");
+                Console.WriteLine(ContainsNode(EventState.Payload as IntegrationNode) + " " + HasNodesOnTop());
                 return;
+            }
+            
+            Console.WriteLine(GetType() + " : HandleOnDrop");
 
-            if (Is<IntegrationField>(EventState.Payload.Parent))
-                (EventState.Payload.Parent as IntegrationField).RemoveNode(
-                    EventState.Payload.Parent as IntegrationField,
-                    EventState.Payload as IntegrationNode);
-            else if (Is<IntegrationNode>(EventState.Payload.Parent))
-                (EventState.Payload.Parent as IntegrationNode).RemoveNode(EventState.Payload.Parent as IntegrationNode,
-                    EventState.Payload as IntegrationNode);
+            BaseClass b = EventState.FindItem(this.Guid);
+            
+            EventState.DeleteItem(EventState.Payload.Guid.ToString());
 
-            NodeReferences.Remove(EventState.Payload.Guid);
-            GroupItems.Add(EventState.Payload as IntegrationNode);
             EventState.Payload.Parent = this;
-
+            
+            b.GroupItems.Add(EventState.Payload as IntegrationNode);
+            
             RenderService.Redraw();
 
             Storage.SaveToSessionStorage();

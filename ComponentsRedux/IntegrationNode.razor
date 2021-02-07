@@ -20,8 +20,6 @@
          @onclick="(() => IsEditable=true)"
          onblur="HandleOnBlur(this)">@Title</div>
 
-    <br/>
-
     <div class="tb-flex tb-interfaceslots">
         <div>
             
@@ -40,10 +38,10 @@
 
         </div>
     </div>
-    <div class="flex-column">
+    <div class="tb-flex-column">
 
         @foreach (var node in GroupItems.Cast<IntegrationNode>()) {
-            <IntegrationNode DomId=@node.DomId Guid=@node.Guid Interfaces=@node.Interfaces Parent=@node.Parent @key=@node.Guid @ref=@Instances[node.Guid]></IntegrationNode>
+            <IntegrationNode DomId=@node.DomId Guid=@node.Guid GroupItems=@node.GroupItems Interfaces=@node.Interfaces Parent=@node.Parent @key=@node.Guid @ref=@Instances[node.Guid]></IntegrationNode>
         }
 
     </div>

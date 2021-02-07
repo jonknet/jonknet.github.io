@@ -10,7 +10,7 @@
      @oncontextmenu:stopPropagation
      @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid, this))">
 
-    <div id="@Guid" class="text-center" contenteditable="@IsEditable" 
+    <div id="@Guid" contenteditable="@IsEditable" 
          @onclick="(() => IsEditable=true)" 
          onblur="HandleOnBlur(this)">@Title</div>
 

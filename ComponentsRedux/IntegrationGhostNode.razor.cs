@@ -1,4 +1,5 @@
-﻿using TreeBuilder.Classes;
+﻿using System.Collections.Generic;
+using TreeBuilder.Classes;
 
 namespace TreeBuilder.ComponentsRedux {
     /// <summary>
@@ -11,36 +12,20 @@ namespace TreeBuilder.ComponentsRedux {
             var Node = new IntegrationNode();
             Node.Parent = Storage.IntegrationField;
             Node.Field = Storage.IntegrationField;
+            Node.GroupItems = new List<BaseClass>();
             
-            BaseClass b = EventState.FindItem(EventState.Payload.Guid);
-            
-            EventState.DeleteItem(EventState.Payload.Guid.ToString());
-            
-            b.Parent = new InterfaceSlot();
-
-
-            if (Position == InterfaceSlotPosition.Left)
-            {
-                Node.Interfaces[(int) InterfaceSlotPosition.Left] = b as Interface;
-                (b.Parent as InterfaceSlot).Position = (int) InterfaceSlotPosition.Left;
-            }
-            else if (Position == InterfaceSlotPosition.Right)
-            {
-                Node.Interfaces[(int) InterfaceSlotPosition.Right] = b as Interface;
-                (b.Parent as InterfaceSlot).Position = (int) InterfaceSlotPosition.Right;
-            }
-            
-            b.Parent.Parent = Node;
+            BaseClass b = new Interface();
+            b.Guid = System.Guid.NewGuid();
+            b.Parent = Node;
             b.Field = Storage.IntegrationField;
-
-
-
+            
+            Node.Interfaces[(int) Position] = b as Interface;
+            
             Storage.IntegrationField.GroupItems.Add(Node);
 
-            base.HandleOnDragEnd();
-            
-            RenderService.Redraw();
             Storage.SaveToSessionStorage();
+            
+            base.HandleOnDragEnd();
         }
     }
 }

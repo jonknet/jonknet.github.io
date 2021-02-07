@@ -11,42 +11,41 @@ namespace TreeBuilder.ComponentsRedux {
         public override void HandleOnDrop() {
             if (!Is<Interface>(EventState.Payload)) return;
 
-            // Hack to make sure the additional slots go away
-            Parent.HandleOnDragEnd();
-            
-            BaseClass b = EventState.FindItem(EventState.Payload.Guid);
-            b.Parent = this;
-            b.Field = Field;
-            
-            EventState.DeleteItem(EventState.Payload.Guid.ToString());
+            BaseClass b = null;
 
-            // Remove from previous field if switching fields
-            if (EventState.Payload.Field != Field) {
-                EventState.Payload.Parent.GroupItems.Remove(EventState.Payload);
-                
+            // Create new interface if transferring fields
+            if (EventState.Payload.Field.Is<GroupField>())
+            {
+                b = new Interface();
+                b.Guid = Guid.NewGuid();
             }
-            else if (Is<InterfaceSlot>(EventState.Payload.Parent)) {
+            else if (Is<IntegrationNode>(EventState.Payload.Parent))
+            {
+                b = EventState.FindItem(EventState.Payload.Guid);
+                var Inode = EventState.FindItem(EventState.Payload.Parent.Guid);
+                
                 // Remove from previous slot by nulling it out
-                var interfaces = (EventState.Payload.Parent.Parent as IntegrationNode).Interfaces;
+                var interfaces = (Inode as IntegrationNode).Interfaces;
                 for (var i = 0; i < interfaces.Length; i++)
                     if (interfaces[i] != null && interfaces[i].Equals(EventState.Payload)) {
                         interfaces[i] = null;
                         break;
                     }
             }
+            
+            b.Parent = Parent;
+            b.Field = Field;
 
             // Add to this slot
 
             (Parent as IntegrationNode).Interfaces[Position] = b as Interface;
 
             Console.WriteLine($"{GetType()} {Field.GetType()}");
-
-
-            CssClass = "";
-
-            RenderService.Redraw();
-
+            
             Storage.SaveToSessionStorage();
+            
+            // Make sure to end drag event so ghost node goes away
+            base.HandleOnDragEnd();
         }
     }
 }
