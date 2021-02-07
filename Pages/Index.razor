@@ -58,13 +58,12 @@
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) {
-            Console.WriteLine("OnAfterRender");
             StorageService.GroupField = fieldRef;
             StorageService.IntegrationField = integrationRef;
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
             RenderService.GhostNode = ghostRef;
-            EventState.PopulateDictionary(StorageService.GroupField.GroupItems.Concat(StorageService.IntegrationField.GroupItems).ToList());
+            //EventState.PopulateDictionary(StorageService.GroupField.GroupItems.Concat(StorageService.IntegrationField.GroupItems).ToList());
         }
     }
 

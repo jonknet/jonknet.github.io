@@ -52,13 +52,7 @@ namespace TreeBuilder.Classes {
         [JsonIgnore] public bool IsEditable = false;
 
         protected override void OnInitialized() {
-            #if DEBUG
-                Console.WriteLine(JsonConvert.SerializeObject(this,
-                    new JsonSerializerSettings(){
-                        TypeNameHandling = TypeNameHandling.All,
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                        PreserveReferencesHandling = PreserveReferencesHandling.Objects}));
-            #endif
+            
         }
 
         public void SetTitle(string newTitle) {

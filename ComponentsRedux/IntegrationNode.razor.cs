@@ -48,8 +48,6 @@ namespace TreeBuilder.ComponentsRedux {
 
 
         public override void HandleOnDragEnter(BaseClass payload) {
-            Console.WriteLine($"OnDragEnter LastDomId:{EventState.LastDomId} DomId:{DomId}");
-
             if (!Is<Interface>(EventState.Payload))
             {
                 return;
@@ -70,12 +68,9 @@ namespace TreeBuilder.ComponentsRedux {
             if (!Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
                 (Is<IntegrationNode>(EventState.Payload) && ContainsNode(EventState.Payload as IntegrationNode)))
             {
-                Console.WriteLine(GetType() + " : HandleOnDrop" + " Failed drop");
                 Console.WriteLine(ContainsNode(EventState.Payload as IntegrationNode) + " " + HasNodesOnTop());
                 return;
             }
-            
-            Console.WriteLine(GetType() + " : HandleOnDrop");
 
             BaseClass b = EventState.FindItem(this.Guid);
             

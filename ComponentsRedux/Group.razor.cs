@@ -15,7 +15,6 @@ namespace TreeBuilder.ComponentsRedux {
                 GroupItems.Contains(EventState.Payload) ||
                 EventState.Payload == this)
             {
-                Console.WriteLine("HandleOnDrop denied");
                 return;
             }
             

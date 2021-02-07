@@ -40,8 +40,6 @@ namespace TreeBuilder.ComponentsRedux {
 
             (Parent as IntegrationNode).Interfaces[Position] = b as Interface;
 
-            Console.WriteLine($"{GetType()} {Field.GetType()}");
-            
             Storage.SaveToSessionStorage();
             
             // Make sure to end drag event so ghost node goes away

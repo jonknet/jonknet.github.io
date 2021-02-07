@@ -120,16 +120,12 @@ namespace TreeBuilder.Classes
 
         public BaseClass FindItem(Guid guid)
         {
-            Console.WriteLine($"FindItem Guid:{guid}");
-
             BaseClass output = null;
             output = Search(guid, Storage.GroupField.GroupItems);
             if (output == null)
             {
                 output = Search(guid, Storage.IntegrationField.GroupItems);
             }
-            if(output != null)
-                Console.WriteLine($"Guid:{output.Guid},Title:{output.Title},Type:{output.GetType()}");
             return output;
         }
 
@@ -138,11 +134,8 @@ namespace TreeBuilder.Classes
             BaseClass b = null;
             foreach (var item in list)
             {
-                Console.WriteLine(item);
                 if (item.Guid == guid)
                 {
-                    Console.WriteLine("FindItem searched for " + guid + " and found " + item.Guid);
-
                     return item;
                 }
 
@@ -150,10 +143,8 @@ namespace TreeBuilder.Classes
                 {
                     foreach (var i in (item as IntegrationNode).Interfaces)
                     {
-                        Console.WriteLine(i);
                         if (i != null && i.Guid == guid)
                         {
-                            Console.WriteLine("FindItem searched for " + guid + " and found " + i.Guid);
                             return i;
                         }
                     }
@@ -202,7 +193,6 @@ namespace TreeBuilder.Classes
             var guid = Guid.Parse(objGuid);
 
             BaseClass b = FindItem(guid);
-            Console.WriteLine("Found " + b);
 
             if (b.Is<Group>() || b.Is<IntegrationNode>())
             {
@@ -217,7 +207,6 @@ namespace TreeBuilder.Classes
                     int idx = iarray.IndexOf(b);
                     if (iarray.IndexOf(b) != -1)
                         iarray[iarray.IndexOf(b)] = null;
-                    Console.WriteLine("Removed interface from " + idx);
                 }
                 else
                 {
