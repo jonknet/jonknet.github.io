@@ -154,3 +154,8 @@ a, .btn-link {
     .tb-interfaceslots {
         height: 120px;
     }
+    
+    .tb-trash {
+        font-size: 16px;
+        float: left;
+    }
