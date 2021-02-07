@@ -17,7 +17,7 @@ jobs:
         dotnet-version: 5.0.101
           # publishes Blazor project to the release-folder
     - name: Add package source
-      run: dotnet nuget add source https://nuget.telerik.com/nuget -u jonknet@gmail.com -p **REMOVED** --store-password-in-clear-text
+      run: dotnet nuget add source https://nuget.telerik.com/nuget -u jonknet@gmail.com -p JasonBolstad --store-password-in-clear-text
     - name: Dotnet Restore
       run: dotnet restore
     - name: Publish .NET Core Project
