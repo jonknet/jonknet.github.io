@@ -49,6 +49,16 @@ a, .btn-link {
         top: 0.5rem;
     }
 
+    html {
+        min-width: 800px;
+        position: relative;
+        
+    }
+    
+    .main {
+        background-color: #E0ECF1;
+    }
+
     .tb-draggable {
         cursor: move;
     }
@@ -63,30 +73,40 @@ a, .btn-link {
         box-shadow: -5px 5px 5px grey;
     }
     
+    @media (min-width: 576px){
+        .container {
+            max-width: 800px;
+        }
+    }
+
     .tb-group {
         display: flex;
         min-width: 170px;
         max-width: 300px;
-        min-height: 75px;
-        background-color: rgb(212, 158, 9);
+        min-height: 50px;
+        background-color: #98bf16;
         padding: 10px;
         margin: 5px;
         flex-direction: column;
         text-align: center;
-        z-index: 25;
+        flex-shrink: 0;
         
     }
 
     .tb-interface {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 146px;
         height: 33px;
-        background-color: rgb(80, 42, 216);
+        background-color: #209adc;
         margin: 0px;
         padding: 0px;
         font-size: small;
         align-self: center;
         z-index: 100;
         margin-bottom: 5px;
+        flex-shrink: 0;
     }
 
     .tb-dropborder {
@@ -100,8 +120,11 @@ a, .btn-link {
         flex-direction: column;
         align-items: center;
         vertical-align: top;
-        width: 500px;
-        min-height: 500px;
+        flex-shrink: 0;
+        flex: none;
+        max-height: 700px;
+        min-width: 350px;
+        overflow-y: auto;
     }
 
     .tb-flex {
@@ -110,6 +133,17 @@ a, .btn-link {
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
+        flex-shrink: 0;
+
+    }
+    
+    .tb-flex-column {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     .tb-integrationslot {
@@ -123,7 +157,7 @@ a, .btn-link {
     }
     
     .tb-integrationnode {
-        display: inline-table;
+        display: flex;
         border: 2px solid black;
         border-radius: 10px;
         min-height: 130px;
@@ -131,8 +165,9 @@ a, .btn-link {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        z-index: 50;
         margin: 5px;
+        flex-shrink: 0;
+        background-color: #007acc;
     }
 
     .tb-closeicon {
