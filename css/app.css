@@ -58,6 +58,18 @@ a, .btn-link {
     .main {
         background-color: #E0ECF1;
     }
+    
+    html,body {
+        height: 100%;
+    }
+    
+    #app {
+        height: 100%;
+    }
+    
+    .page {
+        height: 100%;
+    }
 
     .tb-draggable {
         cursor: move;
