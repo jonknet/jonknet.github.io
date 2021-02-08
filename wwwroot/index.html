@@ -107,9 +107,9 @@
             Calls UpdateTitle from .NET when Title div loses focus
          */
         function HandleOnBlur(e){
+            
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
             dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id, null);
-            
         }
         
         var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll');

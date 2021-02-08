@@ -80,6 +80,16 @@ namespace TreeBuilder.Classes
                 PopulateDictionary(item.GroupItems);
             }
         }
+        
+        [JSInvokable]
+        public void ToggleEditable(BaseClass obj) {
+            if (obj.IsEditable) {
+                JS.InvokeVoidAsync("HandleOnBlur", this);
+            }
+            else {
+                obj.IsEditable = true;
+            }
+        }
 
         [JSInvokable]
         public void OutputAll(List<BaseClass> list = null)
@@ -154,6 +164,8 @@ namespace TreeBuilder.Classes
 
             return b;
         }
+
+
 
         [JSInvokable]
         public void FinishTour()
@@ -234,10 +246,8 @@ namespace TreeBuilder.Classes
 
         private void DeleteItemFromStorage(BaseClass obj)
         {
-            if(obj.Field == Storage.GroupField)
-                DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
-            else
-                DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
+            DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
+            DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
         }
 
         private void DeleteItemFromStorageInt(BaseClass obj, List<BaseClass> list)

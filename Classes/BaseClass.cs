@@ -58,6 +58,8 @@ namespace TreeBuilder.Classes {
         public void SetTitle(string newTitle) {
             this.Title = newTitle;
         }
+        
+
 
         public virtual void HandleOnDragEnter(BaseClass target) {
             if (target is not IntegrationNode) {

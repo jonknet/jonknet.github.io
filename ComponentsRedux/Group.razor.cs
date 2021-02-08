@@ -18,9 +18,9 @@ namespace TreeBuilder.ComponentsRedux {
             
             EventState.DeleteItem(EventState.Payload.Guid.ToString());
 
-            GroupItems.Add(EventState.Payload);
-
             EventState.Payload.Parent = this;
+            
+            GroupItems.Add(EventState.Payload);
 
             if (Is<GroupField>())
             {

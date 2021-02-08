@@ -17,6 +17,7 @@ namespace TreeBuilder.ComponentsRedux {
             if (EventState.Payload.Field.Is<GroupField>())
             {
                 b = new Interface();
+                b.Title = EventState.Payload.Title;
                 b.Guid = Guid.NewGuid();
             }
             else if (Is<IntegrationNode>(EventState.Payload.Parent))

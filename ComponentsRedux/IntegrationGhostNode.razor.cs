@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TreeBuilder.Classes;
 
 namespace TreeBuilder.ComponentsRedux {
@@ -18,7 +19,8 @@ namespace TreeBuilder.ComponentsRedux {
             b.Guid = System.Guid.NewGuid();
             b.Parent = Node;
             b.Field = Storage.IntegrationField;
-            
+            b.Title = EventState.Payload.Title;
+
             Node.Interfaces[(int) Position] = b as Interface;
             
             Storage.IntegrationField.GroupItems.Add(Node);

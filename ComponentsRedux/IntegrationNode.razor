@@ -16,8 +16,9 @@
      @oncontextmenu:preventDefault="true"
      @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid, this))">
 
-    <div id="@Guid" class="text-center" contenteditable="@IsEditable" 
-         @onclick="(() => IsEditable=true)"
+    <div id="@Guid" class="text-center" contenteditable="@(IsEditable.ToString())" 
+         @onclick:stopPropagation
+         @onclick="(() => EventState.ToggleEditable(this))"
          onblur="HandleOnBlur(this)">@Title</div>
 
     <div class="tb-flex tb-interfaceslots">

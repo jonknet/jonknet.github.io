@@ -15,7 +15,11 @@
      @oncontextmenu:preventDefault="true"
      @oncontextmenu="@( (MouseEventArgs e) => ContextMenuRef.ShowMenu(e, Guid, this))">
 
-    <div id="@Guid" contenteditable="@IsEditable" @onclick="(() => IsEditable=true)" onblur="HandleOnBlur(this)">@Title</div>
+    <div id="@Guid" 
+         contenteditable="@(IsEditable.ToString())" 
+         @onclick:stopPropagation 
+         @onclick="(() => EventState.ToggleEditable(this))" 
+         onblur="HandleOnBlur(this)">@Title</div>
 
 
     @foreach (var item in GroupItems) {
