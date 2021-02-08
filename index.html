@@ -107,9 +107,9 @@
             Calls UpdateTitle from .NET when Title div loses focus
          */
         function HandleOnBlur(e){
+            
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
             dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id, null);
-            
         }
         
         var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll');
@@ -148,17 +148,20 @@
         function LaunchHelp(){
             
             var introjs = introJs().setOptions({
+                tooltipClass: 'custom-tooltip',
                 steps: [{
                     title: 'Welcome to HL7 Tree Builder!',
                     intro: 'This is a brief overview of how to use this software.'
                 },
                     {
                         element: document.querySelector('#buttonsgroup'),
-                        intro: 'This interface allows you to create Groups, Interfaces, and Integrations and also Clear your work.'
+                        intro: 'This interface allows you to create Groups, Interfaces, and Integrations and also Clear your work.<br/>' +
+                            '<img width=704px height=395px src="gifs/basicoperations.gif"/>'
                     },
                     {
                         element: document.querySelector('.ExGroup'),
-                        intro: 'This is a group. A group serves to hold interfaces and even other groups!'
+                        intro: 'This is a group. A group serves to hold interfaces and even other groups!<br/>' +
+                            '<img width=278px height=203px src="gifs/groups.gif"/>'
                     },
                     {
                         element: document.querySelector('#GroupField'),
@@ -170,17 +173,23 @@
                     },
                     {
                         element: document.querySelector('#IntegrationField'),
-                        intro: 'This is the Integration Field. Integrations can only reside here.'
+                        intro: 'This is the Integration Field. You can create a new integration by dragging an interface to the bottom right.' +
+                            '<img width=500px height=585px src="gifs/dragncreate.gif"/>'
                     },
                     {
                         element: document.querySelector('.ExIntegrationNode'),
-                        intro: 'And this is an Integration. An Integration takes up to 4 Interfaces and combines them.'
+                        intro: 'And this is an Integration. An Integration takes up to 4 Interfaces and combines them.<br/>' +
+                            '<img width=732px height=203px src="gifs/integrations.gif"/>'
                     },
                     {
                         intro: 'Interfaces can be dragged onto other groups or into the designated slots on an Integration <br/>' +
-                            "<img src=\"gifs/integrations.gif\"/>",
-                        tooltipClass: 'custom-tooltip'
+                            "<img width=500px height=555px src=\"gifs/genusage3.gif\"/>",
                         
+                    },
+                    {
+                        intro: 'All elements can be renamed by clicking or right clicking on the title, and deleted by dragging to the Trash bin or via right click. <br/>' +
+                            "<img width=500px height=565px src=\"gifs/renamedelete.gif\"/>",
+
                     },
                     {
                         intro: 'That\'s it for now! See the website for more information!'
