@@ -185,7 +185,7 @@
                         intro: 'That\'s it for now! See the website for more information!'
                     }]
             }).start().onchange(function(targetElement){
-                window.introjs_event.resize2_1();
+                window.dispatchEvent(new Event('resize'));
             }).onexit(function(targetElement){
                 dotNetRef.invokeMethod('FinishTour');
             });
