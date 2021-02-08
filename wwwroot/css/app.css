@@ -218,7 +218,6 @@ a, .btn-link {
     }
     
     .custom-tooltip {
-        width: 772px!important;
         max-width: 800px!important;
-        height: 415px!important;
+        max-height: 800px!important;
     }
