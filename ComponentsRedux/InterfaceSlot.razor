@@ -3,7 +3,6 @@
 
 <div id="@DomId" class="tb-integrationslot @CssClass"
      ondragover="event.preventDefault()"
-     @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 
     @if ((Parent as IntegrationNode).Interfaces[Position] != null) {
