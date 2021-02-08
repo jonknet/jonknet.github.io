@@ -4,13 +4,11 @@ using TreeBuilder.Classes;
 namespace TreeBuilder.ComponentsRedux {
     public partial class Group : BaseClass {
         public Group() { }
-        public Group(BaseClass Parent, Group Field) : base(Parent, Field) { }
+        public Group(BaseClass Parent) : base(Parent, Parent as Group) { }
         
 
         public override void HandleOnDrop()
         {
-            Console.WriteLine($"This: {this}\r\nPayload: {EventState.Payload}\r\nField: {EventState.Payload.Field}\r\nParent: {EventState.Payload.Parent}");
-
             if ((!EventState.Payload.Is<Interface>() && !EventState.Payload.Is<Group>()) ||
                 GroupItems.Contains(EventState.Payload) ||
                 EventState.Payload == this)

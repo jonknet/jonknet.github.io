@@ -41,7 +41,7 @@
     <div class="tb-flex-column">
 
         @foreach (var node in GroupItems.Cast<IntegrationNode>()) {
-            <IntegrationNode DomId=@node.DomId Guid=@node.Guid GroupItems=@node.GroupItems Interfaces=@node.Interfaces Parent=@node.Parent @key=@node.Guid @ref=@Instances[node.Guid]></IntegrationNode>
+            <IntegrationNode DomId=@node.DomId Guid=@node.Guid GroupItems=@node.GroupItems Interfaces=@node.Interfaces Parent=@node.Parent @key=@node.Guid></IntegrationNode>
         }
 
     </div>

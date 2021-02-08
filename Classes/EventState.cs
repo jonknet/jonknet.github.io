@@ -36,6 +36,9 @@ namespace TreeBuilder.Classes
 
             var dotNetRef = DotNetObjectReference.Create(this);
             JS.InvokeVoidAsync("UpdateTitleHelper", dotNetRef);
+            
+            if(Storage.GroupField != null && Storage.IntegrationField != null)
+                PopulateDictionary(Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList());
         }
 
         private StorageService Storage { get; }
@@ -72,16 +75,6 @@ namespace TreeBuilder.Classes
                 }
 
                 PopulateDictionary(item.GroupItems);
-            }
-        }
-
-
-        [JSInvokable]
-        public void OutputReferences()
-        {
-            foreach (var i in BaseClass.Instances.Values)
-            {
-                Console.WriteLine($"Guid:{i.Guid},Title:{i.Title},Type:{i.GetType()}");
             }
         }
 
@@ -167,8 +160,6 @@ namespace TreeBuilder.Classes
         [JSInvokable]
         public void UpdateTitle(string newTitle, string objGuid, BaseClass obj)
         {
-            Console.WriteLine($"UpdateTitle {newTitle} {objGuid}");
-
             var guid = Guid.Parse(objGuid);
 
             BaseClass b = FindItem(guid);
@@ -181,8 +172,6 @@ namespace TreeBuilder.Classes
                 obj.SetTitle(newTitle);
                 obj.IsEditable = false;
             }
-
-            Console.WriteLine(b.Title);
 
             Storage.SaveToSessionStorage();
             RenderService.Redraw();
@@ -197,10 +186,17 @@ namespace TreeBuilder.Classes
             if (b.Is<Group>() || b.Is<IntegrationNode>())
             {
                 b.Parent.GroupItems.Remove(b);
+
+                if (b.Is<Group>())
+                {
+                    RuntimeGroups.Remove(b.Guid);
+                } else if (b.Is<IntegrationNode>())
+                {
+                    RuntimeIntegrations.Remove(b.Guid);
+                }
             }
             else if (b.Is<Interface>())
             {
-                Console.WriteLine(b.Parent.GetType());
                 if (b.Parent is IntegrationNode)
                 {
                     Interface[] iarray = (b.Parent as IntegrationNode).Interfaces;
@@ -212,6 +208,8 @@ namespace TreeBuilder.Classes
                 {
                     b.Parent.GroupItems.Remove(b);
                 }
+
+                RuntimeInterfaces.Remove(b.Guid);
             }
 
             DeleteItemFromStorage(b);
@@ -222,8 +220,10 @@ namespace TreeBuilder.Classes
 
         private void DeleteItemFromStorage(BaseClass obj)
         {
-            DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
-            DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
+            if(obj.Field == Storage.GroupField)
+                DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
+            else
+                DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
         }
 
         private void DeleteItemFromStorageInt(BaseClass obj, List<BaseClass> list)

@@ -20,10 +20,10 @@
 
     @foreach (var item in GroupItems) {
         if (Is<Group>(item)) {
-            <Group Guid=@item.Guid Title=@item.Title GroupItems=@((item as Group).GroupItems) Parent=@item.Parent @key=@item.Guid @ref=@Instances[item.Guid]></Group>
+            <Group Guid=@item.Guid Title=@item.Title GroupItems=@((item as Group).GroupItems) Parent=@item.Parent @key=@item.Guid></Group>
         }
         else if (Is<Interface>(item)) {
-            <Interface Guid=@item.Guid Title=@item.Title Parent=@item.Parent @key=@item.Guid @ref=@Instances[item.Guid]></Interface>
+            <Interface Guid=@item.Guid Title=@item.Title Parent=@item.Parent @key=@item.Guid></Interface>
         }
 
     }

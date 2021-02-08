@@ -7,18 +7,11 @@ using TreeBuilder.Classes;
 namespace TreeBuilder.ComponentsRedux {
     public partial class IntegrationField : Group {
         public IntegrationField() { }
-        public IntegrationField(BaseClass Parent, Group Field) : base(Parent, Field) { }
-        
-        [JsonIgnore] public Dictionary<Guid, IntegrationNode> NodeReferences { get; set; } = new();
+        public IntegrationField(BaseClass Parent) : base(Parent) { }
 
         protected override void OnInitialized() {
             Field = this;
-            var intField = Storage.LoadIntegrationField();
-            if (intField != null) {
-                GroupItems.Clear();
-                GroupItems = intField.GroupItems;
-                Title = intField.Title;
-            }
+            GroupItems = Storage.IntegrationField.GroupItems;
         }
 
         public override void HandleOnDrop() {
@@ -37,18 +30,6 @@ namespace TreeBuilder.ComponentsRedux {
             RenderService.Redraw();
 
             Storage.SaveToSessionStorage();
-        }
-
-        // Helper methods
-        public void RemoveNode<T>(T BaseNode, IntegrationNode TargetNode) where T : IntegrationField {
-            foreach (var node in BaseNode.GroupItems) {
-                if (node.Equals(TargetNode)) {
-                    BaseNode.GroupItems.Remove(TargetNode);
-                    return;
-                }
-
-                RemoveNode(node as T, TargetNode);
-            }
         }
 
         /// <summary>

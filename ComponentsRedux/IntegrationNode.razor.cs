@@ -16,19 +16,22 @@ namespace TreeBuilder.ComponentsRedux {
         RightBottom = 3
     }
 
-    public partial class IntegrationNode : IntegrationField {
-        public static int CurrentDomId = 32847;
+    public partial class IntegrationNode : IntegrationField
+    {
 
-        public IntegrationNode() {
-            DomId = CurrentDomId;
-            CurrentDomId++;
+        private Random Random;
+        public IntegrationNode()
+        {
+            Random = new Random();
+            DomId = GetNextDomId();
         }
 
-        public IntegrationNode(BaseClass Parent, Group Field) : base(Parent, Field) {
+        public IntegrationNode(BaseClass Parent) : base(Parent) {
+            Random = new Random();
+            DomId = GetNextDomId();
+            
             this.Parent = Parent;
             this.Field = Field;
-            DomId = CurrentDomId;
-            CurrentDomId++;
         }
 
         [Parameter] public Interface[] Interfaces { get; set; } =  { null, null, null, null };
@@ -41,12 +44,19 @@ namespace TreeBuilder.ComponentsRedux {
                 Parent = Field;
             }
             Field = Storage.IntegrationField;
-            DomId = CurrentDomId;
-            CurrentDomId++;
+            Random = new Random();
+        }
+
+        private int GetNextDomId()
+        {
+            int newDomId = new Random().Next();
+            while (EventState.RuntimeIntegrations.Values.FirstOrDefault((e)=> e.DomId == newDomId) != null)
+            {
+                newDomId = new Random().Next();
+            }
+            return newDomId;
         }
         
-
-
         public override void HandleOnDragEnter(BaseClass payload) {
             if (!Is<Interface>(EventState.Payload))
             {

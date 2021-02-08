@@ -22,6 +22,7 @@ namespace TreeBuilder.ComponentsRedux {
             Node.Interfaces[(int) Position] = b as Interface;
             
             Storage.IntegrationField.GroupItems.Add(Node);
+            EventState.RuntimeIntegrations[Node.Guid] = Node;
 
             Storage.SaveToSessionStorage();
             

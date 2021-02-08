@@ -7,7 +7,7 @@
      @ondrop="HandleOnDrop">
 
     @if ((Parent as IntegrationNode).Interfaces[Position] != null) {
-        <Interface Guid=@((Parent as IntegrationNode).Interfaces[Position].Guid) Title=@((Parent as IntegrationNode).Interfaces[Position].Title) Parent=@(this.Parent) @key=@((Parent as IntegrationNode).Interfaces[Position].Guid) @ref=@(Instances[((Parent as IntegrationNode).Interfaces[Position].Guid)])></Interface>
+        <Interface Guid=@((Parent as IntegrationNode).Interfaces[Position].Guid) Title=@((Parent as IntegrationNode).Interfaces[Position].Title) Parent=@(this.Parent) @key=@((Parent as IntegrationNode).Interfaces[Position].Guid)></Interface>
     }
 
 </div>

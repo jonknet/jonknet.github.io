@@ -58,35 +58,32 @@
 
     protected override void OnAfterRender(bool firstRender) {
         if (firstRender) {
-            StorageService.GroupField = fieldRef;
-            StorageService.IntegrationField = integrationRef;
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
             RenderService.GhostNode = ghostRef;
-            //EventState.PopulateDictionary(StorageService.GroupField.GroupItems.Concat(StorageService.IntegrationField.GroupItems).ToList());
         }
     }
 
     public void AddGroup() {
-        var grp = new Group(fieldRef, fieldRef);
+        var grp = new Group(StorageService.GroupField);
         EventState.RuntimeGroups[grp.Guid] = grp;
-        fieldRef.GroupItems.Add(grp);
+        StorageService.GroupField.GroupItems.Add(grp);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }
 
     public void AddInterface() {
-        var iface = new Interface(fieldRef, fieldRef);
+        var iface = new Interface(StorageService.GroupField);
         EventState.RuntimeInterfaces[iface.Guid] = iface;
-        fieldRef.GroupItems.Add(iface);
+        StorageService.GroupField.GroupItems.Add(iface);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }
 
     public void AddIntegrationNode() {
-        var node = new IntegrationNode(integrationRef, integrationRef);
+        var node = new IntegrationNode(StorageService.IntegrationField);
         EventState.RuntimeIntegrations[node.Guid] = node;
-        integrationRef.GroupItems.Add(node);
+        StorageService.IntegrationField.GroupItems.Add(node);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
     }

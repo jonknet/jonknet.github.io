@@ -47,8 +47,6 @@ namespace TreeBuilder.Classes {
         public static ModalWindows WindowsRef { get; set; }
         public static ContextMenu ContextMenuRef { get; set; }
 
-        public static Dictionary<Guid, BaseClass> Instances { get; set; } = new Dictionary<Guid, BaseClass>();
-
         [JsonIgnore] public bool IsEditable = false;
 
         protected override void OnInitialized() {
@@ -75,7 +73,6 @@ namespace TreeBuilder.Classes {
 
         public virtual void HandleOnDragStart(BaseClass payload) {
             EventState.Payload = payload;
-            Console.WriteLine(EventState.Payload);
             if (payload is Interface) {
                 EventState.DraggingEvent = true;
                 var iface = payload as Interface;

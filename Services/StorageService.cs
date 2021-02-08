@@ -4,9 +4,10 @@ using TreeBuilder.ComponentsRedux;
 
 namespace TreeBuilder.Services {
     public class StorageService {
+        
         public GroupField GroupField;
-
         public IntegrationField IntegrationField;
+        
         public ISyncLocalStorageService LocalStorageService;
 
         public JsonSerializerSettings settings = new()
@@ -19,13 +20,9 @@ namespace TreeBuilder.Services {
 
         public StorageService(ISyncLocalStorageService LocalStorageService) {
             this.LocalStorageService = LocalStorageService;
-        }
 
-        public void Save(IntegrationField intField, GroupField grpField) {
-            LocalStorageService.SetItem("TreeBuilder_IntegrationField",
-                JsonConvert.SerializeObject(intField, settings));
-            LocalStorageService.SetItem("TreeBuilder_GroupField",
-                JsonConvert.SerializeObject(grpField, settings));
+            GroupField = LoadGroupField();
+            IntegrationField = LoadIntegrationField();
         }
 
         public void SaveToSessionStorage() {
@@ -35,14 +32,15 @@ namespace TreeBuilder.Services {
                 JsonConvert.SerializeObject(GroupField, settings));
         }
 
-        public GroupField LoadGroupField() {
-            if (!LocalStorageService.ContainKey("TreeBuilder_GroupField")) return null;
+        public GroupField LoadGroupField()
+        {
+            if (!LocalStorageService.ContainKey("TreeBuilder_GroupField")) return new GroupField();
             return JsonConvert.DeserializeObject<GroupField>(
                 LocalStorageService.GetItemAsString("TreeBuilder_GroupField"), settings);
         }
 
         public IntegrationField LoadIntegrationField() {
-            if (!LocalStorageService.ContainKey("TreeBuilder_IntegrationField")) return null;
+            if (!LocalStorageService.ContainKey("TreeBuilder_IntegrationField")) return new IntegrationField();
             return JsonConvert.DeserializeObject<IntegrationField>(
                 LocalStorageService.GetItemAsString("TreeBuilder_IntegrationField"), settings);
         }
