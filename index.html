@@ -92,24 +92,17 @@
         function UpdateTitleHelper(ref){
             dotNetRef = ref;
         }
-        
-        function HandleOnFocus(e){
-            console.log("onfocus fired: " + e);
-        }
 
         /*
             Calls UpdateTitle from .NET when Title div loses focus
          */
         function HandleOnBlur(e){
-            console.log("onblur fired: " + e);
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
-            console.log(str);
             dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id, null);
             e.removeAttribute("contenteditable");
         }
         
-        var outputStorage = () => dotNetRef.invokeMethodAsync('OutputStorage');
-        var outputReferences = () => dotNetRef.invokeMethodAsync('OutputReferences');
+        var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll');
         var outputDictionaries = () => dotNetRef.invokeMethodAsync('OutputDictionaries');
         
     </script>

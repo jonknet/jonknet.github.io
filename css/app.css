@@ -134,7 +134,7 @@ a, .btn-link {
         vertical-align: top;
         flex-shrink: 0;
         flex: none;
-        max-height: 700px;
+        height: 700px;
         min-width: 350px;
         overflow-y: auto;
     }
