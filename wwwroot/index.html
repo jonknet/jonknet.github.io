@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="_content/Telerik.UI.for.Blazor/css/kendo-theme-default/all.css" />
     <script src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js" defer></script>
     <script src="https://kit.fontawesome.com/e6ee6eb207.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/tippy.js@6/animations/shift-away.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/intro.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.css"/>
 </head>
 
 <body>
@@ -24,6 +32,8 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>
+        // Disables spellcheck so there's no underlining words in contenteditable fields
+        document.body.setAttribute('spellcheck', false);
         
         /*
             There is a chrome bug where if the DOM is updated during a drag event, the event will 
@@ -41,9 +51,9 @@
                     return;
                 var item = document.getElementById(domid);
                 item = item.getElementsByClassName("InterfaceSlots")[0];
-                Right = item.children.Right;
-                RightTop = item.children.RightTop;
-                RightBottom = item.children.RightBottom;
+                var Right = item.children.Right;
+                var RightTop = item.children.RightTop;
+                var RightBottom = item.children.RightBottom;
                 
                 var numActive = RightTop.children.length + Right.children.length + RightBottom.children.length;
                 
@@ -99,11 +109,89 @@
         function HandleOnBlur(e){
             var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
             dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id, null);
-            e.removeAttribute("contenteditable");
+            
         }
         
         var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll');
         var outputDictionaries = () => dotNetRef.invokeMethodAsync('OutputDictionaries');
+
+        
+        
+        function BindToolTipsToIcons() {
+            
+            tippy('#addgroup', {
+                content: 'Create a new group',
+                arrow: true,
+                animation: 'shift-away',
+            });
+
+            tippy('#addinterface', {
+                content: 'Create a new Interface',
+                arrow: true,
+                animation: 'shift-away',
+            });
+
+            tippy('#addnode', {
+                content: 'Create a new Integration',
+                arrow: true,
+                animation: 'shift-away',
+            });
+
+            tippy('#clearall', {
+                content: 'Clear all fields and start over',
+                arrow: true,
+                animation: 'shift-away',
+            });
+            
+        }
+        
+        function LaunchHelp(){
+            
+            introJs().setOptions({
+                steps: [{
+                    title: 'Welcome to HL7 Tree Builder!',
+                    intro: 'This is a brief overview of how to use this software.'
+                },
+                    {
+                        element: document.querySelector('#buttonsgroup'),
+                        intro: 'This interface allows you to create Groups, Interfaces, and Integrations and also Clear your work.'
+                    },
+                    {
+                        element: document.querySelector('.ExGroup'),
+                        intro: 'This is a group. A group serves to hold interfaces and even other groups!'
+                    },
+                    {
+                        element: document.querySelector('#GroupField'),
+                        intro: 'This is the Group Field. It only contains Groups and Interfaces.'
+                    },
+                    {
+                        element: document.querySelector('.ExInterface'),
+                        intro: 'This is an Interface. An Interface can fit in other groups or more importantly into an Integration.'
+                    },
+                    {
+                        element: document.querySelector('#IntegrationField'),
+                        intro: 'This is the Integration Field. Integrations can only reside here.'
+                    },
+                    {
+                        element: document.querySelector('.ExIntegrationNode'),
+                        intro: 'And this is an Integration. An Integration takes up to 4 Interfaces and combines them.'
+                    },
+                    {
+                        intro: 'Interfaces can be dragged onto other groups or into the designated slots on an Integration <br/>' +
+                            '<img src="gifs/integrations.gif"/>',
+                       
+                    },
+                    {
+                        intro: 'That\'s it for now! See the website for more information!'
+                    }]
+            }).start().onchange(function(targetElement){
+                window.introjs_event.resize2_1();
+            }).onexit(function(targetElement){
+                dotNetRef.invokeMethod('FinishTour');
+            });
+            
+            
+        }
         
     </script>
 </body>

@@ -24,6 +24,9 @@ namespace TreeBuilder.Classes
 
         public static bool DraggingEvent = false;
 
+        public GroupField GroupFieldBackup;
+        public IntegrationField IntFieldBackup;
+
         public static Dictionary<Guid, IntegrationNode> RuntimeIntegrations = new();
         public static Dictionary<Guid, Group> RuntimeGroups = new();
         public static Dictionary<Guid, Interface> RuntimeInterfaces = new();
@@ -150,6 +153,17 @@ namespace TreeBuilder.Classes
             }
 
             return b;
+        }
+
+        [JSInvokable]
+        public void FinishTour()
+        {
+            DraggingEvent = false;
+
+            Storage.GroupField = Storage.LoadGroupField();
+            Storage.IntegrationField = Storage.LoadIntegrationField();
+
+            RenderService.Redraw();
         }
 
         /// <summary>

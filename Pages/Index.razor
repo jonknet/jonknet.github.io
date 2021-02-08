@@ -2,6 +2,7 @@
 @inherits BaseClass
 @using TreeBuilder.Classes
 @using TreeBuilder.ComponentsRedux.TelerikUI;
+@using System.Timers
 
 @inject StorageService StorageService
 @inject RenderService RenderService
@@ -11,12 +12,15 @@
 @namespace TreeBuilder.Pages
 
 <div class="container" @ondragenter="(()=>HandleOnDragEnter(this))">
-    <div class="row">
-        <div class="col col-6">
-            <button @onclick="AddGroup">Add a group</button><br/>
-            <button @onclick="AddInterface">Add an interface</button><br/>
-            <button @onclick="AddIntegrationNode">Add an integration node</button><br/>
-        </div>
+    <div id="buttonsgroup" class="tb-addbuttons">
+        <i id="addgroup" class="fas fa-layer-group fa-3x p-3" @onclick="AddGroup"></i>
+        <i id="addinterface" class="fas fa-link fa-3x p-3" @onclick="AddInterface"></i>
+        <i id="addnode" class="fas fa-file-export fa-3x p-3" @onclick="AddIntegrationNode"></i>
+        <i id="clearall" class="fas fa-backspace fa-3x p-3" @onclick="ClearAll"></i>
+        <i id="help" class="fas fa-question-circle fa-3x p-3" @onclick="LaunchHelp"></i>
+            <!-- Not implemented yet
+            <i class="fas fa-download fa-3x"></i>
+            -->
     </div>
     <div class="row">
         <div class="col col-6">
@@ -33,7 +37,7 @@
                  ondragover="event.preventDefault()"
                  @ondrop:stopPropagation
                  @ondrop="(()=>WindowsRef.ShowDeleteWindow())">
-                <i class="fas fa-trash fa-6x"></i>
+                <i id="TrashCan" class="fas fa-trash fa-6x"></i>
             </div>
         </div>
         <div class="col col-6">
@@ -61,6 +65,7 @@
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
             RenderService.GhostNode = ghostRef;
+            ((IJSInProcessRuntime)JS).InvokeVoid("BindToolTipsToIcons");
         }
     }
 
@@ -86,6 +91,52 @@
         StorageService.IntegrationField.GroupItems.Add(node);
         StorageService.SaveToSessionStorage();
         RenderService.Redraw();
+    }
+
+    public void ClearAll()
+    {
+        StorageService.GroupField.GroupItems.Clear();
+        StorageService.IntegrationField.GroupItems.Clear();
+        EventState.RuntimeGroups.Clear();
+        EventState.RuntimeIntegrations.Clear();
+        EventState.RuntimeInterfaces.Clear();
+        StorageService.SaveToSessionStorage();
+        RenderService.Redraw();
+    }
+
+    
+    
+    public void SetupHelp()
+    {
+        GroupField g = StorageService.GroupField;
+        IntegrationField i = StorageService.IntegrationField;
+
+        StorageService.GroupField = new GroupField();
+        StorageService.IntegrationField = new IntegrationField();
+        
+        Group ng = new Group();
+        ng.Parent = StorageService.GroupField;
+        ng.CssClass = "ExGroup";
+        Interface ig = new Interface(g);
+        ig.Parent = ng;
+        ig.CssClass = "ExInterface";
+        ng.GroupItems.Add(ig);
+        IntegrationNode inn = new IntegrationNode(i);
+        inn.CssClass = "ExIntegrationNode";
+        StorageService.GroupField.GroupItems.Add(ng);
+        StorageService.IntegrationField.GroupItems.Add(inn);
+        EventState.DraggingEvent = true;
+
+        StateHasChanged();
+        RenderService.Redraw();
+
+    }
+    
+    public async void LaunchHelp()
+    {
+        SetupHelp();
+        await Task.Delay(200);
+        ((IJSInProcessRuntime) JS).InvokeVoid("LaunchHelp");
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -14,10 +15,11 @@ namespace TreeBuilder.Classes {
     ///     BaseClass of all types
     /// </summary>
     public class BaseClass : ComponentBase {
-        public BaseClass() {
+
+        public BaseClass()
+        {
             
         }
-
         public BaseClass(BaseClass Parent, Group Field) {
             this.Parent = Parent;
             this.Field = Field;
