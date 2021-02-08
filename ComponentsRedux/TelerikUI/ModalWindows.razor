@@ -1,5 +1,6 @@
 ﻿@inject EventState EventState
 @inject StorageService Storage
+@inject RenderService RenderService
 
 
     <TelerikWindow Modal="true" @bind-Visible="@isRenameModalVisible">
@@ -30,21 +31,13 @@
     [Parameter] public bool isRenameModalVisible { get; set; } = false;
     [Parameter] public bool isDeleteModalVisible { get; set; } = false;
 
-    protected override void OnInitialized() {
-
-        base.OnInitialized();
-    }
-
-    
-
     public string NewTitle { get; set; } = "";
 
     public void SaveTitle() {
-        EventState.UpdateTitle(NewTitle, ContextMenu.Guid.ToString(), ContextMenu.BoundInstance);
+        EventState.UpdateTitle(NewTitle, ContextMenu.Guid.ToString(),ContextMenu.BoundInstance);
         isRenameModalVisible = false;
         NewTitle = "";
-        StateHasChanged();
-        Storage.SaveToSessionStorage();
+        RenderService.Redraw();
     }
 
     public void ShowDeleteWindow()

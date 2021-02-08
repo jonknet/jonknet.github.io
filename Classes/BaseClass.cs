@@ -45,6 +45,8 @@ namespace TreeBuilder.Classes {
         [JsonIgnore] public string CssSelect { get; set; } = "";
 
         [Parameter] public List<BaseClass> GroupItems { get; set; } = new();
+
+        [Parameter] public BaseClass InstanceClass { get; set; }
         
         public static ModalWindows WindowsRef { get; set; }
         public static ContextMenu ContextMenuRef { get; set; }
@@ -52,8 +54,17 @@ namespace TreeBuilder.Classes {
         [JsonIgnore] public bool IsEditable = false;
 
         protected override void OnInitialized() {
-            
+            if (InstanceClass != null) {
+                Guid = InstanceClass.Guid;
+                Title = InstanceClass.Title;
+                Field = InstanceClass.Field;
+                CssClass = InstanceClass.CssClass;
+                CssSelect = InstanceClass.CssSelect;
+                GroupItems = InstanceClass.GroupItems;
+            }
         }
+        
+        
 
         public void SetTitle(string newTitle) {
             this.Title = newTitle;

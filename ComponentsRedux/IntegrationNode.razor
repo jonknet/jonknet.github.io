@@ -1,5 +1,5 @@
 ﻿@using System.Timers
-@inherits IntegrationField
+@inherits Group
 
 <div id="@DomId.ToString()" draggable="true" class="tb-integrationnode tb-draggable tb-contextmenu @CssClass @CssSelect"
      @ondragenter:stopPropagation
@@ -42,14 +42,7 @@
     <div class="tb-flex-column">
 
         @foreach (var node in GroupItems.Cast<IntegrationNode>()) {
-            <IntegrationNode Title=@node.Title 
-                             DomId=@node.DomId 
-                             Guid=@node.Guid 
-                             GroupItems=@node.GroupItems 
-                             Interfaces=@node.Interfaces 
-                             Parent=@node.Parent 
-                             @key=@node.Guid 
-                             CssClass=@node.CssClass></IntegrationNode>
+            <IntegrationNode InstanceClass=@node Parent="this" @key=@node.Guid></IntegrationNode>
         }
 
     </div>

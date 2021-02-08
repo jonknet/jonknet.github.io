@@ -24,19 +24,10 @@
 
     @foreach (var item in GroupItems) {
         if (Is<Group>(item)) {
-            <Group Guid=@item.Guid 
-                   Title=@item.Title 
-                   GroupItems=@((item as Group).GroupItems) 
-                   Parent=@item.Parent 
-                   CssClass=@item.CssClass
-                   @key=@item.Guid></Group>
+            <Group InstanceClass=@item Parent="this" @key=@item.Guid></Group>
         }
         else if (Is<Interface>(item)) {
-            <Interface Guid=@item.Guid 
-                       Title=@item.Title 
-                       Parent=@item.Parent
-                       CssClass=@item.CssClass
-                       @key=@item.Guid></Interface>
+            <Interface InstanceClass=@item Parent="this" @key=@item.Guid></Interface>
         }
 
     }

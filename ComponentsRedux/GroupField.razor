@@ -12,19 +12,10 @@
     <CascadingValue Value="this" Name="Field">
         @foreach (var item in Storage.GroupField.GroupItems) {
             @if (Is<Group>(item)) {
-                <Group Guid=@item.Guid 
-                       Title=@item.Title 
-                       GroupItems=@((item as Group).GroupItems) 
-                       Parent=@item.Parent 
-                       @key=@item.Guid 
-                       CssClass=@item.CssClass></Group>
+                <Group InstanceClass=@item Parent="this" @key=@item.Guid></Group>
             }
             else if (Is<Interface>(item)) {
-                <Interface Guid=@item.Guid 
-                           Title=@item.Title 
-                           Parent=@item.Parent 
-                           @key=@item.Guid 
-                           CssClass=@item.CssClass></Interface>
+                <Interface InstanceClass=@item Parent="this" @key=@item.Guid></Interface>
             }
 
         }

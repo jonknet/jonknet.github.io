@@ -190,17 +190,17 @@ namespace TreeBuilder.Classes
 
             BaseClass b = FindItem(guid);
 
-            b.SetTitle(newTitle);
-            b.IsEditable = false;
+            Console.WriteLine(b);
 
-            if (obj != null)
-            {
-                obj.SetTitle(newTitle);
+            if (obj != null) {
+                obj.Title = newTitle;
                 obj.IsEditable = false;
             }
 
-            Storage.SaveToSessionStorage();
+            b.SetTitle(newTitle);
+            b.IsEditable = false;
             RenderService.Redraw();
+            Storage.SaveToSessionStorage();
         }
 
         public void DeleteItem(string objGuid)

@@ -16,22 +16,17 @@ namespace TreeBuilder.ComponentsRedux {
         RightBottom = 3
     }
 
-    public partial class IntegrationNode : IntegrationField
-    {
+    public partial class IntegrationNode : Group {
 
-        private Random Random;
+        private static Random Random { get; set; } = new Random();
+
         public IntegrationNode()
         {
-            Random = new Random();
             DomId = GetNextDomId();
         }
 
         public IntegrationNode(BaseClass Parent) : base(Parent) {
-            Random = new Random();
             DomId = GetNextDomId();
-            
-            this.Parent = Parent;
-            this.Field = Field;
         }
 
         [Parameter] public Interface[] Interfaces { get; set; } =  { null, null, null, null };
@@ -39,20 +34,19 @@ namespace TreeBuilder.ComponentsRedux {
         [Parameter] public int DomId { get; set; }
 
         protected override void OnInitialized() {
-            if (Parent == null)
-            {
-                Parent = Field;
+            if (InstanceClass != null) {
+                base.OnInitialized();
+                DomId = (InstanceClass as IntegrationNode).DomId;
+                Interfaces = (InstanceClass as IntegrationNode).Interfaces;
             }
-            Field = Storage.IntegrationField;
-            Random = new Random();
         }
 
         private int GetNextDomId()
         {
-            int newDomId = new Random().Next();
+            int newDomId = Random.Next();
             while (EventState.RuntimeIntegrations.Values.FirstOrDefault((e)=> e.DomId == newDomId) != null)
             {
-                newDomId = new Random().Next();
+                newDomId = Random.Next();
             }
             return newDomId;
         }
@@ -76,9 +70,9 @@ namespace TreeBuilder.ComponentsRedux {
 
         public override void HandleOnDrop() {
             if (!Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
-                (Is<IntegrationNode>(EventState.Payload) && ContainsNode(EventState.Payload as IntegrationNode)))
+                (Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
             {
-                Console.WriteLine(ContainsNode(EventState.Payload as IntegrationNode) + " " + HasNodesOnTop());
+                Console.WriteLine(this.ContainsNode(EventState.Payload as IntegrationNode) + " " + this.HasNodesOnTop());
                 return;
             }
 

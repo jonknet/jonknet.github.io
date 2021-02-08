@@ -65,6 +65,7 @@
             RenderService.GroupField = fieldRef;
             RenderService.IntegrationField = integrationRef;
             RenderService.GhostNode = ghostRef;
+            RenderService.App = this;
             ((IJSInProcessRuntime)JS).InvokeVoid("BindToolTipsToIcons");
         }
     }
