@@ -147,7 +147,7 @@
         
         function LaunchHelp(){
             
-            introJs().setOptions({
+            var introjs = introJs().setOptions({
                 steps: [{
                     title: 'Welcome to HL7 Tree Builder!',
                     intro: 'This is a brief overview of how to use this software.'
@@ -178,17 +178,27 @@
                     },
                     {
                         intro: 'Interfaces can be dragged onto other groups or into the designated slots on an Integration <br/>' +
-                            '<img src="gifs/integrations.gif"/>',
-                       
+                            "<img src=\"gifs/integrations.gif\"/>",
+                        tooltipClass: 'custom-tooltip'
+                        
                     },
                     {
                         intro: 'That\'s it for now! See the website for more information!'
                     }]
-            }).start().onchange(function(targetElement){
+            });
+            
+            introjs.onafterchange(function(targetElement){
+                console.log("onafterchange");
                 window.dispatchEvent(new Event('resize'));
             }).onexit(function(targetElement){
                 dotNetRef.invokeMethod('FinishTour');
             });
+            
+            introjs.start();
+            
+            function resizeEvent(){
+                window.dispatchEvent(new Event('resize'));
+            }
             
             
         }

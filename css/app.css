@@ -214,6 +214,8 @@ a, .btn-link {
         align-items: center;
     }
     
-    .introjs-tooltip {
-        max-width: 800px!important
+    .custom-tooltip {
+        width: 772px!important;
+        max-width: 800px!important;
+        height: 415px!important;
     }
