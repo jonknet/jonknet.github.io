@@ -206,3 +206,14 @@ a, .btn-link {
         font-size: 16px;
         float: left;
     }
+    
+    .tb-addbuttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .introjs-tooltip {
+        max-width: 800px!important
+    }
