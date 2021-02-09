@@ -61,14 +61,6 @@ namespace TreeBuilder.Classes {
                 GroupItems = InstanceClass.GroupItems;
             }
         }
-        
-        
-
-        public void SetTitle(string newTitle) {
-            this.Title = newTitle;
-        }
-        
-
 
         public virtual void HandleOnDragEnter(BaseClass target) {
             if (target is not IntegrationNode) {
@@ -123,21 +115,7 @@ namespace TreeBuilder.Classes {
         public void Render() {
             StateHasChanged();
         }
-
-        /// <summary>
-        ///     Helper method to determine class type
-        /// </summary>
-        /// <param name="Base">Class you want to check</param>
-        /// <typeparam name="T">Type to check for</typeparam>
-        /// <returns></returns>
-        public bool Is<T>(BaseClass Base) {
-            return Base is T;
-        }
-
-        public bool Is<T>() {
-            return this is T;
-        }
-
+        
         public override bool Equals(object obj) {
             if (obj == null || !GetType().Equals(obj.GetType())) return false;
 

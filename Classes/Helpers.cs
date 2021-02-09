@@ -11,7 +11,7 @@ namespace TreeBuilder.Classes {
         public static bool Is<T>(this BaseClass Base) {
             return Base is T;
         }
-        
+
         /// <summary>
         ///     Returns true if an IntegrationNode contains other nodes
         /// </summary>

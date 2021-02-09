@@ -52,7 +52,7 @@ namespace TreeBuilder.ComponentsRedux {
         }
         
         public override void HandleOnDragEnter(BaseClass payload) {
-            if (!Is<Interface>(EventState.Payload))
+            if (!Helpers.Is<Interface>(EventState.Payload))
             {
                 return;
             }
@@ -66,8 +66,8 @@ namespace TreeBuilder.ComponentsRedux {
         }
 
         public override void HandleOnDrop() {
-            if (!Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
-                (Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
+            if (!Helpers.Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
+                (Helpers.Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
             {
                 Console.WriteLine(this.ContainsNode(EventState.Payload as IntegrationNode) + " " + this.HasNodesOnTop());
                 return;

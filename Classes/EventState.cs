@@ -200,14 +200,12 @@ namespace TreeBuilder.Classes
 
             BaseClass b = FindItem(guid);
 
-            Console.WriteLine(b);
-
             if (obj != null) {
                 obj.Title = newTitle;
                 obj.IsEditable = false;
             }
 
-            b.SetTitle(newTitle);
+            b.Title = newTitle;
             b.IsEditable = false;
             RenderService.Redraw();
             Storage.SaveToSessionStorage();

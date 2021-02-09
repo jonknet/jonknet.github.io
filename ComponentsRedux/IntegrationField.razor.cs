@@ -15,8 +15,8 @@ namespace TreeBuilder.ComponentsRedux {
         }
 
         public override void HandleOnDrop() {
-            if (!(Is<IntegrationNode>(EventState.Payload)) || 
-                (Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
+            if (!(Helpers.Is<IntegrationNode>(EventState.Payload)) || 
+                (Helpers.Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
                 return;
 
             BaseOnDrop();

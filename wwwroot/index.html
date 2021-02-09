@@ -33,6 +33,28 @@
         // Disables spellcheck so there's no underlining words in contenteditable fields
         document.body.setAttribute('spellcheck', false);
         
+        // Preload images
+        var images = [];
+        function preload() {
+            for (var i = 0; i < arguments.length; i++) {
+                images[i] = new Image();
+                images[i].src = preload.arguments[i];
+            }
+        }
+
+        //-- usage --//
+        preload(
+            "gifs/basicoperations.gif",
+            "gifs/dragncreate.gif",
+            "gifs/genusage3.gif",
+            "gifs/groups.gif",
+            "gifs/integrations.gif",
+            "gifs/renamedelete.gif",
+            "gifs/grouping.gif",
+            "gifs/trash.gif",
+            "gifs/renamedeletecontext.gif"
+        )
+        
         /*
             There is a chrome bug where if the DOM is updated during a drag event, the event will 
             be cancelled and DragEnd will be called unexpectedly. In order to get around this,
@@ -220,6 +242,7 @@
             });
             
             introjs.start();
+            
             
             
         }

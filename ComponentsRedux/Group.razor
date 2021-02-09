@@ -23,10 +23,10 @@
 
 
     @foreach (var item in GroupItems) {
-        if (Is<Group>(item)) {
+        if (Helpers.Is<Group>(item)) {
             <Group InstanceClass=@item Parent="this" @key=@item.Guid></Group>
         }
-        else if (Is<Interface>(item)) {
+        else if (Helpers.Is<Interface>(item)) {
             <Interface InstanceClass=@item Parent="this" @key=@item.Guid></Interface>
         }
 

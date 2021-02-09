@@ -1,15 +1,22 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Components;
 using TreeBuilder.Classes;
+using static System.Array;
 
 namespace TreeBuilder.ComponentsRedux {
     public partial class InterfaceSlot : BaseClass {
         [Parameter] public int Position { get; set; }
         [Parameter] public string DomId { get; set; }
 
+        protected override void OnInitialized() {
+            Field = Storage.IntegrationField;
+        }
+
         public override void HandleOnDrop() {
-            if (!Is<Interface>(EventState.Payload)) return;
+            if (!Helpers.Is<Interface>(EventState.Payload) || 
+                (IndexOf((Parent as IntegrationNode).Interfaces,EventState.Payload) == Position)) return;
 
             BaseClass b = null;
 
@@ -20,7 +27,7 @@ namespace TreeBuilder.ComponentsRedux {
                 b.Title = EventState.Payload.Title;
                 b.Guid = Guid.NewGuid();
             }
-            else if (Is<IntegrationNode>(EventState.Payload.Parent))
+            else if (Helpers.Is<IntegrationNode>(EventState.Payload.Parent))
             {
                 b = EventState.FindItem(EventState.Payload.Guid);
                 var Inode = EventState.FindItem(EventState.Payload.Parent.Guid);
