@@ -12,28 +12,19 @@ namespace TreeBuilder.ComponentsRedux {
                 GroupItems.Contains(EventState.Payload) ||
                 EventState.Payload == this || EventState.Payload.Is<IntegrationNode>())
             {
+                HandleOnDragEnd();
                 return;
             }
-            
-            EventState.DeleteItem(EventState.Payload.Guid.ToString());
 
-            EventState.Payload.Parent = this;
-            
-            GroupItems.Add(EventState.Payload);
+            base.HandleOnDrop();
+        }
 
-            if (Is<GroupField>())
-            {
-                EventState.Payload.Field = this;
-            }
-            else
-            {
-                EventState.Payload.Field = Field;
-            }
-            
-            CssClass = "";
-            EventState.DraggingEvent = false;
-            RenderService.Redraw();
-            Storage.SaveToSessionStorage();
+        /// <summary>
+        /// Pass-thru functionality so we can call BaseClass's HandleOnDrop from IntegrationField
+        /// </summary>
+        protected void BaseOnDrop()
+        {
+            base.HandleOnDrop();
         }
         
     }

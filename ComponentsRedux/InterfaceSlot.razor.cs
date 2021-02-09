@@ -42,8 +42,7 @@ namespace TreeBuilder.ComponentsRedux {
             (Parent as IntegrationNode).Interfaces[Position] = b as Interface;
 
             Storage.SaveToSessionStorage();
-            
-            // Make sure to end drag event so ghost node goes away
+
             base.HandleOnDragEnd();
         }
     }

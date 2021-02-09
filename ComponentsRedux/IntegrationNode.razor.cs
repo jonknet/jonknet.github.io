@@ -16,7 +16,7 @@ namespace TreeBuilder.ComponentsRedux {
         RightBottom = 3
     }
 
-    public partial class IntegrationNode : Group {
+    public partial class IntegrationNode : BaseClass {
 
         private static Random Random { get; set; } = new Random();
 
@@ -25,7 +25,7 @@ namespace TreeBuilder.ComponentsRedux {
             DomId = GetNextDomId();
         }
 
-        public IntegrationNode(BaseClass Parent) : base(Parent) {
+        public IntegrationNode(BaseClass Parent) : base(Parent, Parent as Group) {
             DomId = GetNextDomId();
         }
 
@@ -56,12 +56,9 @@ namespace TreeBuilder.ComponentsRedux {
             {
                 return;
             }
-
-            if (EventState.LastDomId != -1 && EventState.LastDomId != DomId)
-            {
-                ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
-            }
-            ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", DomId.ToString(), true);
+            
+            JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), !(EventState.LastDomId != -1 && EventState.LastDomId != DomId));
+           
             EventState.LastDomId = DomId;
 
             CssClass = "tb-dropborder";
@@ -76,17 +73,7 @@ namespace TreeBuilder.ComponentsRedux {
                 return;
             }
 
-            BaseClass b = EventState.FindItem(this.Guid);
-            
-            EventState.DeleteItem(EventState.Payload.Guid.ToString());
-
-            EventState.Payload.Parent = this;
-            
-            b.GroupItems.Add(EventState.Payload as IntegrationNode);
-            
-            RenderService.Redraw();
-
-            Storage.SaveToSessionStorage();
+            base.HandleOnDrop();
         }
     }
 }

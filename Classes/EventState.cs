@@ -26,7 +26,7 @@ namespace TreeBuilder.Classes
 
         public GroupField GroupFieldBackup;
         public IntegrationField IntFieldBackup;
-
+        
         public static Dictionary<Guid, IntegrationNode> RuntimeIntegrations = new();
         public static Dictionary<Guid, Group> RuntimeGroups = new();
         public static Dictionary<Guid, Interface> RuntimeInterfaces = new();
@@ -43,7 +43,7 @@ namespace TreeBuilder.Classes
             if(Storage.GroupField != null && Storage.IntegrationField != null)
                 PopulateDictionary(Storage.GroupField.GroupItems.Concat(Storage.IntegrationField.GroupItems).ToList());
         }
-
+        
         private StorageService Storage { get; }
         private IJSRuntime JS { get; }
         private RenderService RenderService { get; }
@@ -52,7 +52,7 @@ namespace TreeBuilder.Classes
         ///     Extracts All Items and inserts them into their respective Dictionaries
         /// </summary>
         /// <param name="list">List of items</param>
-        public void PopulateDictionary(List<BaseClass> list)
+        private void PopulateDictionary(List<BaseClass> list)
         {
             foreach (var item in list)
             {
@@ -81,7 +81,10 @@ namespace TreeBuilder.Classes
             }
         }
         
-        [JSInvokable]
+        /// <summary>
+        /// Toggles whether the title is editable or not
+        /// </summary>
+        /// <param name="obj"></param>
         public void ToggleEditable(BaseClass obj) {
             if (obj.IsEditable) {
                 JS.InvokeVoidAsync("HandleOnBlur", this);
@@ -116,7 +119,7 @@ namespace TreeBuilder.Classes
         [JSInvokable]
         public void OutputDictionaries()
         {
-            List<BaseClass> list = RuntimeGroups.Values.Concat(RuntimeIntegrations.Values)
+            List<BaseClass> list = RuntimeGroups.Values.Concat<BaseClass>(RuntimeIntegrations.Values)
                 .Concat<BaseClass>(RuntimeInterfaces.Values).ToList();
             foreach (var i in list)
             {
@@ -124,6 +127,11 @@ namespace TreeBuilder.Classes
             }
         }
 
+        /// <summary>
+        /// Searches for an item in the Fields by Guid
+        /// </summary>
+        /// <param name="guid">Guid of object</param>
+        /// <returns>Found BaseClass object</returns>
         public BaseClass FindItem(Guid guid)
         {
             BaseClass output = null;
@@ -166,7 +174,9 @@ namespace TreeBuilder.Classes
         }
 
 
-
+        /// <summary>
+        /// Called by Javascript when the help tour is finished
+        /// </summary>
         [JSInvokable]
         public void FinishTour()
         {
@@ -179,7 +189,7 @@ namespace TreeBuilder.Classes
         }
 
         /// <summary>
-        ///     Invoked from Javascript to update the title of an element
+        /// Invoked from Javascript to update the title of an element
         /// </summary>
         /// <param name="newTitle">The new title</param>
         /// <param name="objGuid">Guid of the object to update</param>

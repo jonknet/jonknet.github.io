@@ -112,7 +112,13 @@ namespace TreeBuilder.Classes {
         public virtual void HandleOnDrop() {
             EventState.DraggingEvent = false;
             CssClass = "";
+            
+            EventState.DeleteItem(EventState.Payload.Guid.ToString());
+            GroupItems.Add(EventState.Payload);
+            EventState.Payload.Parent = this;
+            
             Storage.SaveToSessionStorage();
+            RenderService.Redraw();
         }
 
         public void Render() {

@@ -15,21 +15,11 @@ namespace TreeBuilder.ComponentsRedux {
         }
 
         public override void HandleOnDrop() {
-            if (Is<IntegrationNode>(EventState.Payload) && (this.ContainsNode(EventState.Payload as IntegrationNode)))
+            if (!(Is<IntegrationNode>(EventState.Payload)) || 
+                (Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
                 return;
 
-            if (Is<IntegrationNode>(EventState.Payload))
-            {
-                EventState.DeleteItem(EventState.Payload.Guid.ToString());
-                GroupItems.Add(EventState.Payload as IntegrationNode);
-                //NodeReferences.Remove(EventState.Payload.Guid);
-                EventState.Payload.Parent = this;
-                EventState.Payload.Field = this;
-            }
-
-            RenderService.Redraw();
-
-            Storage.SaveToSessionStorage();
+            BaseOnDrop();
         }
 
 
