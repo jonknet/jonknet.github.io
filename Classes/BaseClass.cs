@@ -37,11 +37,13 @@ namespace TreeBuilder.Classes {
         [JsonProperty(IsReference = true)] 
         public BaseClass Parent { get; set; }
         
+        [JsonProperty(IsReference = true)] 
         public Group Field { get; set; }
 
         [Parameter] [JsonIgnore] public string CssClass { get; set; } = "";
         [JsonIgnore] public string CssSelect { get; set; } = "";
 
+        [JsonProperty(IsReference = true)]
         public List<BaseClass> GroupItems { get; set; } = new();
 
         [Parameter] public BaseClass InstanceClass { get; set; }
@@ -107,6 +109,7 @@ namespace TreeBuilder.Classes {
             EventState.DeleteItem(EventState.Payload.Guid.ToString());
             GroupItems.Add(EventState.Payload);
             EventState.Payload.Parent = this;
+            EventState.Payload.Field = Field;
             
             Storage.SaveToSessionStorage();
             RenderService.Redraw();

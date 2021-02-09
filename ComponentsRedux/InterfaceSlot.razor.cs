@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 using TreeBuilder.Classes;
 using static System.Array;
 
@@ -19,6 +21,8 @@ namespace TreeBuilder.ComponentsRedux {
                 (IndexOf((Parent as IntegrationNode).Interfaces,EventState.Payload) == Position)) return;
 
             BaseClass b = null;
+
+            Console.WriteLine($"{EventState.Payload.Field} \r\n {EventState.Payload.Parent}");
 
             // Create new interface if transferring fields
             if (EventState.Payload.Field.Is<GroupField>())
