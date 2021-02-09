@@ -5,12 +5,12 @@
      @ondrop:stopPropagation
      @ondrop="HandleOnDrop">
 
-    <CascadingValue Value="this" Name="Field">
+    
         @foreach (var item in Storage.IntegrationField.GroupItems.Cast<IntegrationNode>()) {
             <IntegrationNode InstanceClass=@item Parent="this" @key=@item.Guid></IntegrationNode>
             
         }
         <br/>
         <br/>
-    </CascadingValue>
+    
 </div>

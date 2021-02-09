@@ -29,22 +29,20 @@ namespace TreeBuilder.Classes {
         [Inject] protected RenderService RenderService { get; set; }
         [Inject] protected IJSRuntime JS { get; set; }
         [Inject] protected EventState EventState { get; set; }
-
-        [Parameter] public Guid Guid { get; set; } = Guid.NewGuid();
-        [Parameter] public string Title { get; set; } = "Default";
+        
+        public Guid Guid { get; set; } = Guid.NewGuid();
+        public string Title { get; set; } = "Default";
         
         [Parameter] 
         [JsonProperty(IsReference = true)] 
         public BaseClass Parent { get; set; }
-
-        [CascadingParameter(Name = "Field")]
-        [JsonProperty(IsReference = true)]
+        
         public Group Field { get; set; }
 
         [Parameter] [JsonIgnore] public string CssClass { get; set; } = "";
         [JsonIgnore] public string CssSelect { get; set; } = "";
 
-        [Parameter] public List<BaseClass> GroupItems { get; set; } = new();
+        public List<BaseClass> GroupItems { get; set; } = new();
 
         [Parameter] public BaseClass InstanceClass { get; set; }
         
@@ -96,14 +94,15 @@ namespace TreeBuilder.Classes {
                     ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), true);
                 }
             }
-            RenderService.Redraw();
+
+            RenderService.GhostNode.Render();
         }
 
         public virtual void HandleOnDragEnd() {
             EventState.DraggingEvent = false;
             CssClass = "";
             if (EventState.Payload is Interface) {
-                ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
+                JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
             }
             EventState.LastDomId = -1;
             RenderService.Redraw();

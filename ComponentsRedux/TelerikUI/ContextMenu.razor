@@ -22,6 +22,8 @@
             switch (clickedItem.CommandName) {
                 case "rename":
                     Console.WriteLine("Rename " + Guid);
+                    BaseClass b = EventState.FindItem(ContextMenu.Guid);
+                    BaseClass.WindowsRef.NewTitle = b.Title;
                     BaseClass.WindowsRef.isRenameModalVisible = true;
                     BaseClass.WindowsRef.Render();
                     break;

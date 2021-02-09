@@ -9,7 +9,7 @@
      @ondrop="HandleOnDrop">
 
 
-    <CascadingValue Value="this" Name="Field">
+    
         @foreach (var item in Storage.GroupField.GroupItems) {
             @if (Is<Group>(item)) {
                 <Group InstanceClass=@item Parent="this" @key=@item.Guid></Group>
@@ -19,7 +19,7 @@
             }
 
         }
-    </CascadingValue>
+    
 
 
 </div>

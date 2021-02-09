@@ -11,16 +11,26 @@
 
 @namespace TreeBuilder.Pages
 
-<div class="container" @ondragenter="(()=>HandleOnDragEnter(this))">
-    <div id="buttonsgroup" class="tb-addbuttons">
-        <i id="addgroup" class="fas fa-layer-group fa-3x p-3" @onclick="AddGroup"></i>
-        <i id="addinterface" class="fas fa-link fa-3x p-3" @onclick="AddInterface"></i>
-        <i id="addnode" class="fas fa-file-export fa-3x p-3" @onclick="AddIntegrationNode"></i>
-        <i id="clearall" class="fas fa-backspace fa-3x p-3" @onclick="ClearAll"></i>
-        <i id="help" class="fas fa-question-circle fa-3x p-3" @onclick="LaunchHelp"></i>
-            <!-- Not implemented yet
-            <i class="fas fa-download fa-3x"></i>
-            -->
+<div class="container" @ondragenter="(() => HandleOnDragEnter(this))">
+    <i id="help" class="fas fa-question-circle fa-3x p-3 help-button" @onclick="LaunchHelp"></i>
+    <div class="row">
+        <div class="col-6 text-center">
+            <h2>Interfaces</h2>
+        </div>
+        <div class="col-6 text-center">
+            <h2>Integrations</h2>
+        </div>
+    </div>
+    <div id="buttonsgroup" class="row">
+        <div class="col col-6 tb-addbuttons">
+            <i id="addgroup" class="fas fa-layer-group fa-3x p-3" @onclick="AddGroup"></i>
+            <i id="addinterface" class="fas fa-link fa-3x p-3" @onclick="AddInterface"></i>
+            <i id="clearall" class="fas fa-backspace fa-3x p-3" @onclick="ClearAll"></i>
+        </div>
+        <div class="col col-6 tb-addbuttons">
+            
+            <i id="addnode" class="fas fa-file-export fa-3x p-3" @onclick="AddIntegrationNode"></i>
+        </div>
     </div>
     <div class="row">
         <div class="col col-6">
@@ -30,15 +40,16 @@
             <IntegrationField @ref="integrationRef"></IntegrationField>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col col-6">
-            <div class="tb-trash" 
+            <div class="tb-trash"
                  ondragover="event.preventDefault()"
                  @ondrop:stopPropagation
                  @ondrop="(()=>WindowsRef.ShowDeleteWindow())">
                 <i id="TrashCan" class="fas fa-trash fa-6x"></i>
             </div>
+            
         </div>
         <div class="col col-6">
             <!-- Where the floating Node will go -->
@@ -49,6 +60,8 @@
 
     <ContextMenu @ref="ContextMenuRef"></ContextMenu>
     <ModalWindows @ref="WindowsRef"></ModalWindows>
+
+
 
 @code {
 
