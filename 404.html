@@ -14,9 +14,7 @@
     <script src="https://kit.fontawesome.com/e6ee6eb207.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
-    <link
-            rel="stylesheet"
-            href="https://unpkg.com/tippy.js@6/animations/shift-away.css"
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/intro.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.css"/>
@@ -99,6 +97,7 @@
         
         var dotNetRef;
         
+        // Set dotNetRef so we can call .NET functions from Javascript
         function UpdateTitleHelper(ref){
             dotNetRef = ref;
         }
@@ -112,11 +111,14 @@
             dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id,null);
         }
         
+        // Debugging helpers
         var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll');
         var outputDictionaries = () => dotNetRef.invokeMethodAsync('OutputDictionaries');
 
         
-        
+        /*
+         Tippy.js library, shows tooltips on buttons
+         */
         function BindToolTipsToIcons() {
             
             tippy('#addgroup', {
@@ -142,11 +144,30 @@
                 arrow: true,
                 animation: 'shift-away',
             });
+
+            tippy('#help', {
+                content: 'Tutorial',
+                arrow: true,
+                animation: 'shift-away',
+            });
+
+            tippy('#TrashCan', {
+                content: 'Drag items here to delete',
+                arrow: true,
+                animation: 'shift-away',
+            });
             
         }
         
+        /*
+            Intro.js : Javascript library that powers the tutorial/introduction tour piece
+         */
         function LaunchHelp(){
             
+            /*
+            Note: Very important if using images that you set the width and height explicitly, otherwise
+            Intro.js doesn't know how to calculate positioning correctly and the boxes won't appear centered
+             */
             var introjs = introJs().setOptions({
                 tooltipClass: 'custom-tooltip',
                 steps: [{
@@ -190,24 +211,15 @@
                         intro: 'All elements can be renamed by clicking or right clicking on the title, and deleted by dragging to the Trash bin or via right click. <br/>' +
                             "<img width=500px height=565px src=\"gifs/renamedelete.gif\"/>",
 
-                    },
-                    {
-                        intro: 'That\'s it for now! See the website for more information!'
                     }]
             });
             
-            introjs.onafterchange(function(targetElement){
-                console.log("onafterchange");
-                window.dispatchEvent(new Event('resize'));
-            }).onexit(function(targetElement){
+            // When tour is done, notify app by calling FinishTour
+            introjs.onexit(function(targetElement){
                 dotNetRef.invokeMethod('FinishTour');
             });
             
             introjs.start();
-            
-            function resizeEvent(){
-                window.dispatchEvent(new Event('resize'));
-            }
             
             
         }

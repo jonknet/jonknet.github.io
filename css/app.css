@@ -109,7 +109,7 @@ a, .btn-link {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 146px;
+        width: 141px;
         max-width: 200px;
         height: 33px;
         background-color: #209adc;
@@ -136,9 +136,10 @@ a, .btn-link {
         vertical-align: top;
         flex-shrink: 0;
         flex: none;
-        height: 700px;
+        height: 65vh;
         min-width: 350px;
         overflow-y: auto;
+        border:  3px solid black;
     }
 
     .tb-flex {
@@ -161,7 +162,7 @@ a, .btn-link {
     }
 
     .tb-integrationslot {
-        width: 150px;
+        width: 145px;
         height: 35px;
         background-color: white;
         border: 2px solid black;
@@ -203,10 +204,15 @@ a, .btn-link {
     
     .tb-interfaceslots {
         height: 120px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
     }
     
     .tb-trash {
         font-size: 16px;
+        margin-top: 30px;
         float: left;
     }
     
@@ -220,4 +226,30 @@ a, .btn-link {
     .custom-tooltip {
         max-width: 800px!important;
         max-height: 900px!important;
+    }
+
+    .break {
+        flex-basis: 100%;
+        height: 0;
+    }
+
+.help-button {
+    position: absolute;
+    display: inline !important;
+    left: -50px;
+    top: 45px;
+}
+    
+    .content {
+        width: 1000px;
+    }
+    
+    .main {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+    }
+    
+    .container {
+        position: relative;
     }
