@@ -32,6 +32,10 @@ namespace TreeBuilder.Classes {
 
         private const string VERSION_STR = "TreeBuilder_Version";
 
+        public Version() {
+            
+        }
+
         public Version(int Major, int Minor) {
             this.Major = Major;
             this.Minor = Minor;
@@ -39,10 +43,12 @@ namespace TreeBuilder.Classes {
 
         public Version(StorageService storageService) : this(1,0) {
             StorageService = storageService;
-            Version currVersion = StorageService.LoadValue<Version>("VERSION_STR");
+            Version currVersion = StorageService.LoadValue<Version>(VERSION_STR);
             if (currVersion != null && !currVersion.Equals(this)) {
                 // Clear keys
                 StorageService.ClearAllKeys();
+                StorageService.GroupField.GroupItems.Clear();
+                StorageService.IntegrationField.GroupItems.Clear();
             }
             StorageService.SaveValue(VERSION_STR, this);
         }
