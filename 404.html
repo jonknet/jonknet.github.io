@@ -41,8 +41,7 @@
                 images[i].src = preload.arguments[i];
             }
         }
-
-        //-- usage --//
+        
         preload(
             "gifs/basicoperations.gif",
             "gifs/dragncreate.gif",
@@ -54,6 +53,27 @@
             "gifs/trash.gif",
             "gifs/renamedeletecontext.gif"
         )
+
+        var dotNetRef;
+
+        // Set dotNetRef so we can call .NET functions from Javascript
+        function UpdateTitleHelper(ref){
+            dotNetRef = ref;
+        }
+
+        /*
+            Calls UpdateTitle from .NET when Title div loses focus
+         */
+        function HandleOnBlur(e,obj){
+
+            var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
+            dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id,null);
+        }
+        
+        // On Exiting the page (either via browser close or navigating away), Save the state
+        window.addEventListener('beforeunload', function(){
+            dotNetRef.invokeMethodAsync('SaveState');         
+        });
         
         /*
             There is a chrome bug where if the DOM is updated during a drag event, the event will 
@@ -117,24 +137,10 @@
             },0);
         }
         
-        var dotNetRef;
-        
-        // Set dotNetRef so we can call .NET functions from Javascript
-        function UpdateTitleHelper(ref){
-            dotNetRef = ref;
-        }
 
-        /*
-            Calls UpdateTitle from .NET when Title div loses focus
-         */
-        function HandleOnBlur(e){
-            
-            var str = e.innerText.trim().replace(/(\r\n|\n|\r)/gm, "");
-            dotNetRef.invokeMethodAsync('UpdateTitle',str,e.id,null);
-        }
         
         // Debugging helpers
-        var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll');
+        var outputStorage = () => dotNetRef.invokeMethodAsync('OutputAll',null);
         var outputDictionaries = () => dotNetRef.invokeMethodAsync('OutputDictionaries');
 
         
