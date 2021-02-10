@@ -21,9 +21,7 @@ namespace TreeBuilder.ComponentsRedux {
                 (IndexOf((Parent as IntegrationNode).Interfaces,EventState.Payload) == Position)) return;
 
             BaseClass b = null;
-
-            Console.WriteLine($"{EventState.Payload.Field} \r\n {EventState.Payload.Parent}");
-
+            
             // Create new interface if transferring fields
             if (EventState.Payload.Field.Is<GroupField>())
             {

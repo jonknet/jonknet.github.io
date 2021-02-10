@@ -37,7 +37,7 @@ namespace TreeBuilder.Classes {
             this.Minor = Minor;
         }
 
-        public Version(StorageService storageService) : this(0,5) {
+        public Version(StorageService storageService) : this(1,0) {
             StorageService = storageService;
             Version currVersion = StorageService.LoadValue<Version>("VERSION_STR");
             if (currVersion != null && !currVersion.Equals(this)) {

@@ -145,6 +145,12 @@ namespace TreeBuilder.Classes
             return output;
         }
 
+        /// <summary>
+        /// Faster version of find using Runtime dictionaries
+        /// </summary>
+        /// <param name="obj">obj to find</param>
+        /// <param name="guid">(Optional) Guid to find</param>
+        /// <returns></returns>
         private BaseClass FastFind(BaseClass obj, Guid guid = new Guid()) {
             if (guid != Guid.Empty) {
                 BaseClass b = null;
@@ -266,6 +272,11 @@ namespace TreeBuilder.Classes
             //Storage.SaveToSessionStorage();
         }
 
+        /// <summary>
+        /// Deletes items and optionally from the Runtime dictionaries
+        /// </summary>
+        /// <param name="obj">obj to delete</param>
+        /// <param name="permanentDelete">if true, delete from Runtime dictionaries</param>
         public void DeleteItem(BaseClass obj,bool permanentDelete = false)
         {
 
@@ -300,7 +311,7 @@ namespace TreeBuilder.Classes
                     RuntimeInterfaces.Remove(b.Guid);
             }
             
-            DeleteItemFromStorage(b);
+            //DeleteItemFromStorage(b);
 
             
 

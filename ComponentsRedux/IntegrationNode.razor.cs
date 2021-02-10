@@ -84,7 +84,6 @@ namespace TreeBuilder.ComponentsRedux {
             if (!Helpers.Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
                 (Helpers.Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
             {
-                Console.WriteLine(this.ContainsNode(EventState.Payload as IntegrationNode) + " " + this.HasNodesOnTop());
                 return;
             }
 

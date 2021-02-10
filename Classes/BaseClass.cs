@@ -16,7 +16,7 @@ namespace TreeBuilder.Classes {
     /// <summary>
     ///     BaseClass of all types
     /// </summary>
-    public class BaseClass : ComponentBase {
+    public class BaseClass : ComponentBase, IDisposable {
 
         public BaseClass()
         {
@@ -56,7 +56,7 @@ namespace TreeBuilder.Classes {
         [JsonIgnore] public bool IsEditable = false;
         
         #if DEBUG
-        private Stopwatch _stopwatch = new Stopwatch();
+        private static Stopwatch _stopwatch = new Stopwatch();
         #endif
 
         protected override void OnInitialized() {
@@ -165,7 +165,24 @@ namespace TreeBuilder.Classes {
         public void Render() {
             StateHasChanged();
         }
-        
+
+        /// <summary>
+        /// Easy way to clean up from the Runtime dictionaries
+        /// </summary>
+        public void Dispose() {
+            var g = EventState.RuntimeGroups;
+            var i = EventState.RuntimeIntegrations;
+            var ifc = EventState.RuntimeInterfaces;
+            Console.WriteLine("Disposed " + Guid);
+            if (GetType() == typeof(Group)) {
+                g.Remove(this.Guid);
+            } else if (GetType() == typeof(IntegrationNode)) {
+                i.Remove(this.Guid);
+            } else if (GetType() == typeof(Interface)) {
+                ifc.Remove(this.Guid);
+            }
+        }
+
         public override bool Equals(object obj) {
             if (obj == null || !GetType().Equals(obj.GetType())) return false;
 
