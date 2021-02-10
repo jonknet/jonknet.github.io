@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Newtonsoft.Json;
 using TreeBuilder.ComponentsRedux;
 
@@ -8,7 +9,8 @@ namespace TreeBuilder.Services {
         public GroupField GroupField;
         public IntegrationField IntegrationField;
         
-        public ISyncLocalStorageService LocalStorageService;
+        public ILocalStorageService LocalStorageService;
+        public ISyncLocalStorageService LocalStorageSyncService;
 
         public JsonSerializerSettings settings = new()
         {
@@ -18,9 +20,9 @@ namespace TreeBuilder.Services {
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize
         };
 
-        public StorageService(ISyncLocalStorageService LocalStorageService) {
+        public StorageService(ILocalStorageService LocalStorageService,ISyncLocalStorageService LocalStorageSyncService) {
             this.LocalStorageService = LocalStorageService;
-
+            this.LocalStorageSyncService = LocalStorageSyncService;
             GroupField = LoadGroupField();
             IntegrationField = LoadIntegrationField();
         }
@@ -28,10 +30,10 @@ namespace TreeBuilder.Services {
         /// <summary>
         /// Saves both IntegrationField and GroupField to Local Storage in the Browser as JSON
         /// </summary>
-        public void SaveToSessionStorage() {
-            LocalStorageService.SetItem("TreeBuilder_IntegrationField",
+        public async void SaveToSessionStorage() {
+            await LocalStorageService.SetItemAsync("TreeBuilder_IntegrationField",
                 JsonConvert.SerializeObject(IntegrationField, settings));
-            LocalStorageService.SetItem("TreeBuilder_GroupField",
+            await LocalStorageService.SetItemAsync("TreeBuilder_GroupField",
                 JsonConvert.SerializeObject(GroupField, settings));
         }
 
@@ -41,9 +43,9 @@ namespace TreeBuilder.Services {
         /// <returns>GroupField or, if none, an empty one</returns>
         public GroupField LoadGroupField()
         {
-            if (!LocalStorageService.ContainKey("TreeBuilder_GroupField")) return new GroupField();
+            if (!LocalStorageSyncService.ContainKey("TreeBuilder_GroupField")) return new GroupField();
             return JsonConvert.DeserializeObject<GroupField>(
-                LocalStorageService.GetItemAsString("TreeBuilder_GroupField"), settings);
+                LocalStorageSyncService.GetItemAsString("TreeBuilder_GroupField"), settings);
         }
 
         /// <summary>
@@ -51,22 +53,22 @@ namespace TreeBuilder.Services {
         /// </summary>
         /// <returns>IntegrationField or, if none, a empty one</returns>
         public IntegrationField LoadIntegrationField() {
-            if (!LocalStorageService.ContainKey("TreeBuilder_IntegrationField")) return new IntegrationField();
+            if (!LocalStorageSyncService.ContainKey("TreeBuilder_IntegrationField")) return new IntegrationField();
             return JsonConvert.DeserializeObject<IntegrationField>(
-                LocalStorageService.GetItemAsString("TreeBuilder_IntegrationField"), settings);
+                LocalStorageSyncService.GetItemAsString("TreeBuilder_IntegrationField"), settings);
         }
 
         
         public void SaveValue<T>(string Key, T Value) {
-            LocalStorageService.SetItem(Key, Value);
+            LocalStorageSyncService.SetItem(Key, Value);
         }
 
         public T LoadValue<T>(string Key) {
-            return LocalStorageService.GetItem<T>(Key);
+            return LocalStorageSyncService.GetItem<T>(Key);
         }
 
         public void ClearAllKeys() {
-            LocalStorageService.Clear();
+            LocalStorageSyncService.Clear();
         }
     }
 }

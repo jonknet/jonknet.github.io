@@ -92,11 +92,11 @@ namespace TreeBuilder.Classes {
             RenderService.GhostNode.Render();
         }
 
-        public virtual void HandleOnDragEnd() {
+        public virtual async void HandleOnDragEnd() {
             EventState.DraggingEvent = false;
             CssClass = "";
             if (EventState.Payload is Interface) {
-                JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
+                await JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
             }
             EventState.LastDomId = -1;
             RenderService.Redraw();
