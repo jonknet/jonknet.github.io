@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
@@ -52,6 +53,11 @@ namespace TreeBuilder.ComponentsRedux {
         }
         
         public override void HandleOnDragEnter(BaseClass payload) {
+            #if DEBUG
+                        var _stopwatch = new Stopwatch();
+                        _stopwatch.Reset();
+                        _stopwatch.Start();
+            #endif
             if (!Helpers.Is<Interface>(EventState.Payload))
             {
                 return;
@@ -62,10 +68,19 @@ namespace TreeBuilder.ComponentsRedux {
             EventState.LastDomId = DomId;
 
             CssClass = "tb-dropborder";
-            RenderService.Redraw();
+            //RenderService.Redraw();
+            #if DEBUG
+                        _stopwatch.Stop();
+                        Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
 
         public override void HandleOnDrop() {
+            #if DEBUG
+                        var _stopwatch = new Stopwatch();
+                        _stopwatch.Reset();
+                        _stopwatch.Start();
+            #endif
             if (!Helpers.Is<IntegrationNode>(EventState.Payload) || EventState.Payload == this ||
                 (Helpers.Is<IntegrationNode>(EventState.Payload) && this.ContainsNode(EventState.Payload as IntegrationNode)))
             {
@@ -74,6 +89,10 @@ namespace TreeBuilder.ComponentsRedux {
             }
 
             base.HandleOnDrop();
+            #if DEBUG
+                        _stopwatch.Stop();
+                        Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
     }
 }

@@ -30,6 +30,7 @@ namespace TreeBuilder.ComponentsRedux {
                 b = new Interface();
                 b.Title = EventState.Payload.Title;
                 b.Guid = Guid.NewGuid();
+                EventState.RuntimeInterfaces[b.Guid] = b as Interface;
             }
             else if (Helpers.Is<IntegrationNode>(EventState.Payload.Parent))
             {
@@ -52,7 +53,7 @@ namespace TreeBuilder.ComponentsRedux {
 
             (Parent as IntegrationNode).Interfaces[Position] = b as Interface;
 
-            Storage.SaveToSessionStorage();
+            //Storage.SaveToSessionStorage();
 
             base.HandleOnDragEnd();
         }

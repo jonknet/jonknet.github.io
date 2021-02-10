@@ -28,5 +28,7 @@ namespace TreeBuilder.Classes {
         public static bool ContainsNode(this BaseClass obj, IntegrationNode Node) {
             return obj.GroupItems.Contains(Node);
         }
+        
+        
     }
 }

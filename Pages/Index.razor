@@ -87,24 +87,24 @@
         var grp = new Group(StorageService.GroupField);
         EventState.RuntimeGroups[grp.Guid] = grp;
         StorageService.GroupField.GroupItems.Add(grp);
-        StorageService.SaveToSessionStorage();
-        RenderService.Redraw();
+        //StorageService.SaveToSessionStorage();
+        RenderService.Redraw(RenderService.Element.GroupField);
     }
 
     public void AddInterface() {
         var iface = new Interface(StorageService.GroupField);
         EventState.RuntimeInterfaces[iface.Guid] = iface;
         StorageService.GroupField.GroupItems.Add(iface);
-        StorageService.SaveToSessionStorage();
-        RenderService.Redraw();
+        //StorageService.SaveToSessionStorage();
+        RenderService.Redraw(RenderService.Element.GroupField);
     }
 
     public void AddIntegrationNode() {
         var node = new IntegrationNode(StorageService.IntegrationField);
         EventState.RuntimeIntegrations[node.Guid] = node;
         StorageService.IntegrationField.GroupItems.Add(node);
-        StorageService.SaveToSessionStorage();
-        RenderService.Redraw();
+        //StorageService.SaveToSessionStorage();
+        RenderService.Redraw(RenderService.Element.IntegrationField);
     }
 
     public void ClearAll()
@@ -124,6 +124,9 @@
     {
         GroupField g = StorageService.GroupField;
         IntegrationField i = StorageService.IntegrationField;
+        // Back up current state
+        EventState.GroupFieldBackup = g;
+        EventState.IntFieldBackup = i;
 
         StorageService.GroupField = new GroupField();
         StorageService.IntegrationField = new IntegrationField();
@@ -142,7 +145,7 @@
         EventState.DraggingEvent = true;
 
         StateHasChanged();
-        RenderService.Redraw();
+        RenderService.Redraw(RenderService.Element.GroupField | RenderService.Element.IntegrationField);
 
     }
     

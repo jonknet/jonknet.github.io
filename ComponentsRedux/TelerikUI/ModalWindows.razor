@@ -34,24 +34,27 @@
     public string NewTitle { get; set; } = "";
 
     public void SaveTitle() {
-        EventState.UpdateTitle(NewTitle, ContextMenu.Guid.ToString(),ContextMenu.BoundInstance);
+        EventState.UpdateTitle(NewTitle,ContextMenu.Guid.ToString(), ContextMenu.BoundInstance);
         isRenameModalVisible = false;
         NewTitle = "";
-        RenderService.Redraw();
+        //RenderService.Redraw();
     }
 
     public void ShowDeleteWindow()
     {
         isDeleteModalVisible = true;
         ContextMenu.Guid = EventState.Payload.Guid;
+        ContextMenu.BoundInstance = EventState.Payload;
+        EventState.DraggingEvent = false;
         StateHasChanged();
     }
 
     public void DeleteItem() {
-        EventState.DeleteItem(ContextMenu.Guid.ToString());
+        EventState.DeleteItem(ContextMenu.BoundInstance, true);
         isDeleteModalVisible = false;
         StateHasChanged();
-        Storage.SaveToSessionStorage();
+        RenderService.Redraw(RenderService.Element.GhostNode | RenderService.Element.GroupField | RenderService.Element.IntegrationField);
+        //Storage.SaveToSessionStorage();
         
     }
 

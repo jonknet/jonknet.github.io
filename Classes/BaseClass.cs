@@ -9,6 +9,8 @@ using Telerik.Blazor.Components;
 using TreeBuilder.ComponentsRedux;
 using TreeBuilder.ComponentsRedux.TelerikUI;
 using TreeBuilder.Services;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace TreeBuilder.Classes {
     /// <summary>
@@ -52,6 +54,10 @@ namespace TreeBuilder.Classes {
         public static ContextMenu ContextMenuRef { get; set; }
 
         [JsonIgnore] public bool IsEditable = false;
+        
+        #if DEBUG
+        private Stopwatch _stopwatch = new Stopwatch();
+        #endif
 
         protected override void OnInitialized() {
             if (InstanceClass != null) {
@@ -65,20 +71,40 @@ namespace TreeBuilder.Classes {
         }
 
         public virtual void HandleOnDragEnter(BaseClass target) {
+            #if DEBUG
+                _stopwatch.Reset();
+                _stopwatch.Start();
+            #endif
             if (target is not IntegrationNode) {
                 ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId, false);
                 EventState.LastDomId = -1;
             }
             CssClass = "tb-dropborder";
-            RenderService.Redraw();
+            //RenderService.Redraw();
+            #if DEBUG
+                _stopwatch.Stop();
+                Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
 
         public virtual void HandleOnDragLeave(BaseClass payload) {
+            #if DEBUG
+                        _stopwatch.Reset();
+                        _stopwatch.Start();
+            #endif
             CssClass = "";
-            RenderService.Redraw();
+            //RenderService.Redraw();
+            #if DEBUG
+                        _stopwatch.Stop();
+                        Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
 
         public virtual void HandleOnDragStart(BaseClass payload) {
+            #if DEBUG
+                        _stopwatch.Reset();
+                        _stopwatch.Start();
+            #endif
             EventState.Payload = payload;
             if (payload is Interface) {
                 EventState.DraggingEvent = true;
@@ -90,29 +116,50 @@ namespace TreeBuilder.Classes {
             }
 
             RenderService.GhostNode.Render();
+            #if DEBUG
+                        _stopwatch.Stop();
+                        Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
 
-        public virtual async void HandleOnDragEnd() {
+        public virtual void HandleOnDragEnd() {
+            #if DEBUG
+                        _stopwatch.Reset();
+                        _stopwatch.Start();
+            #endif
             EventState.DraggingEvent = false;
             CssClass = "";
             if (EventState.Payload is Interface) {
-                await JS.InvokeVoidAsync("ToggleSlots", EventState.LastDomId.ToString(), false);
+                ((IJSInProcessRuntime)JS).InvokeVoid("ToggleSlots", EventState.LastDomId.ToString(), false);
             }
             EventState.LastDomId = -1;
-            RenderService.Redraw();
+            RenderService.Redraw(RenderService.Element.GhostNode);
+            #if DEBUG
+                        _stopwatch.Stop();
+                        Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
         
         public virtual void HandleOnDrop() {
+            #if DEBUG
+                        _stopwatch.Reset();
+                        _stopwatch.Start();
+            #endif
             EventState.DraggingEvent = false;
             CssClass = "";
             
-            EventState.DeleteItem(EventState.Payload.Guid.ToString());
+            EventState.DeleteItem(EventState.Payload);
             GroupItems.Add(EventState.Payload);
+            
             EventState.Payload.Parent = this;
             EventState.Payload.Field = Field;
             
-            Storage.SaveToSessionStorage();
-            RenderService.Redraw();
+            //Storage.SaveToSessionStorage();
+            RenderService.Redraw(RenderService.Element.GhostNode | RenderService.Element.GroupField | RenderService.Element.IntegrationField);
+            #if DEBUG
+                        _stopwatch.Stop();
+                        Console.WriteLine(GetType().Name + ":" + MethodBase.GetCurrentMethod().Name + ":" + _stopwatch.ElapsedMilliseconds);
+            #endif
         }
 
         public void Render() {

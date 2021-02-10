@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TreeBuilder.Classes;
+using TreeBuilder.Services;
 
 namespace TreeBuilder.ComponentsRedux {
     /// <summary>
@@ -20,13 +21,16 @@ namespace TreeBuilder.ComponentsRedux {
             b.Parent = Node;
             b.Field = Storage.IntegrationField;
             b.Title = EventState.Payload.Title;
+            EventState.RuntimeInterfaces[b.Guid] = b as Interface;
 
             Node.Interfaces[(int) Position] = b as Interface;
             
             Storage.IntegrationField.GroupItems.Add(Node);
             EventState.RuntimeIntegrations[Node.Guid] = Node;
+            
+            RenderService.Redraw(RenderService.Element.IntegrationField);
 
-            Storage.SaveToSessionStorage();
+            //Storage.SaveToSessionStorage();
             
             base.HandleOnDragEnd();
         }

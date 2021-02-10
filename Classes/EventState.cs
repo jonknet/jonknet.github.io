@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using Telerik.DataSource.Extensions;
 using TreeBuilder.ComponentsRedux;
 using TreeBuilder.Services;
@@ -143,6 +145,41 @@ namespace TreeBuilder.Classes
             return output;
         }
 
+        private BaseClass FastFind(BaseClass obj, Guid guid = new Guid()) {
+            if (guid != Guid.Empty) {
+                BaseClass b = null;
+                if (RuntimeGroups.ContainsKey(guid)) {
+                    b = RuntimeGroups[guid];
+                }
+
+                if (b != null)
+                    return b;
+
+                if (RuntimeIntegrations.ContainsKey(guid)) {
+                    b = RuntimeIntegrations[guid];
+                }
+
+                if (b != null)
+                    return b;
+
+                if (RuntimeInterfaces.ContainsKey(guid)) {
+                    b = RuntimeInterfaces[guid];
+                }
+
+                return b;
+            }
+            
+            if (obj.Is<Group>()) {
+                return RuntimeGroups[obj.Guid];
+            } else if (obj.Is<Interface>()) {
+                return RuntimeInterfaces[obj.Guid];
+            } else if (obj.Is<IntegrationNode>()) {
+                return RuntimeIntegrations[obj.Guid];
+            }
+
+            return null;
+        }
+
         private BaseClass Search(Guid guid, List<BaseClass> list)
         {
             BaseClass b = null;
@@ -182,10 +219,18 @@ namespace TreeBuilder.Classes
         {
             DraggingEvent = false;
 
-            Storage.GroupField = Storage.LoadGroupField();
-            Storage.IntegrationField = Storage.LoadIntegrationField();
+            Storage.GroupField = GroupFieldBackup;
+            Storage.IntegrationField = IntFieldBackup;
 
-            RenderService.Redraw();
+            RenderService.Redraw(RenderService.Element.GroupField | RenderService.Element.IntegrationField);
+        }
+
+        /// <summary>
+        /// Called from JS when page is exited
+        /// </summary>
+        [JSInvokable]
+        public void SaveState() {
+            Storage.SaveToSessionStorage();
         }
 
         /// <summary>
@@ -194,12 +239,12 @@ namespace TreeBuilder.Classes
         /// <param name="newTitle">The new title</param>
         /// <param name="objGuid">Guid of the object to update</param>
         [JSInvokable]
-        public void UpdateTitle(string newTitle, string objGuid, BaseClass obj)
-        {
+        public void UpdateTitle(string newTitle, string objGuid, BaseClass obj = null) {
+            BaseClass b = null;
+            
             var guid = Guid.Parse(objGuid);
-
-            BaseClass b = FindItem(guid);
-
+            b = FastFind(null, guid);
+            
             if (obj != null) {
                 obj.Title = newTitle;
                 obj.IsEditable = false;
@@ -207,24 +252,33 @@ namespace TreeBuilder.Classes
 
             b.Title = newTitle;
             b.IsEditable = false;
-            RenderService.Redraw();
-            Storage.SaveToSessionStorage();
+            
+            if(obj != null)
+                RenderService.RedrawObject(obj);
+            else {
+                if (b.Field.Is<GroupField>()) {
+                    RenderService.Redraw(RenderService.Element.GroupField);
+                }
+                else {
+                    RenderService.Redraw(RenderService.Element.IntegrationField);
+                }
+            }
+            //Storage.SaveToSessionStorage();
         }
 
-        public void DeleteItem(string objGuid)
+        public void DeleteItem(BaseClass obj,bool permanentDelete = false)
         {
-            var guid = Guid.Parse(objGuid);
 
-            BaseClass b = FindItem(guid);
+            BaseClass b = obj;
 
             if (b.Is<Group>() || b.Is<IntegrationNode>())
             {
                 b.Parent.GroupItems.Remove(b);
 
-                if (b.Is<Group>())
+                if (b.Is<Group>() && permanentDelete)
                 {
                     RuntimeGroups.Remove(b.Guid);
-                } else if (b.Is<IntegrationNode>())
+                } else if (b.Is<IntegrationNode>() && permanentDelete)
                 {
                     RuntimeIntegrations.Remove(b.Guid);
                 }
@@ -242,20 +296,29 @@ namespace TreeBuilder.Classes
                 {
                     b.Parent.GroupItems.Remove(b);
                 }
-
-                RuntimeInterfaces.Remove(b.Guid);
+                if(permanentDelete)
+                    RuntimeInterfaces.Remove(b.Guid);
             }
-
+            
             DeleteItemFromStorage(b);
 
-            Storage.SaveToSessionStorage();
-            RenderService.Redraw();
+            
+
+            //Storage.SaveToSessionStorage();
+            if (b.Field.Is<GroupField>()) {
+                RenderService.Redraw(RenderService.Element.GroupField);
+            }
+            else {
+                RenderService.Redraw(RenderService.Element.IntegrationField);
+            }
         }
 
         private void DeleteItemFromStorage(BaseClass obj)
         {
-            DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
-            DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
+            if(obj.Field != null && obj.Field.Is<GroupField>())
+                DeleteItemFromStorageInt(obj, Storage.GroupField.GroupItems);
+            else if(obj.Field != null && obj.Field.Is<IntegrationField>())
+                DeleteItemFromStorageInt(obj, Storage.IntegrationField.GroupItems);
         }
 
         private void DeleteItemFromStorageInt(BaseClass obj, List<BaseClass> list)
@@ -271,8 +334,10 @@ namespace TreeBuilder.Classes
                 if (i.Is<IntegrationNode>())
                 {
                     Interface[] iarray = (i as IntegrationNode).Interfaces;
-                    if (iarray.IndexOf(obj) != -1)
+                    if (iarray.IndexOf(obj) != -1) {
                         iarray.SetValue(null, iarray.IndexOf(obj));
+                        return;
+                    }
                 }
 
                 DeleteItemFromStorageInt(obj, i.GroupItems);
